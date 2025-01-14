@@ -6,7 +6,14 @@ export default {
   ],
   prefix: "tw-",
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        lexiBlue: {
+          800: '#384371',
+          500: '#1967D2'
+        }
+      }
+    },
   },
   plugins: [],
 }
