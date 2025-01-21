@@ -2,12 +2,16 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "./pages/notFound/notFound";
 import Landing from "./pages/landing/landing";
 import "./App.css";
+import { Signup } from "./pages/user/signup/signup";
+import { SignIn } from "./pages/user/signin/signin";
 
 function App() {
   return (
     <BrowserRouter basename="/lexsi">
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/user/signup" element={<Signup />} />
+        <Route path="/user/signin" element={<SignIn />} />
 
         {/* this route should be last */}
         <Route path="/*" element={<NotFound />} />
@@ -17,4 +21,3 @@ function App() {
 }
 
 export default App;
-
