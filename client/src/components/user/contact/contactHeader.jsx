@@ -4,7 +4,7 @@ import ContactHeaderImg from "../../../assets/png/contact-bg.png";
 export const ContactHeader = () => {
   return (
     <div style={{backgroundImage: `url(${ContactHeaderImg})`}} className="tw-min-h-screen tw-bg-no-repeat tw-bg-cover tw-py-16 tw-px-4">
-      <div className="tw-max-w-6xl tw-mx-auto tw-text-center">
+      <div className="tw-max-w-6xl tw-mt-32 tw-mx-auto tw-text-center">
         <h1 className="tw-text-4xl md:tw-text-5xl tw-font-bold tw-text-[#2B3674] tw-mb-4">
           Contact Us
         </h1>

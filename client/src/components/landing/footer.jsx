@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   return (
@@ -19,10 +20,10 @@ export const Footer = () => {
 
           {/* Navigation Links */}
           <div className="tw-space-y-4">
-            <a href="#" className="tw-block hover:tw-text-blue-400 tw-transition-colors">Home</a>
-            <a href="#" className="tw-block hover:tw-text-blue-400 tw-transition-colors">Jobs</a>
-            <a href="#" className="tw-block hover:tw-text-blue-400 tw-transition-colors">About</a>
-            <a href="#" className="tw-block hover:tw-text-blue-400 tw-transition-colors">Contact</a>
+            <Link to="/" className="tw-block hover:tw-text-blue-400 tw-transition-colors">Home</Link>
+            <Link to="/user/jobs" className="tw-block hover:tw-text-blue-400 tw-transition-colors">Jobs</Link>
+            <Link to="/user/about" className="tw-block hover:tw-text-blue-400 tw-transition-colors">About</Link>
+            <Link to="/user/contact" className="tw-block hover:tw-text-blue-400 tw-transition-colors">Contact</Link>
           </div>
 
           {/* Legal Links */}

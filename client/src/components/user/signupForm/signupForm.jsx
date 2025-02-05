@@ -6,22 +6,22 @@ import { axiosInstance } from "../../../apis/axiosInstance";
 import axios from "axios";
 
 export const SignUpForm = () => {
-  const [formData, setFormData] = useState({
-    name: "usern",
-    email: "user3@gmail.com",
-    phone: "1234123412",
-    password: "Anand@123",
-    confirmPassword: "Anand@123",
-    profileImage: null,
-  });
   // const [formData, setFormData] = useState({
-  //   name: "",
-  //   email: "",
-  //   phone: "",
-  //   password: "",
-  //   confirmPassword: "",
+  //   name: "usern",
+  //   email: "user3@gmail.com",
+  //   phone: "1234123412",
+  //   password: "Anand@123",
+  //   confirmPassword: "Anand@123",
   //   profileImage: null,
   // });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    profileImage: null,
+  });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
