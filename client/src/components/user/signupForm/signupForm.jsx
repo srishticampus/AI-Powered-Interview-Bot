@@ -3,6 +3,7 @@ import { Eye, EyeOff, UserCircle, Plus } from "lucide-react";
 import { useAppNavigate } from "../../../hooks/useAppNavigate";
 import { errorToast, successToast } from "../../../utils/showToast";
 import { axiosInstance } from "../../../apis/axiosInstance";
+import axios from "axios";
 
 export const SignUpForm = () => {
   const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ export const SignUpForm = () => {
   };
 
   const validateFields = () => {
-    const { name, email, phone, password, confirmPassword, profileImage } = formData;
+    const {  profileImage } = formData;
     if (!profileImage) {
       errorToast("Photo is required");
       return false;
@@ -68,13 +69,11 @@ export const SignUpForm = () => {
     // Handle form submission
     console.log(formData);
     if (!validateFields()) {
-      console.log('ch')
       return;
     }
-    console.log('else')
     const myFormData = new FormData();
     const {name, phone, email, password, confirmPassword, profileImage} = formData;
-    myFormData.append("name",name)
+    myFormData.append("username",name)
     myFormData.append("phone_number",phone)
     myFormData.append("email",email)
     myFormData.append("password",password)
@@ -83,34 +82,23 @@ export const SignUpForm = () => {
     sendDataToServer(myFormData)
   };
 
-  const sendDataToServer = async (data) => {
+  const sendDataToServer = async (formData) => {
     try {
-      // console.log('dataa ',data);
-      // const res = await axiosInstance.post('/register', data, {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data"
-      //   }
-      // })
-
-      fetch("http://127.0.0.1:8000/api/ai_bot_api/register/", {
-        method: "POST",
-        body: data,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          alert('registratiomn successful')
-          console.log("Registration Successful:", data);
-         
-        })
-        .catch((error) => {
-          console.error("Registration Error:", error);
-         
-        });
-
-
-      console.log('res p', res);
+      const response = await axiosInstance.post("register/", formData);
+      if (response.status === 201) {
+        successToast("Registration successful");
+        navigate('/user/signin')
+      } else {
+        errorToast("Registration failed");
+      }
     } catch (error) {
-      console.log("Error on SIGNUP", error)
+      if (error.response) {
+        errorToast("Email id already registered with us.");
+        console.error("Registration Error:", error.response.data);
+      } else {
+        errorToast("Network error");
+        console.error("Network Error:", error.message);
+      }
     }
   }
 

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Eye, EyeOff, UserCircle, Plus } from "lucide-react";
 import { useAppNavigate } from "../../../hooks/useAppNavigate";
+import { errorToast, successToast } from "../../../utils/showToast";
+import { axiosInstance } from "../../../apis/axiosInstance";
 
 export const SigninForm = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +27,45 @@ export const SigninForm = () => {
     e.preventDefault();
     // Handle form submission
     console.log(formData);
+    if (!validateFields()) {
+      return;
+    }
+    const myFormData = new FormData();
+    const { email, password } = formData;
+    myFormData.append("email", email);
+    myFormData.append("password", password);
+    sendDataToServer(myFormData);
   };
+
+  const sendDataToServer = async (formData) => {
+    try {
+      const response = await axiosInstance.post("login/", formData);
+      if (response.status === 200) {
+        successToast("Login successful");
+        // navigate("/user/dashboard");
+      } else {
+        errorToast("Login failed");
+      }
+    } catch (error) {
+      if (error.response) {
+        errorToast("Email or password is incorrect.");
+        console.error("Login Error:", error.response.data);
+      } else {
+        errorToast("Login failed");
+        console.error("Network Error:", error.message);
+      }
+    }
+  };
+
+
+  const validateFields = () => {
+      const {  email, password } = formData;
+      if (!email || !password) {
+        errorToast("All fields are required");
+        return false;
+      }
+      return true;
+    };
 
   return (
     <section className="tw-py-16 tw-px-4">
