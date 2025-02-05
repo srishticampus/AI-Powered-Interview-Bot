@@ -5,6 +5,9 @@ import { useState } from "react";
 
 export const LandingNavbar = () => {
   const [activePage, setActivePage] = useState("home");
+  const changeActivePage = (newPage) => {
+    setActivePage(newPage);
+  }
   return (
     <nav className="tw-container tw-mx-auto tw-px-16 tw-py-4">
       <div className="tw-flex tw-justify-between tw-items-center">
@@ -18,30 +21,40 @@ export const LandingNavbar = () => {
           <Link to="/">
             {" "}
             <span
+              onClick={() => {
+                changeActivePage("home")
+              }}
               className={`${activePage === "home" && "tw-text-lexiBlue-500"}`}
             >
               Home{" "}
             </span>
           </Link>
-          <Link to="/">
+          <Link to="/user/jobs">
             {" "}
             <span
+              onClick={() => {
+                changeActivePage("jobs")
+              }}
               className={`${activePage === "jobs" && "tw-text-lexiBlue-500"}`}
             >
               Jobs{" "}
             </span>
           </Link>
-          <Link to="/">
+          <Link to="/user/about">
             {" "}
             <span
+
               className={`${activePage === "about" && "tw-text-lexiBlue-500"}`}
             >
               About{" "}
             </span>
           </Link>
-          <Link to="/">
+          <Link to="/user/contact">
             {" "}
             <span
+            onClick={() => {
+              changeActivePage("contact")
+            }}
               className={`${
                 activePage === "contact" && "tw-text-lexiBlue-500"
               }`}

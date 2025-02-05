@@ -5,6 +5,7 @@ import "./App.css";
 import { Signup } from "./pages/user/signup/signup";
 import { SignIn } from "./pages/user/signin/signin";
 import { Contact } from "./pages/user/contact/contact";
+import { About } from "./pages/user/about/about";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/user/signup" element={<Signup />} />
         <Route path="/user/signin" element={<SignIn />} />
+        <Route path="/user/about" element={<About />} />
         <Route path="/user/contact" element={<Contact />} />
 
         {/* this route should be last */}
