@@ -35,19 +35,8 @@ export const Footer = () => {
 
         {/* Copyright and Navigation Arrows */}
         <div className="tw-flex tw-flex-col md:tw-flex-row tw-justify-between tw-items-center tw-pt-2 tw-border-t tw-border-gray-700">
-          <p className="tw-text-gray-400 tw-mb-4 md:tw-mb-0">Copy right © 2024. All rights received</p>
-          <div className="tw-flex tw-gap-4">
-            <button className="tw-w-10 tw-h-10 tw-rounded-full tw-border tw-border-gray-700 tw-flex tw-items-center tw-justify-center hover:tw-bg-gray-700 tw-transition-colors">
-              <svg className="tw-w-6 tw-h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-            <button className="tw-w-10 tw-h-10 tw-rounded-full tw-border tw-border-gray-700 tw-flex tw-items-center tw-justify-center hover:tw-bg-gray-700 tw-transition-colors">
-              <svg className="tw-w-6 tw-h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
-          </div>
+          <p className="tw-text-gray-400 tw-mb-4 md:tw-mb-0">Copy right © 2025. All rights received</p>
+          
         </div>
       </div>
     </footer>

@@ -8,6 +8,7 @@ import { SignIn } from "./pages/user/signin/signin";
 function App() {
   return (
     <BrowserRouter basename="/lexsi">
+      
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/user/signup" element={<Signup />} />

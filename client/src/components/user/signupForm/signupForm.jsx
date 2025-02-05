@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import { Eye, EyeOff, UserCircle, Plus } from "lucide-react";
 import { useAppNavigate } from "../../../hooks/useAppNavigate";
+import { errorToast, successToast } from "../../../utils/showToast";
+import { axiosInstance } from "../../../apis/axiosInstance";
 
 export const SignUpForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
+    name: "usern",
+    email: "user3@gmail.com",
+    phone: "1234123412",
+    password: "Anand@123",
+    confirmPassword: "Anand@123",
+    profileImage: null,
   });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   phone: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   profileImage: null,
+  // });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -35,13 +46,73 @@ export const SignUpForm = () => {
       };
       reader.readAsDataURL(file);
     }
+    setFormData((prevData) => {
+      return {
+        ...prevData,
+        profileImage: file,
+      };
+    });
+  };
+
+  const validateFields = () => {
+    const { name, email, phone, password, confirmPassword, profileImage } = formData;
+    if (!profileImage) {
+      errorToast("Photo is required");
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
     console.log(formData);
+    if (!validateFields()) {
+      console.log('ch')
+      return;
+    }
+    console.log('else')
+    const myFormData = new FormData();
+    const {name, phone, email, password, confirmPassword, profileImage} = formData;
+    myFormData.append("name",name)
+    myFormData.append("phone_number",phone)
+    myFormData.append("email",email)
+    myFormData.append("password",password)
+    myFormData.append("confirm_password",confirmPassword)
+    myFormData.append("profile_image",profileImage)
+    sendDataToServer(myFormData)
   };
+
+  const sendDataToServer = async (data) => {
+    try {
+      // console.log('dataa ',data);
+      // const res = await axiosInstance.post('/register', data, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data"
+      //   }
+      // })
+
+      fetch("http://127.0.0.1:8000/api/ai_bot_api/register/", {
+        method: "POST",
+        body: data,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          alert('registratiomn successful')
+          console.log("Registration Successful:", data);
+         
+        })
+        .catch((error) => {
+          console.error("Registration Error:", error);
+         
+        });
+
+
+      console.log('res p', res);
+    } catch (error) {
+      console.log("Error on SIGNUP", error)
+    }
+  }
 
   return (
     <section className="tw-py-16 tw-px-4">
@@ -74,6 +145,7 @@ export const SignUpForm = () => {
                   type="file"
                   id="profile-image"
                   className="tw-hidden"
+                  
                   accept="image/*"
                   onChange={handleImageChange}
                 />
@@ -116,6 +188,8 @@ export const SignUpForm = () => {
                   type="email"
                   id="email"
                   name="email"
+                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                  title="Please enter a valid email address"
                   value={formData.email}
                   onChange={handleInputChange}
                   className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-2 focus:tw-ring-blue-200 tw-transition-colors"
@@ -136,6 +210,8 @@ export const SignUpForm = () => {
                   type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                  title="Please enter minimum 8 characters with 1 uppercase, 1 lowercase and 1 number"
                   value={formData.password}
                   onChange={handleInputChange}
                   className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-2 focus:tw-ring-blue-200 tw-transition-colors"
@@ -165,6 +241,8 @@ export const SignUpForm = () => {
                   type={showConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
                   name="confirmPassword"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                  title="Please enter minimum 8 characters with 1 uppercase, 1 lowercase and 1 number"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-2 focus:tw-ring-blue-200 tw-transition-colors"
@@ -196,6 +274,8 @@ export const SignUpForm = () => {
                 type="tel"
                 id="phone"
                 name="phone"
+                pattern="\d{10}"
+                title="Please enter a valid 10-digit phone number"
                 value={formData.phone}
                 onChange={handleInputChange}
                 className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-2 focus:tw-ring-blue-200 tw-transition-colors"
