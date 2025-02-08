@@ -4,17 +4,17 @@ import { useAppNavigate } from "../../../hooks/useAppNavigate";
 import { errorToast, successToast } from "../../../utils/showToast";
 import { axiosInstance } from "../../../apis/axiosInstance";
 
-export const SigninForm = () => {
+export const ForgetPasswordForm = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useAppNavigate();
-  const navigateToSignup = () => {
-    navigate("/user/signup");
-  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -38,40 +38,45 @@ export const SigninForm = () => {
   };
 
   const sendDataToServer = async (formData) => {
-    try {
-      const response = await axiosInstance.post("login/", formData);
-      if (response.status === 200) {
-        successToast("Login successful");
-        // navigate("/user/dashboard");
-      } else {
-        errorToast("Login failed");
-      }
-    } catch (error) {
-      if (error.response) {
-        errorToast("Email or password is incorrect.");
-        console.error("Login Error:", error.response.data);
-      } else {
-        errorToast("Login failed");
-        console.error("Network Error:", error.message);
-      }
-    }
+    // try {
+    //   const response = await axiosInstance.post("login/", formData);
+    //   if (response.status === 200) {
+    //     successToast("Login successful");
+    //     // navigate("/user/dashboard");
+    //   } else {
+    //     errorToast("Login failed");
+    //   }
+    // } catch (error) {
+    //   if (error.response) {
+    //     errorToast("Email or password is incorrect.");
+    //     console.error("Login Error:", error.response.data);
+    //   } else {
+    //     errorToast("Login failed");
+    //     console.error("Network Error:", error.message);
+    //   }
+    // }
   };
 
-
   const validateFields = () => {
-      const {  email, password } = formData;
-      if (!email || !password) {
-        errorToast("All fields are required");
+    const { email, password, confirmPassword } = formData;
+    if (!email || !password) {
+      errorToast("All fields are required");
+      return false;
+    }
+    if (password !== confirmPassword) {
+        errorToast("Password and confirm password should be same.");
         return false;
-      }
-      return true;
-    };
+
+    }
+
+    return true;
+  };
 
   return (
     <section className="tw-py-16 tw-px-4">
       <div className="tw-max-w-md tw-mx-auto">
         <h1 className="tw-text-4xl tw-font-bold text-[#2B3674] tw-text-center tw-mb-12">
-          Sign In!
+          Forgot password?
         </h1>
 
         <form onSubmit={handleSubmit} className="tw-space-y-6">
@@ -125,33 +130,46 @@ export const SigninForm = () => {
                   <Eye className="tw-w-5 tw-h-5" />
                 )}
               </button>
-              <div className="tw-flex tw-justify-end tw-cursor-pointer" onClick={() => {
-                navigate('/user/forget-password')
-              }}>
-                <p className="tw-text-lexiBlue-500 tw-font-bold">
-                  Forgot password?
-                </p>
-              </div>
-
             </div>
           </div>
 
+          {/* confirm password */}
+          <div className="tw-relative">
+            <label
+              htmlFor="password"
+              className="tw-block text-[#2B3674] tw-mb-1"
+            >
+              Confirm New Password
+            </label>
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-2 focus:tw-ring-blue-200 tw-transition-colors"
+              required
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="tw-absolute tw-right-3 tw-top-11 tw-text-gray-500 hover:tw-text-gray-700"
+            >
+              {showPassword ? (
+                <EyeOff className="tw-w-5 tw-h-5" />
+              ) : (
+                <Eye className="tw-w-5 tw-h-5" />
+              )}
+            </button>
+          </div>
           <div className="tw-flex tw-flex-col tw-items-center ">
             <button
               type="submit"
               className="tw-w-md tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white tw-font-semibold tw-py-3 tw-px-6 tw-rounded-full tw-transition-colors"
             >
-              Sign In
+              Confirm
             </button>
-            <p className="tw-mt-5">
-              Don't have an account?{" "}
-              <span
-                className="tw-text-lexiBlue-500 tw-font-bold tw-cursor-pointer"
-                onClick={navigateToSignup}
-              >
-                Sign Up
-              </span>
-            </p>
           </div>
         </form>
       </div>
