@@ -1,23 +1,59 @@
-import React from "react";
-import {
-  LayoutDashboard,
-  Building2,
-  Briefcase,
-  Users,
-  FileText,
+import React, { useState } from 'react';
+import { 
+  LayoutDashboard, 
+  Building2, 
+  Building,
+  Briefcase, 
+  BriefcaseConveyorBelt,
+  Users, 
+  FileText, 
   UserCog,
   LogOut,
-  Star,
-} from "lucide-react";
+  ChevronDown,
+  ChevronRight,
+  Plus,
+  Eye,
+  Star
+} from 'lucide-react';
 
 export const AdminSidebar = () => {
+  const [openDropdowns, setOpenDropdowns] = useState({
+    company: false,
+    jobs: false
+  });
+
+  const toggleDropdown = (key) => {
+    setOpenDropdowns(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
   const menuItems = [
-    { icon: LayoutDashboard, text: "Dashboard", active: true },
-    { icon: Building2, text: "Companies" },
-    { icon: Briefcase, text: "Jobs" },
-    { icon: Users, text: "Candidates" },
-    { icon: FileText, text: "Applications" },
-    { icon: UserCog, text: "Settings" },
+    { icon: LayoutDashboard, text: 'Overview', active: true },
+    {
+      icon: Building2,
+      text: 'Company',
+      hasDropdown: true,
+      key: 'company',
+      subItems: [
+        { icon: Building, text: 'Add Company' },
+        { icon: Eye, text: 'View Company' }
+      ]
+    },
+    {
+      icon: Briefcase,
+      text: 'Jobs',
+      hasDropdown: true,
+      key: 'jobs',
+      subItems: [
+        { icon: BriefcaseConveyorBelt, text: 'Add Job' },
+        { icon: Eye, text: 'View Job' }
+      ]
+    },
+    { icon: Users, text: 'Candidates' },
+    { icon: FileText, text: 'Applications' },
+    { icon: UserCog, text: 'Hiring Details' }
   ];
 
   return (
@@ -26,24 +62,44 @@ export const AdminSidebar = () => {
         <div className="tw-flex tw-justify-center tw-items-center tw-gap-2">
           <Star className="tw-h-6 tw-w-6 tw-text-blue-600" />
           <span className="tw-text-xl tw-font-bold tw-text-gray-800">
-            Lexi{" "}
+            Lexsi{" "}
           </span>
         </div>
       </div>
 
       <nav className="tw-flex-1 tw-px-4">
         {menuItems.map((item, index) => (
-          <div
-            key={index}
-            className={`tw-flex tw-items-center tw-px-4 tw-py-3 tw-mb-1 tw-rounded-lg tw-cursor-pointer
-              ${
-                item.active
-                  ? "tw-bg-blue-50 tw-text-blue-600"
-                  : "tw-text-gray-600 hover:tw-bg-gray-50"
-              }`}
-          >
-            <item.icon className="tw-w-5 tw-h-5 tw-mr-3" />
-            <span className="tw-font-medium">{item.text}</span>
+          <div key={index}>
+            <div
+              onClick={() => item.hasDropdown && toggleDropdown(item.key)}
+              className={`tw-flex tw-items-center tw-px-4 tw-py-3 tw-mb-1 tw-rounded-lg tw-cursor-pointer
+                ${item.active ? 'tw-bg-blue-50 tw-text-blue-600' : 'tw-text-gray-600 hover:tw-bg-gray-50'}
+                ${item.hasDropdown ? 'tw-justify-between' : ''}`}
+            >
+              <div className="tw-flex tw-items-center">
+                <item.icon className="tw-w-5 tw-h-5 tw-mr-3" />
+                <span className="tw-font-medium">{item.text}</span>
+              </div>
+              {item.hasDropdown && (
+                openDropdowns[item.key] ? 
+                <ChevronDown className="tw-w-4 tw-h-4" /> : 
+                <ChevronRight className="tw-w-4 tw-h-4" />
+              )}
+            </div>
+            
+            {item.hasDropdown && openDropdowns[item.key] && (
+              <div className="tw-ml-7 tw-mb-2">
+                {item.subItems.map((subItem, subIndex) => (
+                  <div
+                    key={subIndex}
+                    className="tw-flex tw-items-center tw-px-4 tw-py-2 tw-text-gray-600 hover:tw-bg-gray-50 tw-rounded-lg tw-cursor-pointer tw-text-sm"
+                  >
+                    <subItem.icon className="tw-w-4 tw-h-4 tw-mr-3" />
+                    <span>{subItem.text}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </nav>
