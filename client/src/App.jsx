@@ -8,11 +8,13 @@ import { About } from "./pages/user/about/about";
 import { Jobs } from "./pages/user/jobs/jobs";
 import "./App.css";
 import { ForgetPassword } from "./pages/user/forgetPassword/forgetPassword";
+import { AdminSignIn } from "./pages/admin/signin/signin";
+import { AdminDashboard } from "./pages/admin/dashboard/adminDashboard";
+import { ProtectAdminRoutes } from "./pages/admin/protectRoute";
 
 function App() {
   return (
     <BrowserRouter basename="/lexsi">
-      
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/user/signup" element={<Signup />} />
@@ -22,6 +24,11 @@ function App() {
         <Route path="/user/jobs" element={<Jobs />} />
         <Route path="/user/contact" element={<Contact />} />
 
+        {/* admin  */}
+        <Route path="/admin/login" element={<AdminSignIn />} />
+        <Route element={<ProtectAdminRoutes />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Route>
         {/* this route should be last */}
         <Route path="/*" element={<NotFound />} />
       </Routes>
