@@ -24,8 +24,6 @@ export const SigninForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log(formData);
     if (!validateFields()) {
       return;
     }
@@ -37,7 +35,7 @@ export const SigninForm = () => {
     if (email === "admin@gmail.com" && password === "admin@123") {
       localStorage.setItem("lexi-admin-loggedin", true);
       successToast("Login successful");
-      navigate("/admin/dashboard");
+      navigate("/admin");
     } else {
       errorToast("Please check your email and password");
     }

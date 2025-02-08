@@ -1,59 +1,75 @@
-import React, { useState } from 'react';
-import { 
-  LayoutDashboard, 
-  Building2, 
+import React, { useState } from "react";
+import {
+  LayoutDashboard,
+  Building2,
   Building,
-  Briefcase, 
+  Briefcase,
   BriefcaseConveyorBelt,
-  Users, 
-  FileText, 
+  Users,
+  FileText,
   UserCog,
   LogOut,
   ChevronDown,
   ChevronRight,
   Plus,
   Eye,
-  Star
-} from 'lucide-react';
-
-export const AdminSidebar = () => {
+  Star,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { successToast } from "../../../utils/showToast";
+export const AdminSidebar = ({
+  activeItem,
+  activeSubItem,
+  changeActiveItem,
+  changeActiveSubItem,
+}) => {
+  const navigate = useNavigate();
   const [openDropdowns, setOpenDropdowns] = useState({
     company: false,
-    jobs: false
+    jobs: false,
   });
 
   const toggleDropdown = (key) => {
-    setOpenDropdowns(prev => ({
+    setOpenDropdowns((prev) => ({
       ...prev,
-      [key]: !prev[key]
+      [key]: !prev[key],
     }));
   };
-
+  const handleLogout = () => {
+    if (localStorage.getItem("lexi-admin-loggedin")) {
+      localStorage.removeItem("lexi-admin-loggedin");
+    }
+    
+    successToast("Logout successful");
+    navigate("/admin/signin");
+    console.log('wkd')
+  };
   const menuItems = [
-    { icon: LayoutDashboard, text: 'Overview', active: true },
+    { icon: LayoutDashboard, text: "Overview", active: true },
     {
       icon: Building2,
-      text: 'Company',
+      text: "Company",
+
       hasDropdown: true,
-      key: 'company',
+      key: "company",
       subItems: [
-        { icon: Building, text: 'Add Company' },
-        { icon: Eye, text: 'View Company' }
-      ]
+        { icon: Building, text: "Add Company" },
+        { icon: Eye, text: "View Company" },
+      ],
     },
     {
       icon: Briefcase,
-      text: 'Jobs',
+      text: "Jobs",
       hasDropdown: true,
-      key: 'jobs',
+      key: "jobs",
       subItems: [
-        { icon: BriefcaseConveyorBelt, text: 'Add Job' },
-        { icon: Eye, text: 'View Job' }
-      ]
+        { icon: BriefcaseConveyorBelt, text: "Add Job" },
+        { icon: Eye, text: "View Job" },
+      ],
     },
-    { icon: Users, text: 'Candidates' },
-    { icon: FileText, text: 'Applications' },
-    { icon: UserCog, text: 'Hiring Details' }
+    { icon: Users, text: "Candidates" },
+    { icon: FileText, text: "Applications" },
+    { icon: UserCog, text: "Hiring Details" },
   ];
 
   return (
@@ -69,30 +85,48 @@ export const AdminSidebar = () => {
 
       <nav className="tw-flex-1 tw-px-4">
         {menuItems.map((item, index) => (
-          <div key={index}>
+          <div
+            key={index}
+            onClick={() => {
+              if (!item.hasDropdown) {
+                changeActiveItem(item.text);
+              }
+            }}
+          >
             <div
               onClick={() => item.hasDropdown && toggleDropdown(item.key)}
-              className={`tw-flex tw-items-center tw-px-4 tw-py-3 tw-mb-1 tw-rounded-lg tw-cursor-pointer
-                ${item.active ? 'tw-bg-blue-50 tw-text-blue-600' : 'tw-text-gray-600 hover:tw-bg-gray-50'}
-                ${item.hasDropdown ? 'tw-justify-between' : ''}`}
+              className={`tw-flex tw-items-center tw-px-4 tw-py-3 tw-mb-1 tw-rounded-lg tw-cursor-pointer ${
+                item.text === activeItem
+                  ? "tw-bg-blue-50 tw-text-blue-600"
+                  : "tw-text-gray-600 hover:tw-bg-gray-50"
+              }
+                ${item.hasDropdown ? "tw-justify-between" : ""}`}
             >
               <div className="tw-flex tw-items-center">
                 <item.icon className="tw-w-5 tw-h-5 tw-mr-3" />
                 <span className="tw-font-medium">{item.text}</span>
               </div>
-              {item.hasDropdown && (
-                openDropdowns[item.key] ? 
-                <ChevronDown className="tw-w-4 tw-h-4" /> : 
-                <ChevronRight className="tw-w-4 tw-h-4" />
-              )}
+              {item.hasDropdown &&
+                (openDropdowns[item.key] ? (
+                  <ChevronDown className="tw-w-4 tw-h-4" />
+                ) : (
+                  <ChevronRight className="tw-w-4 tw-h-4" />
+                ))}
             </div>
-            
+
             {item.hasDropdown && openDropdowns[item.key] && (
               <div className="tw-ml-7 tw-mb-2">
                 {item.subItems.map((subItem, subIndex) => (
                   <div
                     key={subIndex}
-                    className="tw-flex tw-items-center tw-px-4 tw-py-2 tw-text-gray-600 hover:tw-bg-gray-50 tw-rounded-lg tw-cursor-pointer tw-text-sm"
+                    onClick={() => {
+                      changeActiveSubItem(item.text, subItem.text);
+                    }}
+                    className={`tw-flex tw-items-center tw-px-4 tw-py-2  tw-rounded-lg tw-cursor-pointer tw-text-sm ${
+                      subItem.text === activeSubItem
+                        ? "tw-bg-blue-50 tw-text-blue-600"
+                        : "tw-text-gray-600 hover:tw-bg-gray-50"
+                    }`}
                   >
                     <subItem.icon className="tw-w-4 tw-h-4 tw-mr-3" />
                     <span>{subItem.text}</span>
@@ -105,7 +139,10 @@ export const AdminSidebar = () => {
       </nav>
 
       <div className="tw-p-4 tw-border-t">
-        <div className="tw-flex tw-items-center tw-px-4 tw-py-3 tw-text-gray-600 hover:tw-bg-gray-50 tw-rounded-lg tw-cursor-pointer">
+        <div
+          onClick={handleLogout}
+          className="tw-flex tw-items-center tw-px-4 tw-py-3 tw-text-gray-600 hover:tw-bg-gray-50 tw-rounded-lg tw-cursor-pointer"
+        >
           <LogOut className="tw-w-5 tw-h-5 tw-mr-3" />
           <span className="tw-font-medium">Logout</span>
         </div>

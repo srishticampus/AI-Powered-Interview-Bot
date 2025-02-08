@@ -25,7 +25,7 @@ function App() {
         <Route path="/user/contact" element={<Contact />} />
 
         {/* admin  */}
-        <Route path="/admin/login" element={<AdminSignIn />} />
+        <Route path="/admin/signin" element={<AdminSignIn />} />
         <Route element={<ProtectAdminRoutes />}>
           <Route path="/admin" element={<AdminDashboard />} />
         </Route>
