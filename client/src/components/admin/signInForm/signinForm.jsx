@@ -85,7 +85,7 @@ export const SigninForm = () => {
                 htmlFor="password"
                 className="tw-block text-[#2B3674] tw-mb-1"
               >
-                New Password
+                Password
               </label>
               <input
                 type={showPassword ? "text" : "password"}

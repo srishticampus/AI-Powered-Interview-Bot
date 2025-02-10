@@ -56,7 +56,7 @@ export const LandingHeader = () => {
               </span>
             </div>
           </div>
-          <div className="tw-absolute tw-top-80 tw-left-4 tw-bg-white tw-p-2 tw-rounded-lg tw-shadow-lg">
+          <div className="tw-absolute tw-top-60 tw-left-4 tw-bg-white tw-p-2 tw-rounded-lg tw-shadow-lg">
             <div className="tw-flex tw-items-center tw-space-x-2">
               <span className="tw-h-8 tw-w-10 p-3 tw-rounded-full  tw-items-center tw-flex tw-justify-center tw-bg-lexiBlue-500">
                 <img className=" tw-h-5 tw-w-5 " src={StartIcon} alt="like" />
