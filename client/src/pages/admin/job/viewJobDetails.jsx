@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapPin, Briefcase, Calendar, Clock, Share2, Edit, Trash2, Twitter } from 'lucide-react';
 
-export const ViewJob = () => {
+export const ViewJobDetails = () => {
   const jobDetails = {
     title: 'Software Developer',
     location: 'Trivandrum, India',
@@ -80,6 +80,27 @@ export const ViewJob = () => {
       <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
         {/* Left Column - Job Info */}
         <div className="tw-space-y-6">
+          <div className="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-sm">
+            <h2 className="tw-text-lg tw-font-semibold tw-text-gray-800 tw-mb-4">Job Overview</h2>
+            <div className="tw-space-y-4">  
+              <div>
+                <label className="tw-text-sm tw-text-gray-500"> Experience</label>
+                <p className="tw-font-medium">{jobDetails.experience}</p>
+              </div>
+              <div>
+                <label className="tw-text-sm tw-text-gray-500">Skills</label>
+                <p className="tw-font-medium">{jobDetails.skills}</p>
+              </div>
+              <div>
+                <label className="tw-text-sm tw-text-gray-500">Salary</label>
+                <p className="tw-font-medium">{jobDetails.salary}</p>
+              </div>
+              <div>
+                <label className="tw-text-sm tw-text-gray-500">Job Type</label>
+                <p className="tw-font-medium">{jobDetails.jobType}</p>
+              </div>
+            </div>
+          </div>
           <div className="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-sm">
             <h2 className="tw-text-lg tw-font-semibold tw-text-gray-800 tw-mb-4">Job Info</h2>
             <div className="tw-space-y-4">
