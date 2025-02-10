@@ -5,6 +5,7 @@ import { AddCompany } from "../company/addCompany";
 import { ViewCompany } from "../company/viewCompany";
 import { AddJob } from "../job/addJob";
 import { ViewJobs } from "../job/viewJobs";
+import { CandidatesList } from "../candidates/viewCandidates";
 
 export const AdminDashboard = () => {
   const [activeItem, setActiveItem] = useState("Overview");
@@ -31,6 +32,8 @@ export const AdminDashboard = () => {
         return <AddJob />;
       case "View Job":
         return <ViewJobs />;
+      case "Candidates":
+        return <CandidatesList />;
       default:
         return <AdminOverview />;
     }

@@ -12,6 +12,7 @@ export const ViewJobDetails = () => {
     skills: 'Python, Java, SQL, and HTML',
     salary: '$3-5 LPA',
     jobType: 'Full Time',
+    deadline: '03/12/2025',
     applications: '5 New | 182 Applications',
     description: `As a Software Developer at Google, you will be part of a dynamic and innovative team responsible for creating and maintaining cutting-edge software applications. This role involves collaborating with cross-functional teams to design, develop, and optimize scalable systems while ensuring high performance and security.`,
     responsibilities: [
@@ -66,7 +67,7 @@ export const ViewJobDetails = () => {
               <Edit className="tw-w-4 tw-h-4" />
               Edit
             </button>
-            <button className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-red-600 tw-bg-white tw-rounded-lg tw-border tw-border-red-600 hover:tw-bg-red-50">
+            <button className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-bg-red-500  tw-text-white tw-rounded-lg tw-border tw-border-red-600 hover:tw-bg-red-400">
               <Trash2 className="tw-w-4 tw-h-4" />
               Delete
             </button>
@@ -84,20 +85,20 @@ export const ViewJobDetails = () => {
             <h2 className="tw-text-lg tw-font-semibold tw-text-gray-800 tw-mb-4">Job Overview</h2>
             <div className="tw-space-y-4">  
               <div>
-                <label className="tw-text-sm tw-text-gray-500"> Experience</label>
-                <p className="tw-font-medium">{jobDetails.experience}</p>
+                <label className="tw-text-sm tw-text-gray-500"> Location</label>
+                <p className="tw-font-medium">{jobDetails.location}</p>
               </div>
               <div>
-                <label className="tw-text-sm tw-text-gray-500">Skills</label>
+                <label className="tw-text-sm tw-text-gray-500">Industry type</label>
                 <p className="tw-font-medium">{jobDetails.skills}</p>
               </div>
               <div>
-                <label className="tw-text-sm tw-text-gray-500">Salary</label>
-                <p className="tw-font-medium">{jobDetails.salary}</p>
+                <label className="tw-text-sm tw-text-gray-500">Date Posted</label>
+                <p className="tw-font-medium">{jobDetails.datePosted}</p>
               </div>
               <div>
-                <label className="tw-text-sm tw-text-gray-500">Job Type</label>
-                <p className="tw-font-medium">{jobDetails.jobType}</p>
+                <label className="tw-text-sm tw-text-gray-500">Deadline</label>
+                <p className="tw-font-medium">{jobDetails.deadline}</p>
               </div>
             </div>
           </div>

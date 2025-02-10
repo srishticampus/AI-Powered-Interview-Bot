@@ -1,5 +1,6 @@
 import React from "react";
 import { JobCard } from "../../../components/admin/jobCard/jobCard";
+import { Search } from "lucide-react";
 
 export const JobsList = ({clickOnJob}) => {
   const jobs = [
@@ -38,15 +39,16 @@ export const JobsList = ({clickOnJob}) => {
   return (
     <section className="tw-py-16 tw-px-4 tw-bg-gradient-to-b from-[#F8FAFF] tw-to-white">
       <div className="tw-max-w-6xl tw-mx-auto">
-        <div className="tw-flex tw-justify-between tw-mb-16">
-          <h2 className="tw-text-xl tw-font-bold text-[#3B4B7C] tw-px-4 tw-mb-4">
-            View Jobs!
-          </h2>
-          <div>
+      <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
+          <h1 className="tw-text-2xl tw-font-bold tw-text-gray-800">
+            View Jobs
+          </h1>
+          <div className="tw-relative">
+            <Search className="tw-w-5 tw-h-5 tw-text-gray-400 tw-absolute tw-left-3 tw-top-1/2 tw-transform -tw-translate-y-1/2" />
             <input
-              className="tw-p-3 tw-w-60 tw-rounded-full tw-border-0"
               type="text"
-              placeholder="Search Jobs"
+              placeholder="Search jobs here..."
+              className="tw-pl-10 tw-pr-4 tw-py-2 tw-w-80 tw-rounded-full tw-border tw-border-gray-300 focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
           </div>
         </div>

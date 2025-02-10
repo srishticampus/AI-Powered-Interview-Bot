@@ -7,7 +7,6 @@ export const ViewJobs = () => {
   const clickOnJob = (id) => {
     setJobId(id);
   };
-  console.log('jojb id', jobId)
   return (
     <>{jobId ? <ViewJobDetails /> : <JobsList clickOnJob={clickOnJob} />}</>
   );

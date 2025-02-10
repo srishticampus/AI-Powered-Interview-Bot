@@ -42,7 +42,6 @@ export const AdminSidebar = ({
     
     successToast("Logout successful");
     navigate("/admin/signin");
-    console.log('wkd')
   };
   const menuItems = [
     { icon: LayoutDashboard, text: "Overview", active: true },
