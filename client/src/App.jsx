@@ -12,6 +12,8 @@ import { AdminSignIn } from "./pages/admin/signin/signin";
 import { AdminDashboard } from "./pages/admin/dashboard/adminDashboard";
 import { ProtectAdminRoutes } from "./pages/admin/protectRoute";
 import { UserHome } from "./pages/user/home/userHome";
+import { UserProfile } from "./components/user/profile/userProfile";
+import { ApplicationStatus } from "./components/user/applicationStatus/applicationStatus";
 
 function App() {
   return (
@@ -24,7 +26,9 @@ function App() {
         <Route path="/user/about" element={<About />} />
         <Route path="/user/home" element={<UserHome />} />
         <Route path="/user/jobs" element={<Jobs />} />
+        <Route path="/user/profile" element={<UserProfile />} />
         <Route path="/user/contact" element={<Contact />} />
+        <Route path="/user/application-status" element={<ApplicationStatus />} />
 
         {/* admin  */}
         <Route path="/admin/signin" element={<AdminSignIn />} />

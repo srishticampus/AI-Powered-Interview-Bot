@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-
+import { axiosInstance } from "../../../apis/axiosInstance";
+import { errorToast, successToast } from "../../../utils/showToast";
 export const AddCompany = () => {
   const {
     register,
@@ -10,7 +11,65 @@ export const AddCompany = () => {
 
   const onSubmit = (data) => {
     // Handle form submission
-    console.log(data);
+    console.log(data.companyLogo);
+    if (!validateFields(data)) {
+      return;
+    }
+    const myFormData = new FormData();
+    const {
+      name,
+      email,
+      phone,
+      address,
+      state,
+      companyLogo,
+      city,
+      industryType,
+      website,
+      description,
+    } = data;
+    myFormData.append("company_name", name);
+    myFormData.append("company_email", email);
+    myFormData.append("company_phone", phone);
+    myFormData.append("company_logo", companyLogo[0]);
+    myFormData.append("district", address);
+    myFormData.append("state", state);
+    myFormData.append("city", city);
+    myFormData.append("industry_type", industryType);
+    myFormData.append("website_url", website);
+    myFormData.append("description", description);
+
+    sendDataToServer(myFormData);
+  };
+
+  const validateFields = (data) => {
+    const { phone } = data;
+    if (!phone && phone.length !== 0) {
+      errorToast("Phone number is required.");
+      return false;
+    }
+    return true;
+  };
+
+  const sendDataToServer = async (formData) => {
+    console.log("from v", formData);
+
+    try {
+      const response = await axiosInstance.post("addcompany/", formData);
+      if (response.status === 201) {
+        successToast("Add company successful");
+      } else {
+        errorToast("Add company failed");
+      }
+    } catch (error) {
+      if (error.response) {
+        errorToast("Email id already registered with us.");
+        console.error("Add company Error:", error.response.data);
+      } else {
+        errorToast("Network error");
+        console.error("Network Error:", error.message);
+      }
+    }
   };
 
   const states = [
@@ -43,29 +102,6 @@ export const AddCompany = () => {
     "Uttarakhand",
     "West Bengal",
   ];
-
-  const districts = {
-    Karnataka: [
-      "Bangalore Urban",
-      "Bangalore Rural",
-      "Mysore",
-      "Mangalore",
-      "Hubli",
-    ],
-    Maharashtra: ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik"],
-    // Add more districts for other states as needed
-  };
-
-  const locations = {
-    "Bangalore Urban": [
-      "Koramangala",
-      "Indiranagar",
-      "Whitefield",
-      "Electronic City",
-    ],
-    Mumbai: ["Andheri", "Bandra", "Colaba", "Worli"],
-    // Add more locations for other districts as needed
-  };
 
   const industryTypes = [
     "Information Technology",

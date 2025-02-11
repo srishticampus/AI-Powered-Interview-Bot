@@ -3,6 +3,7 @@ import { Eye, EyeOff, UserCircle, Plus } from "lucide-react";
 import { useAppNavigate } from "../../../hooks/useAppNavigate";
 import { errorToast, successToast } from "../../../utils/showToast";
 import { axiosInstance } from "../../../apis/axiosInstance";
+import { IS_LEXI_USER_LOGGED_IN } from "../../../constants/constants";
 
 export const SigninForm = () => {
   const [formData, setFormData] = useState({
@@ -41,6 +42,7 @@ export const SigninForm = () => {
     try {
       const response = await axiosInstance.post("login/", formData);
       if (response.status === 200) {
+        localStorage.setItem(IS_LEXI_USER_LOGGED_IN, true);
         successToast("Login successful");
         navigate("/user/home");
       } else {
@@ -57,15 +59,14 @@ export const SigninForm = () => {
     }
   };
 
-
   const validateFields = () => {
-      const {  email, password } = formData;
-      if (!email || !password) {
-        errorToast("All fields are required");
-        return false;
-      }
-      return true;
-    };
+    const { email, password } = formData;
+    if (!email || !password) {
+      errorToast("All fields are required");
+      return false;
+    }
+    return true;
+  };
 
   return (
     <section className="tw-py-16 tw-px-4">
@@ -102,7 +103,7 @@ export const SigninForm = () => {
                 htmlFor="password"
                 className="tw-block text-[#2B3674] tw-mb-1"
               >
-                New Password
+                Password
               </label>
               <input
                 type={showPassword ? "text" : "password"}
@@ -125,14 +126,16 @@ export const SigninForm = () => {
                   <Eye className="tw-w-5 tw-h-5" />
                 )}
               </button>
-              <div className="tw-flex tw-justify-end tw-cursor-pointer" onClick={() => {
-                navigate('/user/forget-password')
-              }}>
+              <div
+                className="tw-flex tw-justify-end tw-cursor-pointer"
+                onClick={() => {
+                  navigate("/user/forget-password");
+                }}
+              >
                 <p className="tw-text-lexiBlue-500 tw-font-bold">
                   Forgot password?
                 </p>
               </div>
-
             </div>
           </div>
 

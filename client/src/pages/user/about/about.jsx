@@ -1,18 +1,22 @@
+import { useEffect } from "react";
 import { Footer } from "../../../components/landing/footer";
 import { LandingNavbar } from "../../../components/ui/landingNavbar/landingNavbar";
 import { AboutContent } from "../../../components/user/about/aboutContent";
 import { AboutHeader } from "../../../components/user/about/aboutHeader";
 import { WhyChooseUs } from "../../../components/user/about/whyChooseUs";
-import { ContactForm } from "../../../components/user/contact/contactForm";
-import { ContactHeader } from "../../../components/user/contact/contactHeader";
+import { UserNavbar } from "../../../components/user/navbar/userNavbar";
+import { useUserLoggedin } from "../../../hooks/useLoggedIn";
 
 export const About = () => {
+  const isLoggedIn = useUserLoggedin();
+
   return (
     <div>
-      <LandingNavbar />
+      {isLoggedIn ? <UserNavbar /> : <LandingNavbar />}
+
       <AboutHeader />
-      <AboutContent/>
-      <WhyChooseUs/>
+      <AboutContent />
+      <WhyChooseUs />
       <Footer />
     </div>
   );
