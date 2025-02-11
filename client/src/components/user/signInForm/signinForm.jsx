@@ -42,7 +42,7 @@ export const SigninForm = () => {
       const response = await axiosInstance.post("login/", formData);
       if (response.status === 200) {
         successToast("Login successful");
-        // navigate("/user/dashboard");
+        navigate("/user/home");
       } else {
         errorToast("Login failed");
       }

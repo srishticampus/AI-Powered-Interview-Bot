@@ -11,6 +11,7 @@ import { ForgetPassword } from "./pages/user/forgetPassword/forgetPassword";
 import { AdminSignIn } from "./pages/admin/signin/signin";
 import { AdminDashboard } from "./pages/admin/dashboard/adminDashboard";
 import { ProtectAdminRoutes } from "./pages/admin/protectRoute";
+import { UserHome } from "./pages/user/home/userHome";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/user/signin" element={<SignIn />} />
         <Route path="/user/forget-password" element={<ForgetPassword />} />
         <Route path="/user/about" element={<About />} />
+        <Route path="/user/home" element={<UserHome />} />
         <Route path="/user/jobs" element={<Jobs />} />
         <Route path="/user/contact" element={<Contact />} />
 
