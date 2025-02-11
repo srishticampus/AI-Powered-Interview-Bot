@@ -26,8 +26,6 @@ export const SigninForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log(formData);
     if (!validateFields()) {
       return;
     }
@@ -41,6 +39,7 @@ export const SigninForm = () => {
   const sendDataToServer = async (formData) => {
     try {
       const response = await axiosInstance.post("login/", formData);
+      console.log('resp', response)
       if (response.status === 200) {
         localStorage.setItem(IS_LEXI_USER_LOGGED_IN, true);
         successToast("Login successful");

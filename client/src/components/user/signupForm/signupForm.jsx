@@ -6,22 +6,26 @@ import { axiosInstance } from "../../../apis/axiosInstance";
 import axios from "axios";
 
 export const SignUpForm = () => {
-  // const [formData, setFormData] = useState({
-  //   name: "usern",
-  //   email: "user3@gmail.com",
-  //   phone: "1234123412",
-  //   password: "Anand@123",
-  //   confirmPassword: "Anand@123",
-  //   profileImage: null,
-  // });
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
+    name: "usern",
+    email: "user3@gmail.com",
+    phone: "1234123412",
+    password: "Anand@123",
+    confirmPassword: "Anand@123",
     profileImage: null,
+    skills: "html, css",
+    resume: null
   });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   phone: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   profileImage: null,
+  //   resume: null,
+  //   skills: ""
+  // });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -64,6 +68,17 @@ export const SignUpForm = () => {
     return true;
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prevData) => {
+        return {
+          ...prevData,
+          resume: file,
+        };
+      });
+    }
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
@@ -72,13 +87,15 @@ export const SignUpForm = () => {
       return;
     }
     const myFormData = new FormData();
-    const {name, phone, email, password, confirmPassword, profileImage} = formData;
+    const {name, phone, email, password, confirmPassword, profileImage, resume, skills} = formData;
     myFormData.append("username",name)
     myFormData.append("phone_number",phone)
     myFormData.append("email",email)
     myFormData.append("password",password)
     myFormData.append("confirm_password",confirmPassword)
     myFormData.append("profile_image",profileImage)
+    myFormData.append("resume",resume)
+    myFormData.append("skills",skills)
     sendDataToServer(myFormData)
   };
 
@@ -94,7 +111,7 @@ export const SignUpForm = () => {
     } catch (error) {
       if (error.response) {
         errorToast("Email id already registered with us.");
-        console.error("Registration Error:", error.response.data);
+        console.error("Registration Error:", error?.response?.data?.errors);
       } else {
         errorToast("Network error");
         console.error("Network Error:", error.message);
@@ -179,6 +196,43 @@ export const SignUpForm = () => {
                   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                   title="Please enter a valid email address"
                   value={formData.email}
+                  onChange={handleInputChange}
+                  className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-2 focus:tw-ring-blue-200 tw-transition-colors"
+                  required
+                />
+              </div>
+            </div>
+            <div className="tw-flex  tw-justify-between">
+              <div className="tw-w-5/12 ">
+                <label
+                  htmlFor="resume"
+                  className="tw-block text-[#2B3674] tw-mb-1"
+                >
+                 Resume
+                </label>
+                <input
+                  type="file"
+                  id="resume"
+                  name="resume"
+                  onChange={handleFileChange}
+                  className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-2 focus:tw-ring-blue-200 tw-transition-colors"
+                  required
+                />
+              </div>
+
+              <div className="tw-w-5/12 ">
+                <label
+                  htmlFor="skills"
+                  className="tw-block text-[#2B3674] tw-mb-1"
+                >
+                  Skills
+                </label>
+                <input
+                  type="text"
+                  id="skills"
+                  name="skills"
+                  title="Please Enter your skills"
+                  value={formData.skills}
                   onChange={handleInputChange}
                   className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-2 focus:tw-ring-blue-200 tw-transition-colors"
                   required
