@@ -6,26 +6,26 @@ import { axiosInstance } from "../../../apis/axiosInstance";
 import axios from "axios";
 
 export const SignUpForm = () => {
-  const [formData, setFormData] = useState({
-    name: "usern",
-    email: "user3@gmail.com",
-    phone: "1234123412",
-    password: "Anand@123",
-    confirmPassword: "Anand@123",
-    profileImage: null,
-    skills: "html, css",
-    resume: null
-  });
   // const [formData, setFormData] = useState({
-  //   name: "",
-  //   email: "",
-  //   phone: "",
-  //   password: "",
-  //   confirmPassword: "",
+  //   name: "usern",
+  //   email: "user3@gmail.com",
+  //   phone: "1234123412",
+  //   password: "Anand@123",
+  //   confirmPassword: "Anand@123",
   //   profileImage: null,
-  //   resume: null,
-  //   skills: ""
+  //   skills: "html, css",
+  //   resume: null
   // });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    profileImage: null,
+    resume: null,
+    skills: "",
+  });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -60,7 +60,7 @@ export const SignUpForm = () => {
   };
 
   const validateFields = () => {
-    const {  profileImage } = formData;
+    const { profileImage } = formData;
     if (!profileImage) {
       errorToast("Photo is required");
       return false;
@@ -78,7 +78,7 @@ export const SignUpForm = () => {
         };
       });
     }
-  }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
@@ -87,16 +87,25 @@ export const SignUpForm = () => {
       return;
     }
     const myFormData = new FormData();
-    const {name, phone, email, password, confirmPassword, profileImage, resume, skills} = formData;
-    myFormData.append("username",name)
-    myFormData.append("phone_number",phone)
-    myFormData.append("email",email)
-    myFormData.append("password",password)
-    myFormData.append("confirm_password",confirmPassword)
-    myFormData.append("profile_image",profileImage)
-    myFormData.append("resume",resume)
-    myFormData.append("skills",skills)
-    sendDataToServer(myFormData)
+    const {
+      name,
+      phone,
+      email,
+      password,
+      confirmPassword,
+      profileImage,
+      resume,
+      skills,
+    } = formData;
+    myFormData.append("username", name);
+    myFormData.append("phone_number", phone);
+    myFormData.append("email", email);
+    myFormData.append("password", password);
+    myFormData.append("confirm_password", confirmPassword);
+    myFormData.append("profile_image", profileImage);
+    myFormData.append("resume", resume);
+    myFormData.append("skills", skills);
+    sendDataToServer(myFormData);
   };
 
   const sendDataToServer = async (formData) => {
@@ -104,20 +113,23 @@ export const SignUpForm = () => {
       const response = await axiosInstance.post("register/", formData);
       if (response.status === 201) {
         successToast("Registration successful");
-        navigate('/user/signin')
+        navigate("/user/signin");
       } else {
         errorToast("Registration failed");
       }
     } catch (error) {
       if (error.response) {
-        errorToast("Email id already registered with us.");
-        console.error("Registration Error:", error?.response?.data?.errors);
+        console.error("Registration Error:", error?.response?.data);
+        const newErrors = error?.response?.data || {};
+        for (let key in newErrors) {
+          errorToast(newErrors[key]);
+        }
       } else {
         errorToast("Network error");
         console.error("Network Error:", error.message);
       }
     }
-  }
+  };
 
   return (
     <section className="tw-py-16 tw-px-4">
@@ -150,7 +162,6 @@ export const SignUpForm = () => {
                   type="file"
                   id="profile-image"
                   className="tw-hidden"
-                  
                   accept="image/*"
                   onChange={handleImageChange}
                 />
@@ -208,7 +219,7 @@ export const SignUpForm = () => {
                   htmlFor="resume"
                   className="tw-block text-[#2B3674] tw-mb-1"
                 >
-                 Resume
+                  Resume
                 </label>
                 <input
                   type="file"

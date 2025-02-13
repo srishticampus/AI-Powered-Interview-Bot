@@ -13,7 +13,7 @@ export const EditProfile = ({ profileData, onSave, onClose }) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'skills' ? value.split(',').map(skill => skill.trim()) : value
+      [name]:  value
     }));
   };
 
@@ -38,7 +38,7 @@ export const EditProfile = ({ profileData, onSave, onClose }) => {
             <input
               type="text"
               name="name"
-              value={formData.name}
+              value={formData.username}
               onChange={handleChange}
               className="tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
@@ -64,7 +64,7 @@ export const EditProfile = ({ profileData, onSave, onClose }) => {
             <input
               type="text"
               name="phone"
-              value={formData.phone}
+              value={formData.phone_number}
               onChange={handleChange}
               className="tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
@@ -72,29 +72,17 @@ export const EditProfile = ({ profileData, onSave, onClose }) => {
 
           <div>
             <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
-              Skills (comma-separated)
+              Skills 
             </label>
             <input
               type="text"
               name="skills"
-              value={formData.skills.join(', ')}
+              value={formData.skills}
               onChange={handleChange}
               className="tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
           </div>
 
-          <div>
-            <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
-              Experience
-            </label>
-            <input
-              type="text"
-              name="experience"
-              value={formData.experience}
-              onChange={handleChange}
-              className="tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
-            />
-          </div>
 
           <div className="tw-flex tw-gap-3 tw-mt-6">
             <button

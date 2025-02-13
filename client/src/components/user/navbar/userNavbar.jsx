@@ -1,12 +1,14 @@
-import { Bell, LogOut, Star } from "lucide-react";
+import {  LogOut, Star } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { PrimaryButton } from "../../ui/buttons/primaryBtn";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { IS_LEXI_USER_LOGGED_IN } from "../../../constants/constants";
+import { useUserData } from "../../../hooks/useUserData";
+import { BACKEND_URL } from "../../../apis/axiosInstance";
 export const UserNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const userData = useUserData();
   const [expandDD, setExpandDD] = useState(false);
   let activePage = location.pathname.split("/")[2];
 
@@ -108,7 +110,7 @@ export const UserNavbar = () => {
           <div>
             <button
               type="button"
-              className="tw-inline-flex tw-justify-center tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-shadow-sm tw-px-4 tw-py-2 tw-bg-white tw-text-sm tw-font-medium tw-text-gray-700 hover:tw-bg-gray-50 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-ring-indigo-500"
+              className="tw-inline-flex tw-justify-between tw-items-center tw-min-w-40 tw-rounded-md tw-border tw-border-gray-300 tw-shadow-sm tw-px-4 tw-py-2 tw-bg-white tw-text-sm tw-font-medium tw-text-gray-700 hover:tw-bg-gray-50 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-ring-indigo-500"
               id="options-menu"
               aria-haspopup="true"
               aria-expanded="true"
@@ -116,12 +118,13 @@ export const UserNavbar = () => {
                 e.currentTarget.setAttribute("aria-expanded", "true");
               }}
             >
-              <span>Hi, username</span>
+              <img className="tw-w-10 tw-h-10" src={`${BACKEND_URL}/${userData?.profile_image}`} alt="profile photo"/>
+              <span> Hi, {userData?.username} </span>
             </button>
           </div>
           {expandDD && (
             <div
-              className="tw-origin-top-right tw-absolute tw-right-0 tw-mt-2 tw-w-32 tw-rounded-md tw-shadow-lg tw-bg-white tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
+              className="tw-origin-top-right tw-absolute tw-right-0 tw-mt-2 tw-w-40 tw-rounded-md tw-shadow-lg tw-bg-white tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="options-menu"

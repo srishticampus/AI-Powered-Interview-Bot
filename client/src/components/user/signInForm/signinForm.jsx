@@ -3,7 +3,7 @@ import { Eye, EyeOff, UserCircle, Plus } from "lucide-react";
 import { useAppNavigate } from "../../../hooks/useAppNavigate";
 import { errorToast, successToast } from "../../../utils/showToast";
 import { axiosInstance } from "../../../apis/axiosInstance";
-import { IS_LEXI_USER_LOGGED_IN } from "../../../constants/constants";
+import { IS_LEXI_USER_LOGGED_IN, LEXI_USER_DATA, LEXI_USER_ID } from "../../../constants/constants";
 
 export const SigninForm = () => {
   const [formData, setFormData] = useState({
@@ -39,25 +39,45 @@ export const SigninForm = () => {
   const sendDataToServer = async (formData) => {
     try {
       const response = await axiosInstance.post("login/", formData);
-      console.log('resp', response)
       if (response.status === 200) {
-        localStorage.setItem(IS_LEXI_USER_LOGGED_IN, true);
-        successToast("Login successful");
-        navigate("/user/home");
+        const userId = response.data?.user_id;
+        if(getUserData(userId)) {
+          localStorage.setItem(IS_LEXI_USER_LOGGED_IN, true);
+          localStorage.setItem(LEXI_USER_ID, userId);
+          successToast("Login successful");
+          navigate("/user/home");
+
+        }
+        
       } else {
         errorToast("Login failed");
       }
     } catch (error) {
-      if (error.response) {
-        errorToast("Email or password is incorrect.");
-        console.error("Login Error:", error.response.data);
-      } else {
-        errorToast("Login failed");
-        console.error("Network Error:", error.message);
+      console.log("ERROR ON SIGNIN", error)
+      const newErrors = error?.response?.data || {};
+      for (let key in newErrors) {
+        errorToast(newErrors[key]);
+        return;
       }
+      
     }
   };
 
+
+  const getUserData = async (userId) => {
+    try {
+      const res = await axiosInstance.get(`user/${userId}/`);
+      if (res.status === 200) {
+        console.log(res.data);
+        localStorage.setItem(LEXI_USER_DATA, JSON.stringify(res.data));
+        return true;
+      }
+
+    } catch (error) {
+      console.log('Error ON GET USER DATA', error);
+      return false;
+    }
+  }
   const validateFields = () => {
     const { email, password } = formData;
     if (!email || !password) {

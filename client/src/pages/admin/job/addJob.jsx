@@ -1,6 +1,7 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-
+import React from "react";
+import { useForm } from "react-hook-form";
+import {axiosInstance} from "../../../apis/axiosInstance";
+ import {successToast, errorToast} from "../../../utils/showToast"
 export const AddJob = () => {
   const {
     register,
@@ -11,29 +12,72 @@ export const AddJob = () => {
   const onSubmit = (data) => {
     // Handle form submission
     console.log(data);
+    const {
+      jobTitle,
+      companyName,
+      requiredSkills,
+      experience,
+      location,
+      jobType,
+      salaryRange,
+      jobDescription,
+      applicationDeadline,
+    } = data;
+    const formData = new FormData();
+
+    formData.append("job_title", jobTitle);
+    formData.append("required_skills", requiredSkills);
+    formData.append("experience", experience);
+    formData.append("location", location);
+    formData.append("job_type", jobType);
+    formData.append("salary_range", salaryRange);
+    formData.append("job_description", jobDescription);
+    formData.append("application_deadline", applicationDeadline);
+    formData.append("company_name", companyName);
+    sendDataToServer(formData)
+  };
+
+  const sendDataToServer = async (formData) => {
+    try {
+      const response = await axiosInstance.post("addjob/", formData);
+
+      if (response.status === 201) {
+          successToast("Job added successfully");
+
+      }
+    } catch (error) {
+      console.log("ERROR ON add job", error);
+      const newErrors = error?.response?.data || {};
+      for (let key in newErrors) {
+        errorToast(newErrors[key]);
+        return;
+      }
+    }
   };
 
   // Sample companies data - replace with actual data from your backend
   const companies = [
-    { id: 1, name: 'Tech Corp' },
-    { id: 2, name: 'Innovation Inc' },
-    { id: 3, name: 'Digital Solutions' },
-    { id: 4, name: 'Future Systems' },
+    { id: 1, name: "dasda" },
+    { id: 2, name: "Innovation Inc" },
+    { id: 3, name: "Digital Solutions" },
+    { id: 4, name: "Future Systems" },
   ];
 
   const jobTypes = [
-    'Full-time',
-    'Part-time',
-    'Contract',
-    'Freelance',
-    'Internship',
-    'Remote'
+    "Full-time",
+    "Part-time",
+    "Contract",
+    "Freelance",
+    "Internship",
+    "Remote",
   ];
 
   return (
     <div className="tw-max-w-4xl tw-mx-auto tw-p-6">
-      <h1 className="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-8">Add Job</h1>
-      
+      <h1 className="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-8">
+        Add Job
+      </h1>
+
       <form onSubmit={handleSubmit(onSubmit)} className="tw-space-y-6">
         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
           {/* Job Title */}
@@ -43,11 +87,13 @@ export const AddJob = () => {
             </label>
             <input
               type="text"
-              {...register('jobTitle', { required: 'Job title is required' })}
+              {...register("jobTitle", { required: "Job title is required" })}
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
             {errors.jobTitle && (
-              <p className="tw-mt-1 tw-text-sm tw-text-red-600">{errors.jobTitle.message}</p>
+              <p className="tw-mt-1 tw-text-sm tw-text-red-600">
+                {errors.jobTitle.message}
+              </p>
             )}
           </div>
 
@@ -57,18 +103,20 @@ export const AddJob = () => {
               Company Name
             </label>
             <select
-              {...register('companyId', { required: 'Company is required' })}
+              {...register("companyId", { required: "Company is required" })}
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             >
               <option value="">Select Company</option>
               {companies.map((company) => (
-                <option key={company.id} value={company.id}>
+                <option key={company.id} value={company.name}>
                   {company.name}
                 </option>
               ))}
             </select>
             {errors.companyId && (
-              <p className="tw-mt-1 tw-text-sm tw-text-red-600">{errors.companyId.message}</p>
+              <p className="tw-mt-1 tw-text-sm tw-text-red-600">
+                {errors.companyId.message}
+              </p>
             )}
           </div>
 
@@ -79,12 +127,16 @@ export const AddJob = () => {
             </label>
             <input
               type="text"
-              {...register('requiredSkills', { required: 'Required skills are required' })}
+              {...register("requiredSkills", {
+                required: "Required skills are required",
+              })}
               placeholder="e.g., JavaScript, React, Node.js"
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
             {errors.requiredSkills && (
-              <p className="tw-mt-1 tw-text-sm tw-text-red-600">{errors.requiredSkills.message}</p>
+              <p className="tw-mt-1 tw-text-sm tw-text-red-600">
+                {errors.requiredSkills.message}
+              </p>
             )}
           </div>
 
@@ -95,12 +147,16 @@ export const AddJob = () => {
             </label>
             <input
               type="text"
-              {...register('experience', { required: 'Experience is required' })}
+              {...register("experience", {
+                required: "Experience is required",
+              })}
               placeholder="e.g., 2-3 years"
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
             {errors.experience && (
-              <p className="tw-mt-1 tw-text-sm tw-text-red-600">{errors.experience.message}</p>
+              <p className="tw-mt-1 tw-text-sm tw-text-red-600">
+                {errors.experience.message}
+              </p>
             )}
           </div>
 
@@ -111,12 +167,14 @@ export const AddJob = () => {
             </label>
             <input
               type="text"
-              {...register('location', { required: 'Location is required' })}
+              {...register("location", { required: "Location is required" })}
               placeholder="e.g., New York, Remote"
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
             {errors.location && (
-              <p className="tw-mt-1 tw-text-sm tw-text-red-600">{errors.location.message}</p>
+              <p className="tw-mt-1 tw-text-sm tw-text-red-600">
+                {errors.location.message}
+              </p>
             )}
           </div>
 
@@ -126,16 +184,20 @@ export const AddJob = () => {
               Job Type
             </label>
             <select
-              {...register('jobType', { required: 'Job type is required' })}
+              {...register("jobType", { required: "Job type is required" })}
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             >
               <option value="">Select Job Type</option>
               {jobTypes.map((type) => (
-                <option key={type} value={type}>{type}</option>
+                <option key={type} value={type}>
+                  {type}
+                </option>
               ))}
             </select>
             {errors.jobType && (
-              <p className="tw-mt-1 tw-text-sm tw-text-red-600">{errors.jobType.message}</p>
+              <p className="tw-mt-1 tw-text-sm tw-text-red-600">
+                {errors.jobType.message}
+              </p>
             )}
           </div>
 
@@ -146,12 +208,16 @@ export const AddJob = () => {
             </label>
             <input
               type="text"
-              {...register('salaryRange', { required: 'Salary range is required' })}
+              {...register("salaryRange", {
+                required: "Salary range is required",
+              })}
               placeholder="e.g., $60,000 - $80,000"
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
             {errors.salaryRange && (
-              <p className="tw-mt-1 tw-text-sm tw-text-red-600">{errors.salaryRange.message}</p>
+              <p className="tw-mt-1 tw-text-sm tw-text-red-600">
+                {errors.salaryRange.message}
+              </p>
             )}
           </div>
 
@@ -162,8 +228,8 @@ export const AddJob = () => {
             </label>
             <input
               type="date"
-              {...register('applicationDeadline', {
-                required: 'Application deadline is required',
+              {...register("applicationDeadline", {
+                required: "Application deadline is required",
                 validate: (value) => {
                   const today = new Date();
                   const selectedDate = new Date(value);
@@ -173,7 +239,10 @@ export const AddJob = () => {
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
             {errors.applicationDeadline && (
-              <p className="tw-mt-1 tw-text-sm tw-text-red-600">{errors.applicationDeadline.message || 'Application deadline must be today or future date'}</p>
+              <p className="tw-mt-1 tw-text-sm tw-text-red-600">
+                {errors.applicationDeadline.message ||
+                  "Application deadline must be today or future date"}
+              </p>
             )}
           </div>
         </div>
@@ -184,15 +253,20 @@ export const AddJob = () => {
             Job Description
           </label>
           <textarea
-            {...register('jobDescription', { required: 'Job description is required', minLength: {
-              value: 30,
-              message: "Job description must be at least 30 characters long",
-            } })}
+            {...register("jobDescription", {
+              required: "Job description is required",
+              minLength: {
+                value: 30,
+                message: "Job description must be at least 30 characters long",
+              },
+            })}
             rows={4}
             className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
           />
           {errors.jobDescription && (
-            <p className="tw-mt-1 tw-text-sm tw-text-red-600">{errors.jobDescription.message}</p>
+            <p className="tw-mt-1 tw-text-sm tw-text-red-600">
+              {errors.jobDescription.message}
+            </p>
           )}
         </div>
 

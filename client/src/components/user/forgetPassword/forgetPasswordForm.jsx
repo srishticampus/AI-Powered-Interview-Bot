@@ -33,28 +33,25 @@ export const ForgetPasswordForm = () => {
     const myFormData = new FormData();
     const { email, password } = formData;
     myFormData.append("email", email);
-    myFormData.append("password", password);
+    myFormData.append("new_password", password);
     sendDataToServer(myFormData);
   };
 
   const sendDataToServer = async (formData) => {
-    // try {
-    //   const response = await axiosInstance.post("login/", formData);
-    //   if (response.status === 200) {
-    //     successToast("Login successful");
-    //     // navigate("/user/dashboard");
-    //   } else {
-    //     errorToast("Login failed");
-    //   }
-    // } catch (error) {
-    //   if (error.response) {
-    //     errorToast("Email or password is incorrect.");
-    //     console.error("Login Error:", error.response.data);
-    //   } else {
-    //     errorToast("Login failed");
-    //     console.error("Network Error:", error.message);
-    //   }
-    // }
+    try {
+      const response = await axiosInstance.post("reset-password/", formData);
+      if (response.status === 200) {
+        successToast("Password reset successful");
+        navigate("/user/signin");
+      }
+    } catch (error) {
+      console.log("error on reset password", error);
+      const newErrors = error?.response?.data || {};
+      for (let key in newErrors) {
+        errorToast(newErrors[key]);
+        return;
+      }
+    }
   };
 
   const validateFields = () => {
@@ -64,9 +61,8 @@ export const ForgetPasswordForm = () => {
       return false;
     }
     if (password !== confirmPassword) {
-        errorToast("Password and confirm password should be same.");
-        return false;
-
+      errorToast("Password and confirm password should be same.");
+      return false;
     }
 
     return true;
