@@ -17,24 +17,24 @@ export const AddCompany = () => {
     }
     const myFormData = new FormData();
     const {
-      name,
+      companyName,
       email,
       phone,
-      address,
+      district,
       state,
       companyLogo,
-      city,
+      location,
       industryType,
       website,
       description,
     } = data;
-    myFormData.append("company_name", name);
+    myFormData.append("company_name", companyName);
     myFormData.append("company_email", email);
     myFormData.append("company_phone", phone);
     myFormData.append("company_logo", companyLogo[0]);
-    myFormData.append("district", address);
+    myFormData.append("district", district);
     myFormData.append("state", state);
-    myFormData.append("city", city);
+    myFormData.append("city", location);
     myFormData.append("industry_type", industryType);
     myFormData.append("website_url", website);
     myFormData.append("description", description);
@@ -114,6 +114,7 @@ export const AddCompany = () => {
     "Consulting",
     "Real Estate",
     "Telecommunications",
+    "Other",
   ];
 
   return (

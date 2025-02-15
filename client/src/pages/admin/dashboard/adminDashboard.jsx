@@ -2,7 +2,7 @@ import React, { act, useState } from "react";
 import { AdminSidebar } from "./sidebar";
 import { AdminOverview } from "../overview/overview";
 import { AddCompany } from "../company/addCompany";
-import { ViewCompany } from "../company/viewCompany";
+import { ViewCompanies } from "../company/viewCompany";
 import { AddJob } from "../job/addJob";
 import { ViewJobs } from "../job/viewJobs";
 import { CandidatesList } from "../candidates/viewCandidates";
@@ -27,7 +27,7 @@ export const AdminDashboard = () => {
       case "Add Company":
         return <AddCompany />;
       case "View Company":
-        return <ViewCompany />;
+        return <ViewCompanies />;
       case "Add Job":
         return <AddJob />;
       case "View Job":
