@@ -1,40 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { JobCard } from "../../../components/admin/jobCard/jobCard";
 import { Search } from "lucide-react";
+import { axiosInstance } from "../../../apis/axiosInstance";
 
 export const JobsList = ({clickOnJob}) => {
-  const jobs = [
-    {
-      title: "Software Developer",
-      skills: "Python, Java, SQL, HTML",
-      company: "Google",
-      location: "Trivandrum, India",
-      date: "5 Nov",
-      applications: "150",
-      companyLogo:
-        "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
-    },
-    {
-      title: "Software Developer",
-      skills: "Python, Java, SQL, HTML",
-      company: "Twitter",
-      location: "Trivandrum, India",
-      date: "5 Nov",
-      applications: "150",
-      companyLogo:
-        "https://about.twitter.com/content/dam/about-twitter/x/brand-toolkit/logo-black.png.twimg.1920.png",
-    },
-    {
-      title: "Software Developer",
-      skills: "Python, Java, SQL, HTML",
-      company: "Microsoft",
-      location: "Trivandrum, India",
-      date: "5 Nov",
-      applications: "150",
-      companyLogo:
-        "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31",
-    },
-  ];
+  // const jobs = [
+  //   {
+  //     title: "Software Developer",
+  //     skills: "Python, Java, SQL, HTML",
+  //     company: "Google",
+  //     location: "Trivandrum, India",
+  //     date: "5 Nov",
+  //     applications: "150",
+  //     companyLogo:
+  //       "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+  //   },
+  //   {
+  //     title: "Software Developer",
+  //     skills: "Python, Java, SQL, HTML",
+  //     company: "Twitter",
+  //     location: "Trivandrum, India",
+  //     date: "5 Nov",
+  //     applications: "150",
+  //     companyLogo:
+  //       "https://about.twitter.com/content/dam/about-twitter/x/brand-toolkit/logo-black.png.twimg.1920.png",
+  //   },
+  //   {
+  //     title: "Software Developer",
+  //     skills: "Python, Java, SQL, HTML",
+  //     company: "Microsoft",
+  //     location: "Trivandrum, India",
+  //     date: "5 Nov",
+  //     applications: "150",
+  //     companyLogo:
+  //       "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31",
+  //   },
+  // ];
+
+  const [jobs, setJobs] = useState([]);
+  
+    useEffect(() => {
+      getJobs();
+    }, []);
+  
+    const getJobs = async () => {
+      try {
+        const res = await axiosInstance.get(`jobs/`);
+        if (res.status === 200) {
+          const data = res.data || [];
+          setJobs(data.reverse());
+        }
+      } catch (error) {
+        console.log("Error ON GET USER DATA", error);
+        return false;
+      }
+    };
 
   return (
     <section className="tw-py-16 tw-px-4 tw-bg-gradient-to-b from-[#F8FAFF] tw-to-white">

@@ -3,12 +3,13 @@ import { MapPin, Clock, Settings } from "lucide-react";
 
 export const JobCard = ({
   clickOnJob,
-  title,
-  skills,
+  job_title,
+  required_skills,
   company,
   location,
+  job_type,
   date,
-  applications,
+  salary_range,
   companyLogo,
 }) => {
   return (
@@ -19,9 +20,9 @@ export const JobCard = ({
       <div className="tw-flex tw-justify-between tw-items-start tw-mb-4">
         <div>
           <h3 className="tw-text-xl tw-font-semibold text-[#3B4B7C] tw-mb-2">
-            {title}
+            {job_title}
           </h3>
-          <p className="tw-text-gray-600 tw-mb-2">{skills}</p>
+          <p className="tw-text-gray-600 tw-mb-2">{required_skills}</p>
         </div>
         <img
           src={companyLogo}
@@ -38,14 +39,12 @@ export const JobCard = ({
 
         <div className="tw-flex tw-items-center tw-text-gray-600">
           <Clock className="tw-w-4 tw-h-4 tw-mr-2" />
-          <span>
-            {date} | {applications} Applications
-          </span>
+          <span>{job_type} Job Type</span>
         </div>
 
         <div className="tw-flex tw-items-center tw-text-gray-600">
           <Settings className="tw-w-4 tw-h-4 tw-mr-2" />
-          <span>Technology</span>
+          <span>Salary: {salary_range} </span>
         </div>
       </div>
 

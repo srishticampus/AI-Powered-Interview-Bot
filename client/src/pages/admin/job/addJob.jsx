@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {axiosInstance} from "../../../apis/axiosInstance";
- import {successToast, errorToast} from "../../../utils/showToast"
+import { axiosInstance } from "../../../apis/axiosInstance";
+import { successToast, errorToast } from "../../../utils/showToast";
 export const AddJob = () => {
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    getCompanies();
+  }, []);
+
+  const getCompanies = async () => {
+    try {
+      const res = await axiosInstance.get(`companies/`);
+      if (res.status === 200) {
+        const data = res.data || [];
+        setCompanies(data.reverse());
+      }
+    } catch (error) {
+      console.log("Error ON GET USER DATA", error);
+      return false;
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -14,7 +33,7 @@ export const AddJob = () => {
     console.log(data);
     const {
       jobTitle,
-      companyName,
+      companyId,
       requiredSkills,
       experience,
       location,
@@ -33,17 +52,17 @@ export const AddJob = () => {
     formData.append("salary_range", salaryRange);
     formData.append("job_description", jobDescription);
     formData.append("application_deadline", applicationDeadline);
-    formData.append("company_name", companyName);
-    sendDataToServer(formData)
+    formData.append("company_name", companyId);
+    sendDataToServer(formData);
   };
 
+  console.log('comp', companies)
   const sendDataToServer = async (formData) => {
     try {
       const response = await axiosInstance.post("addjob/", formData);
 
       if (response.status === 201) {
-          successToast("Job added successfully");
-
+        successToast("Job added successfully");
       }
     } catch (error) {
       console.log("ERROR ON add job", error);
@@ -56,12 +75,12 @@ export const AddJob = () => {
   };
 
   // Sample companies data - replace with actual data from your backend
-  const companies = [
-    { id: 1, name: "dasda" },
-    { id: 2, name: "Innovation Inc" },
-    { id: 3, name: "Digital Solutions" },
-    { id: 4, name: "Future Systems" },
-  ];
+  // const companies = [
+  //   { id: 1, name: "dasda" },
+  //   { id: 2, name: "Innovation Inc" },
+  //   { id: 3, name: "Digital Solutions" },
+  //   { id: 4, name: "Future Systems" },
+  // ];
 
   const jobTypes = [
     "Full-time",
@@ -108,8 +127,8 @@ export const AddJob = () => {
             >
               <option value="">Select Company</option>
               {companies.map((company) => (
-                <option key={company.id} value={company.name}>
-                  {company.name}
+                <option key={company.id} value={company.id}>
+                  {company.company_name}
                 </option>
               ))}
             </select>

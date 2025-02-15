@@ -137,7 +137,7 @@ export const ViewCompanies = () => {
                       {company.website_url}
                     </a>
                   </td>
-                  <td className="tw-px-6 tw-py-4 tw-text-sm tw-text-gray-600">
+                  <td className="tw-px-6  tw-line-clamp-2 tw-overflow-auto tw-max-h-40 tw-max-w-40 tw-py-4 tw-text-sm tw-text-gray-600">
                     {company.description}
                   </td>
                   <td className="tw-px-6 tw-py-4 tw-text-sm tw-text-gray-600">

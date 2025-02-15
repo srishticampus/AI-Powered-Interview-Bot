@@ -25,7 +25,7 @@ export const AdminDashboard = () => {
       case "Overview":
         return <AdminOverview />;
       case "Add Company":
-        return <AddCompany />;
+        return <AddCompany changeActiveSubItem={changeActiveSubItem} />;
       case "View Company":
         return <ViewCompanies />;
       case "Add Job":

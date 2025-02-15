@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { axiosInstance } from "../../../apis/axiosInstance";
 import { errorToast, successToast } from "../../../utils/showToast";
-export const AddCompany = () => {
+export const AddCompany = ({changeActiveSubItem}) => {
   const {
     register,
     handleSubmit,
@@ -58,6 +58,7 @@ export const AddCompany = () => {
       const response = await axiosInstance.post("addcompany/", formData);
       if (response.status === 201) {
         successToast("Add company successful");
+        changeActiveSubItem("View Company");
       } else {
         errorToast("Add company failed");
       }
