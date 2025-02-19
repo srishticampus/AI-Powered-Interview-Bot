@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, startTransition } from "react";
 import {
   Mic,
   MicOff,
@@ -6,9 +6,11 @@ import {
   VideoOff,
   ChevronRight,
   ChevronDown,
+  ChevronLeft,
 } from "lucide-react";
 import { UserNavbar } from "../navbar/userNavbar";
 import { Footer } from "../../landing/footer";
+import { useNavigate } from "react-router-dom";
 
 const questions = [
   {
@@ -118,8 +120,8 @@ export const AttendInterview = () => {
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
   const [showDeviceMenu, setShowDeviceMenu] = useState(false);
   const menuRef = useRef(null);
-
   const videoRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleDeviceMenu = () => {
     setShowDeviceMenu(!showDeviceMenu);
@@ -228,6 +230,7 @@ export const AttendInterview = () => {
     { key: "option4", value: question.option4 },
   ];
 
+  const submitAnswers = () => {};
   return (
     <>
       <UserNavbar />
@@ -273,17 +276,45 @@ export const AttendInterview = () => {
                 </div>
               </div>
 
-              <button
-                className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
-                onClick={() => {
-                  const nextId = (currentQuestion.id % 10) + 1;
-                  setCurrentQuestion(questions.find((q) => q.id === nextId));
-                  setSelectedOption(null);
-                }}
-              >
-                Next
-                <ChevronRight className="tw-w-4 tw-h-4" />
-              </button>
+              <div className="tw-flex tw-w-full tw-justify-around">
+                <button
+                  className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
+                  disabled={currentQuestion.id === 1}
+                  onClick={() => {
+                    const nextId = currentQuestion.id - 1;
+                    if (nextId > 0) {
+                      setCurrentQuestion(
+                        questions.find((q) => q.id === nextId)
+                      );
+                      setSelectedOption(null);
+                    }
+                  }}
+                >
+                  Prev
+                  <ChevronLeft className="tw-w-4 tw-h-4" />
+                </button>
+
+                <button
+                  className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
+                  onClick={() => {
+                    navigate("/user/interview-score");
+                  }}
+                >
+                  Submit
+                  <ChevronRight className="tw-w-4 tw-h-4" />
+                </button>
+                <button
+                  className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
+                  onClick={() => {
+                    const nextId = (currentQuestion.id % 10) + 1;
+                    setCurrentQuestion(questions.find((q) => q.id === nextId));
+                    setSelectedOption(null);
+                  }}
+                >
+                  Next
+                  <ChevronRight className="tw-w-4 tw-h-4" />
+                </button>
+              </div>
             </div>
 
             {/* Right Sidebar */}

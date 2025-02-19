@@ -20,6 +20,7 @@ import { ScheduleInterview } from "./components/ui/scheduleInterview/scheduleInt
 import { ApplicationStatus } from "./pages/user/applicationStatus/applicationStatus";
 import { InterviewPreview } from "./components/user/interview/interviewPreview";
 import { AttendInterview } from "./components/user/interview/attendInterview";
+import { InterviewScore } from "./components/user/interview/interviewScore";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/user/contact" element={<Contact />} />
         <Route path="/user/interview-preview" element={<InterviewPreview />} />
         <Route path="/user/attend-interview" element={<AttendInterview />} />
+        <Route path="/user/interview-score" element={<InterviewScore />} />
 
         {/* admin  */}
         <Route path="/admin/signin" element={<AdminSignIn />} />
