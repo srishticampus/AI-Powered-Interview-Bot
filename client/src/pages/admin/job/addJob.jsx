@@ -230,7 +230,7 @@ export const AddJob = () => {
               {...register("salaryRange", {
                 required: "Salary range is required",
               })}
-              placeholder="e.g., $60,000 - $80,000"
+              placeholder="e.g., 60,000 - 80,000"
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
             />
             {errors.salaryRange && (

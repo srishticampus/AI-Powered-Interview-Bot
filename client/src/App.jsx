@@ -16,14 +16,11 @@ import {
 } from "./pages/admin/protectRoute";
 import { UserHome } from "./pages/user/home/userHome";
 import { UserProfile } from "./components/user/profile/userProfile";
-import { ApplicationStatus } from "./components/user/applicationStatus/applicationStatus";
 import { ScheduleInterview } from "./components/ui/scheduleInterview/scheduleInterview";
+import { ApplicationStatus } from "./pages/user/applicationStatus/applicationStatus";
+import { InterviewPreview } from "./components/user/interview/interviewPreview";
+import { AttendInterview } from "./components/user/interview/attendInterview";
 
-/*************  ✨ Codeium Command ⭐  *************/
-/**
- * The App component sets up the main routing for the application using React Router.
-
-/******  8ac7e03d-d827-482a-9b08-7122ea298929  *******/
 function App() {
   return (
     <BrowserRouter basename="/lexsi">
@@ -43,6 +40,8 @@ function App() {
         <Route path="/user/jobs" element={<Jobs />} />
         <Route path="/user/profile" element={<UserProfile />} />
         <Route path="/user/contact" element={<Contact />} />
+        <Route path="/user/interview-preview" element={<InterviewPreview />} />
+        <Route path="/user/attend-interview" element={<AttendInterview />} />
 
         {/* admin  */}
         <Route path="/admin/signin" element={<AdminSignIn />} />
