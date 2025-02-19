@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { UserNavbar } from "../navbar/userNavbar";
 import { Footer } from "../../landing/footer";
+import { useNavigate } from "react-router-dom";
 
 export const InterviewPreview = () => {
   const [audioEnabled, setAudioEnabled] = useState(true);
@@ -21,6 +22,7 @@ export const InterviewPreview = () => {
   const [showDeviceMenu, setShowDeviceMenu] = useState(false);
   const videoRef = useRef(null);
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getVideoDevices = async () => {
@@ -108,6 +110,9 @@ export const InterviewPreview = () => {
     setShowDeviceMenu(false);
   };
 
+  const navigateToInterview = () => {
+    navigate("/user/attend-interview");
+  };
   return (
     <>
       <UserNavbar />
@@ -177,7 +182,7 @@ export const InterviewPreview = () => {
                       </div>
 
                       {showDeviceMenu && (
-                        <div className="tw-absolute tw-bottom-full tw-mb-2 tw-w-64 tw-rounded-lg tw-bg-white tw-shadow-lg">
+                        <div className="tw-absolute tw-bottom-full tw-mb-2 tw-w-44 tw-h-40 tw-overflow-auto tw-rounded-lg tw-bg-white tw-shadow-lg tw-text-sm">
                           <div className="tw-p-2">
                             <div className="tw-mb-2 tw-px-3 tw-py-2 tw-text-sm tw-font-medium tw-text-gray-500">
                               Select Camera
@@ -203,7 +208,7 @@ export const InterviewPreview = () => {
                               </button>
                             ))}
                           </div>
-                        </div>
+                        </div>  
                       )}
                     </div>
                   </div>
@@ -240,7 +245,10 @@ export const InterviewPreview = () => {
                   </div>
                 </div>
 
-                <button className="tw-rounded-lg tw-bg-blue-600 tw-px-8 tw-py-3 tw-text-white tw-transition hover:tw-bg-blue-700">
+                <button
+                  onClick={navigateToInterview}
+                  className="tw-rounded-lg tw-bg-blue-600 tw-px-8 tw-py-3 tw-text-white tw-transition hover:tw-bg-blue-700"
+                >
                   Start Now
                 </button>
 
