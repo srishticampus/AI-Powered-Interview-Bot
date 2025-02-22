@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { MapPin, Briefcase, Calendar, Twitter } from "lucide-react";
-import { axiosInstance } from "../../../apis/axiosInstance";
+import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
 import { LEXI_USER_ID } from "../../../constants/constants";
 import { useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "../../../utils/showToast";
+import { PlaceholderImgURL } from "../../../utils/placeholderImg";
 export const UserViewJobDetails = ({ jobId }) => {
   const [jobDetails, setJobDetails] = useState({});
   const [allAppliedJobs, setAllAppliedJobs] = useState([]);
-  const [myAppliedJobs, setMyAppliedJobs] = useState([]);
   const [appliedAlready, setAppliedAlready] = useState(false);
 
   const navigate = useNavigate();
@@ -37,14 +37,12 @@ export const UserViewJobDetails = ({ jobId }) => {
   const appliedJobsFn = () => {
     const userId = JSON.parse(localStorage.getItem(LEXI_USER_ID)) || null;
     if (userId) {
-      const appliedJob = allAppliedJobs.filter((job) => job.user === userId);
       const applied = allAppliedJobs.find(
         (job) => job.user == userId && job.job == jobId
       );
       if (applied) {
         setAppliedAlready(applied);
       }
-      setMyAppliedJobs(appliedJob);
     }
   };
   const getJobs = async () => {
@@ -59,6 +57,8 @@ export const UserViewJobDetails = ({ jobId }) => {
       return false;
     }
   };
+  const companyImg = jobDetails?.company?.company_logo;
+  const url = companyImg ? `${BACKEND_URL}${companyImg}` : PlaceholderImgURL;
 
   const applyJob = async () => {
     const userid = JSON.parse(localStorage.getItem(LEXI_USER_ID)) || null;
@@ -132,7 +132,7 @@ export const UserViewJobDetails = ({ jobId }) => {
           </div>
           <div className=" tw-p-5">
             <button className="tw-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-bg-[#1DA1F2] tw-text-white tw-rounded-lg hover:tw-bg-[#1a8cd8]">
-              <Twitter className="tw-w-5 tw-h-5" />
+              <img src={url} alt="company-logo" />
             </button>
           </div>
         </div>
