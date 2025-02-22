@@ -2,8 +2,8 @@ import React from "react";
 import { MapPin, Clock, Settings } from "lucide-react";
 
 export const JobCard = ({
-  clickOnJob,
   job_title,
+  id,
   required_skills,
   company,
   location,
@@ -11,10 +11,13 @@ export const JobCard = ({
   date,
   salary_range,
   companyLogo,
+  clickOnJob
 }) => {
+  console.log('m id', id)
+  
   return (
     <div
-      onClick={() => clickOnJob("1")}
+      onClick={() => clickOnJob(id)}
       className="tw-bg-white tw-cursor-pointer tw-rounded-xl tw-p-6 tw-shadow-sm hover:tw-shadow-md tw-transition-shadow"
     >
       <div className="tw-flex tw-justify-between tw-items-start tw-mb-4">

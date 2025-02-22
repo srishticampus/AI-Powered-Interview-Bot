@@ -3,13 +3,23 @@ import { CompanyJobs } from "../../../components/user/jobs/jobs";
 import { LandingNavbar } from "../../../components/ui/landingNavbar/landingNavbar";
 import { useUserLoggedin } from "../../../hooks/useLoggedIn";
 import { UserNavbar } from "../../../components/user/navbar/userNavbar";
+import { useState } from "react";
+import { UserViewJobDetails } from "../../../components/user/jobs/userViewJobDetails";
 
 export const Jobs = () => {
   const isLoggedIn = useUserLoggedin();
+  const [jobId, setJobId] = useState("");
+  const clickOnJob = (id) => {
+    setJobId(id);
+  };
   return (
     <div>
       {isLoggedIn ? <UserNavbar /> : <LandingNavbar />}
-      <CompanyJobs />
+      {jobId ? (
+        <UserViewJobDetails jobId={jobId} />
+      ) : (
+        <CompanyJobs clickOnJob={clickOnJob} />
+      )}
       <Footer />
     </div>
   );

@@ -8,6 +8,6 @@ export const ViewJobs = () => {
     setJobId(id);
   };
   return (
-    <>{jobId ? <ViewJobDetails /> : <JobsList clickOnJob={clickOnJob} />}</>
+    <>{jobId ? <ViewJobDetails jobId={jobId} /> : <JobsList clickOnJob={clickOnJob} />}</>
   );
 };

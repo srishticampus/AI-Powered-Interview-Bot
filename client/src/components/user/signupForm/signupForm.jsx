@@ -225,6 +225,7 @@ export const SignUpForm = () => {
                   type="file"
                   id="resume"
                   name="resume"
+                  accept=".pdf"
                   onChange={handleFileChange}
                   className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-2 focus:tw-ring-blue-200 tw-transition-colors"
                   required

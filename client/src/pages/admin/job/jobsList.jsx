@@ -3,7 +3,7 @@ import { JobCard } from "../../../components/admin/jobCard/jobCard";
 import { Search } from "lucide-react";
 import { axiosInstance } from "../../../apis/axiosInstance";
 
-export const JobsList = ({clickOnJob}) => {
+export const JobsList = ({ clickOnJob }) => {
   // const jobs = [
   //   {
   //     title: "Software Developer",
@@ -38,28 +38,28 @@ export const JobsList = ({clickOnJob}) => {
   // ];
 
   const [jobs, setJobs] = useState([]);
-  
-    useEffect(() => {
-      getJobs();
-    }, []);
-  
-    const getJobs = async () => {
-      try {
-        const res = await axiosInstance.get(`jobs/`);
-        if (res.status === 200) {
-          const data = res.data || [];
-          setJobs(data.reverse());
-        }
-      } catch (error) {
-        console.log("Error ON GET USER DATA", error);
-        return false;
+
+  useEffect(() => {
+    getJobs();
+  }, []);
+
+  const getJobs = async () => {
+    try {
+      const res = await axiosInstance.get(`jobs/`);
+      if (res.status === 200) {
+        const data = res.data || [];
+        setJobs(data.reverse());
       }
-    };
+    } catch (error) {
+      console.log("Error ON GET USER DATA", error);
+      return false;
+    }
+  };
 
   return (
     <section className="tw-py-16 tw-px-4 tw-bg-gradient-to-b from-[#F8FAFF] tw-to-white">
       <div className="tw-max-w-6xl tw-mx-auto">
-      <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
+        <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
           <h1 className="tw-text-2xl tw-font-bold tw-text-gray-800">
             View Jobs
           </h1>

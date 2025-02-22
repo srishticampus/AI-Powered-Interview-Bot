@@ -42,18 +42,20 @@ export const AddJob = () => {
       jobDescription,
       applicationDeadline,
     } = data;
-    const formData = new FormData();
+    console.log('com id', companyId)
 
-    formData.append("job_title", jobTitle);
-    formData.append("required_skills", requiredSkills);
-    formData.append("experience", experience);
-    formData.append("location", location);
-    formData.append("job_type", jobType);
-    formData.append("salary_range", salaryRange);
-    formData.append("job_description", jobDescription);
-    formData.append("application_deadline", applicationDeadline);
-    formData.append("company_name", companyId);
-    sendDataToServer(formData);
+    const formDataObj = {
+      job_title: jobTitle,
+      required_skills: requiredSkills,
+      experience,
+      location,
+      job_type: jobType,
+      salary_range: salaryRange,
+      job_description: jobDescription,
+      application_deadline: applicationDeadline,
+      company_name: companyId,
+    };
+    sendDataToServer(formDataObj);
   };
 
   console.log('comp', companies)
