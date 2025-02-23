@@ -4,41 +4,13 @@ import { Search } from "lucide-react";
 import { axiosInstance } from "../../../apis/axiosInstance";
 
 export const JobsList = ({ clickOnJob }) => {
-  // const jobs = [
-  //   {
-  //     title: "Software Developer",
-  //     skills: "Python, Java, SQL, HTML",
-  //     company: "Google",
-  //     location: "Trivandrum, India",
-  //     date: "5 Nov",
-  //     applications: "150",
-  //     companyLogo:
-  //       "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
-  //   },
-  //   {
-  //     title: "Software Developer",
-  //     skills: "Python, Java, SQL, HTML",
-  //     company: "Twitter",
-  //     location: "Trivandrum, India",
-  //     date: "5 Nov",
-  //     applications: "150",
-  //     companyLogo:
-  //       "https://about.twitter.com/content/dam/about-twitter/x/brand-toolkit/logo-black.png.twimg.1920.png",
-  //   },
-  //   {
-  //     title: "Software Developer",
-  //     skills: "Python, Java, SQL, HTML",
-  //     company: "Microsoft",
-  //     location: "Trivandrum, India",
-  //     date: "5 Nov",
-  //     applications: "150",
-  //     companyLogo:
-  //       "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31",
-  //   },
-  // ];
-
+  const [searchedItem, setSearchedItem] = useState("");
   const [jobs, setJobs] = useState([]);
+  const [fixedJobs, setFixedJobs] = useState([]);
 
+  const searching = (newValue) => {
+    setSearchedItem(newValue);
+  }
   useEffect(() => {
     getJobs();
   }, []);
@@ -49,12 +21,23 @@ export const JobsList = ({ clickOnJob }) => {
       if (res.status === 200) {
         const data = res.data || [];
         setJobs(data.reverse());
+        setFixedJobs(data.reverse());
       }
     } catch (error) {
       console.log("Error ON GET USER DATA", error);
       return false;
     }
   };
+  useEffect(() => {
+    if (searchedItem) {
+      const filteredJobs = fixedJobs.filter((job) => {
+        return job.job_title?.toLowerCase().includes(searchedItem.toLowerCase());
+      });
+      setJobs(filteredJobs);
+    }else [
+      setJobs(fixedJobs)
+    ]
+  }, [searchedItem]);
 
   return (
     <section className="tw-py-16 tw-px-4 tw-bg-gradient-to-b from-[#F8FAFF] tw-to-white">
@@ -64,8 +47,9 @@ export const JobsList = ({ clickOnJob }) => {
             View Jobs
           </h1>
           <div className="tw-relative">
-            <Search className="tw-w-5 tw-h-5 tw-text-gray-400 tw-absolute tw-left-3 tw-top-1/2 tw-transform -tw-translate-y-1/2" />
+            <Search  className="tw-w-5 tw-h-5 tw-text-gray-400 tw-absolute tw-left-3 tw-top-1/2 tw-transform -tw-translate-y-1/2" />
             <input
+              onChange={(e) => searching(e.target.value)}
               type="text"
               placeholder="Search jobs here..."
               className="tw-pl-10 tw-pr-4 tw-py-2 tw-w-80 tw-rounded-full tw-border tw-border-gray-300 focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"

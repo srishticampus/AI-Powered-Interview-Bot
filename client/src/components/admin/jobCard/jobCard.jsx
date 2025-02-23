@@ -13,7 +13,6 @@ export const JobCard = ({
   companyLogo,
   clickOnJob
 }) => {
-  console.log('m id', id)
   
   return (
     <div
@@ -51,18 +50,6 @@ export const JobCard = ({
         </div>
       </div>
 
-      <button className="tw-w-full tw-mt-6 tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white tw-py-3 tw-px-6 tw-rounded-lg tw-flex tw-items-center tw-justify-center group tw-transition-all">
-        Apply Now
-        <svg
-          className="tw-w-4 tw-h-4 tw-ml-2 group-hover:tw-translate-x-1 tw-transition-transform"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
-      </button>
     </div>
   );
 };

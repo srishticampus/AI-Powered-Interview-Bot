@@ -3,7 +3,7 @@ import { Search, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import { ApplicationBtnContainer } from "../../../components/admin/applicationButtons/applicationBtnContainer";
 import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
 
-export const CandidatesList = () => {
+export const ViewApplications = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,7 +33,6 @@ export const CandidatesList = () => {
     }
   };
 
-
   const filteredCandidates = candidates.filter(
     (candidate) =>
       candidate.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -45,19 +44,23 @@ export const CandidatesList = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentCandidates = filteredCandidates.slice(startIndex, endIndex);
-  
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
   return (
     <>
+      <h1 className="tw-text-2xl tw-m-5 tw-font-bold tw-text-gray-800">
+        Applications
+      </h1>
 
+      <ApplicationBtnContainer />
 
       <div className="tw-max-w-7xl tw-mx-auto tw-p-6">
         <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
           <h1 className="tw-text-2xl tw-font-bold tw-text-gray-800">
-            View Candidates
+            View Applications
           </h1>
           <div className="tw-relative">
             <Search className="tw-w-5 tw-h-5 tw-text-gray-400 tw-absolute tw-left-3 tw-top-1/2 tw-transform -tw-translate-y-1/2" />

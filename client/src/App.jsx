@@ -46,7 +46,7 @@ function App() {
         <Route path="/user/interview-score" element={<InterviewScore />} />
 
         {/* admin  */}
-        <Route path="/admin/signin" element={<AdminSignIn />} />
+          <Route path="/admin/signin" element={<AdminSignIn />} />
         <Route element={<ProtectAdminRoutes />}>
           <Route path="/admin" element={<AdminDashboard />} />
         </Route>
