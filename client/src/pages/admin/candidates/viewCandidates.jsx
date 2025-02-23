@@ -11,28 +11,23 @@ export const CandidatesList = () => {
 
   const [candidates, setCandidates] = useState([]);
 
-  // applications
-  const [applications, setApplications] = useState([]);
-
   useEffect(() => {
-    fetchApplications();
+    fetchUsers();
   }, []);
 
-  const fetchApplications = async () => {
+  const fetchUsers = async () => {
     try {
-      const response = await axiosInstance.get("/all-applied-jobs/");
+      const res = await axiosInstance.get("/users/");
+      console.log('respo ', res)
 
-      if (response.status === 200) {
-        setApplications(response.data);
-        const registrations = response?.data || [];
-        const allCandiates = registrations.map((regi) => regi?.user_details);
-        setCandidates(allCandiates.reverse());
+      if (res.status === 200) {
+        const allCandiates = res.data?.reverse() || [];
+        setCandidates(allCandiates);
       }
     } catch (error) {
       console.error("Error fetching applications:", error);
     }
   };
-
 
   const filteredCandidates = candidates.filter(
     (candidate) =>
@@ -45,15 +40,13 @@ export const CandidatesList = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentCandidates = filteredCandidates.slice(startIndex, endIndex);
-  
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
   return (
     <>
-
-
       <div className="tw-max-w-7xl tw-mx-auto tw-p-6">
         <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
           <h1 className="tw-text-2xl tw-font-bold tw-text-gray-800">

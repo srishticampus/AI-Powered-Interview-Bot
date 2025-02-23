@@ -178,7 +178,7 @@ export const UserViewJobDetails = ({ jobId }) => {
                 <label className="tw-text-sm tw-text-gray-500">
                   About Company
                 </label>
-                <p className="tw-font-medium">
+                <p className=" ">
                   {jobDetails?.company?.description}
                 </p>
               </div>

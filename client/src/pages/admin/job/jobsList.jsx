@@ -10,7 +10,7 @@ export const JobsList = ({ clickOnJob }) => {
 
   const searching = (newValue) => {
     setSearchedItem(newValue);
-  }
+  };
   useEffect(() => {
     getJobs();
   }, []);
@@ -19,9 +19,9 @@ export const JobsList = ({ clickOnJob }) => {
     try {
       const res = await axiosInstance.get(`jobs/`);
       if (res.status === 200) {
-        const data = res.data || [];
-        setJobs(data.reverse());
-        setFixedJobs(data.reverse());
+        const data = res.data?.reverse() || [];
+        setJobs(data);
+        setFixedJobs(data);
       }
     } catch (error) {
       console.log("Error ON GET USER DATA", error);
@@ -31,12 +31,14 @@ export const JobsList = ({ clickOnJob }) => {
   useEffect(() => {
     if (searchedItem) {
       const filteredJobs = fixedJobs.filter((job) => {
-        return job.job_title?.toLowerCase().includes(searchedItem.toLowerCase());
+        return job.job_title
+          ?.toLowerCase()
+          .includes(searchedItem.toLowerCase());
       });
       setJobs(filteredJobs);
-    }else [
-      setJobs(fixedJobs)
-    ]
+    } else {
+      setJobs(fixedJobs);
+    }
   }, [searchedItem]);
 
   return (
@@ -47,7 +49,7 @@ export const JobsList = ({ clickOnJob }) => {
             View Jobs
           </h1>
           <div className="tw-relative">
-            <Search  className="tw-w-5 tw-h-5 tw-text-gray-400 tw-absolute tw-left-3 tw-top-1/2 tw-transform -tw-translate-y-1/2" />
+            <Search className="tw-w-5 tw-h-5 tw-text-gray-400 tw-absolute tw-left-3 tw-top-1/2 tw-transform -tw-translate-y-1/2" />
             <input
               onChange={(e) => searching(e.target.value)}
               type="text"

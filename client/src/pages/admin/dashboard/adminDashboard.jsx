@@ -26,11 +26,11 @@ export const AdminDashboard = () => {
       case "Overview":
         return <AdminOverview />;
       case "Add Company":
-        return <AddCompany changeActiveSubItem={changeActiveSubItem} />;
+        return <AddCompany changeActiveSubItem={changeActiveItem} />;
       case "View Company":
         return <ViewCompanies />;
       case "Add Job":
-        return <AddJob />;
+        return <AddJob changeActiveSubItem={changeActiveItem} />;
       case "View Job":
         return <ViewJobs />;
       case "Candidates":

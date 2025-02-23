@@ -1,19 +1,23 @@
 import React from "react";
 import { MapPin, Clock, Settings } from "lucide-react";
+import { BACKEND_URL } from "../../../apis/axiosInstance";
+import { PlaceholderImgURL } from "../../../utils/placeholderImg";
 
-export const JobCard = ({
-  job_title,
-  id,
-  required_skills,
-  company,
-  location,
-  job_type,
-  date,
-  salary_range,
-  companyLogo,
-  clickOnJob
-}) => {
-  
+export const JobCard = (props) => {
+  console.log('pros', props)
+  const {
+    job_title,
+    id,
+    required_skills,
+    company,
+    location,
+    job_type,
+    salary_range,
+    clickOnJob,
+  } = props;
+  const imgPath = company?.company_logo;
+  const companyLogo = imgPath ? `${BACKEND_URL}/${imgPath}` : PlaceholderImgURL;
+
   return (
     <div
       onClick={() => clickOnJob(id)}
@@ -49,7 +53,6 @@ export const JobCard = ({
           <span>Salary: {salary_range} </span>
         </div>
       </div>
-
     </div>
   );
 };

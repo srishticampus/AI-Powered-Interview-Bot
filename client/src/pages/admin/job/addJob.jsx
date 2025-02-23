@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { axiosInstance } from "../../../apis/axiosInstance";
 import { successToast, errorToast } from "../../../utils/showToast";
-export const AddJob = () => {
+export const AddJob = ({ changeActiveSubItem }) => {
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const AddJob = () => {
       jobDescription,
       applicationDeadline,
     } = data;
-    console.log('com id', companyId)
+    console.log("com id", companyId);
 
     const formDataObj = {
       job_title: jobTitle,
@@ -58,13 +58,13 @@ export const AddJob = () => {
     sendDataToServer(formDataObj);
   };
 
-  console.log('comp', companies)
   const sendDataToServer = async (formData) => {
     try {
       const response = await axiosInstance.post("addjob/", formData);
 
       if (response.status === 201) {
         successToast("Job added successfully");
+        changeActiveSubItem("View Job");
       }
     } catch (error) {
       console.log("ERROR ON add job", error);

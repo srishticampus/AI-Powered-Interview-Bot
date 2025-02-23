@@ -1,36 +1,20 @@
 import React, { useEffect, useState } from "react";
 import {
-  MapPin,
-  Briefcase,
-  Calendar,
   Edit,
   Trash2,
   Twitter,
+  Terminal,
+  PhoneCall,
+  Mail,
+  SquareChartGantt,
 } from "lucide-react";
-import { axiosInstance } from "../../../apis/axiosInstance";
+import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
+import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
 
-export const ViewJobDetails = ({ jobId }) => {
-  const [jobDetails, setJobDetails] = useState({});
-
-  useEffect(() => {
-    if (jobId) {
-      getJobs();
-    }
-  }, []);
-
-  const getJobs = async () => {
-    try {
-      const res = await axiosInstance.get(`job/${jobId}/`);
-      if (res.status === 200) {
-        const data = res.data || {};
-        setJobDetails(data);
-      }
-    } catch (error) {
-      console.log("Error ON GET USER DATA", error);
-      return false;
-    }
-  };
-
+export const ViewApplicationDetails = ({ applicationDetials }) => {
+  //   console.log('app deta', applicationDetials)
+  const userDatails = applicationDetials?.user_details || {};
+  const jobDetails = applicationDetials?.job_details || {};
   return (
     <div className="tw-max-w-6xl tw-mx-auto tw-p-6">
       {/* Header Section */}
@@ -38,40 +22,58 @@ export const ViewJobDetails = ({ jobId }) => {
         <div className="tw-flex tw-justify-between tw-items-start tw-mb-4">
           <div>
             <h1 className="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-2">
-              {jobDetails?.job_title}
+              Applicant Name: {userDatails?.username}
             </h1>
             <div className="tw-flex tw-flex-wrap tw-gap-4 tw-text-gray-600">
               <div className="tw-flex tw-items-center tw-gap-1">
-                <MapPin className="tw-w-4 tw-h-4" />
-                <span>{jobDetails?.location}</span>
+                <Mail className="tw-w-4 tw-h-4" />
+                <span>{userDatails?.email}</span>
               </div>
               <div className="tw-flex tw-items-center tw-gap-1">
-                <Briefcase className="tw-w-4 tw-h-4" />
-                <span>{jobDetails?.salary_range}</span>
+                <PhoneCall className="tw-w-4 tw-h-4" />
+                <span>{userDatails?.phone_number}</span>
               </div>
               <div className="tw-flex tw-items-center tw-gap-1">
-                <Calendar className="tw-w-4 tw-h-4" />
-                <span>{jobDetails?.application_deadline}</span>
+                <span>Skills: </span>
+                <span>{userDatails?.skills}</span>
+              </div>
+            </div>
+            <div className="tw-flex tw-flex-wrap tw-gap-4 tw-mt-3 ">
+              <div className="tw-flex tw-items-center tw-gap-1 tw-text-gray-600">
+                <span>Applied at: </span>
+                <span>{applicationDetials?.applied_at}</span>
+              </div>
+
+              <div className="tw-text-lexiBlue-500 tw-flex tw-items-center tw-gap-1">
+                <SquareChartGantt className="tw-w-4 tw-h-4" />
+                <a
+                  href={`${BACKEND_URL}${userDatails?.resume}`}
+                  target="_blank"
+                >
+                  View Resume
+                </a>
+              </div>
+              <div className="tw-flex tw-items-center tw-gap-1 tw-text-gray-600">
+                <span>Status: </span>
+                <span>{capitalizeFirstLetter(applicationDetials?.status)}</span>
               </div>
             </div>
           </div>
           <div className="tw-flex tw-gap-2">
             <button className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-blue-600 tw-bg-white tw-rounded-lg tw-border tw-border-blue-600 hover:tw-bg-blue-50">
-              <Edit className="tw-w-4 tw-h-4" />
-              Edit
+              Schedule an Interview
             </button>
             <button className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-bg-red-500  tw-text-white tw-rounded-lg tw-border tw-border-red-600 hover:tw-bg-red-400">
               <Trash2 className="tw-w-4 tw-h-4" />
-              Delete
+              Reject
             </button>
-            
           </div>
         </div>
       </div>
 
-      <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+      <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-4 tw-gap-6 ">
         {/* Left Column - Job Info */}
-        <div className="tw-space-y-6">
+        <div className="md:tw-col-span-2 tw-space-y-6">
           <div className="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-sm">
             <h2 className="tw-text-lg tw-font-semibold tw-text-gray-800 tw-mb-4">
               Company Details
@@ -94,21 +96,22 @@ export const ViewJobDetails = ({ jobId }) => {
                 </p>
               </div>
               <div>
-                <label className="tw-text-sm tw-text-gray-500">
-                  Website
-                </label>
+                <label className="tw-text-sm tw-text-gray-500">Website</label>
                 <p>
-
-                <a target="_blank" href={jobDetails?.company?.website_url} className="tw-font-medium">
-                  {jobDetails?.company?.website_url}
-                </a>
+                  <a
+                    target="_blank"
+                    href={jobDetails?.company?.website_url}
+                    className="tw-font-medium"
+                  >
+                    {jobDetails?.company?.website_url}
+                  </a>
                 </p>
               </div>
               <div>
                 <label className="tw-text-sm tw-text-gray-500">
                   About Company
                 </label>
-                <p className="tw-text-gray-800">
+                <p className="tw-font-medium">
                   {jobDetails?.company?.description}
                 </p>
               </div>
@@ -128,12 +131,31 @@ export const ViewJobDetails = ({ jobId }) => {
         <div className="md:tw-col-span-2 tw-space-y-6">
           <div className="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-sm">
             <h2 className="tw-text-lg tw-font-semibold tw-text-gray-800 tw-mb-4">
-              Job Description
+              Job Details
             </h2>
-            <p className="tw-text-gray-600 tw-mb-6">
-              {jobDetails?.job_description}
-            </p>
 
+            <div className="tw-mb-6">
+              <label className="tw-text-sm tw-text-gray-500">Job Title</label>
+              <p className="tw-font-medium">{jobDetails.job_title}</p>
+            </div>
+            <div className="tw-mb-6">
+              <label className="tw-text-sm tw-text-gray-500">Location</label>
+              <p className="tw-font-medium">{jobDetails.location}</p>
+            </div>
+            <div className="tw-mb-6">
+              <label className="tw-text-sm tw-text-gray-500">
+                Salary Range
+              </label>
+              <p className="tw-font-medium">{jobDetails.salary_range}</p>
+            </div>
+            <div className="tw-mb-6">
+              <label className="tw-text-sm tw-text-gray-500">
+                Application deadline
+              </label>
+              <p className="tw-font-medium">
+                {jobDetails.application_deadline}
+              </p>
+            </div>
             <div className="tw-mb-6">
               <label className="tw-text-sm tw-text-gray-500">Skills</label>
               <p className="tw-font-medium">{jobDetails.required_skills}</p>
@@ -153,6 +175,14 @@ export const ViewJobDetails = ({ jobId }) => {
               <p className="tw-font-medium">{jobDetails.experience}</p>
             </div>
 
+            <div className="tw-mb-5">
+              <label className="tw-text-sm tw-text-gray-500">
+                Job Description
+              </label>
+              <p className="tw-text-gray-600 tw-mb-6">
+                {jobDetails?.job_description}
+              </p>
+            </div>
           </div>
         </div>
       </div>

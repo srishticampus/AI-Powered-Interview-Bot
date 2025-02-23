@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Search, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import { ApplicationBtnContainer } from "../../../components/admin/applicationButtons/applicationBtnContainer";
 import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
+import { ViewApplicationDetails } from "./applicationDetails";
 
 export const ViewApplications = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showPdfModal, setShowPdfModal] = useState(false);
-
-  const [candidates, setCandidates] = useState([]);
+  const [applicationDetials, setApplicationDetails] = useState(null);
 
   // applications
   const [applications, setApplications] = useState([]);
-
+  console.log("applic", applications);
   useEffect(() => {
     fetchApplications();
   }, []);
@@ -23,31 +22,32 @@ export const ViewApplications = () => {
       const response = await axiosInstance.get("/all-applied-jobs/");
 
       if (response.status === 200) {
-        setApplications(response.data);
-        const registrations = response?.data || [];
-        const allCandiates = registrations.map((regi) => regi?.user_details);
-        setCandidates(allCandiates.reverse());
+        setApplications(response.data?.reverse() || []);
       }
     } catch (error) {
       console.error("Error fetching applications:", error);
     }
   };
 
-  const filteredCandidates = candidates.filter(
-    (candidate) =>
-      candidate.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      candidate.email?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filterApplications = applications.filter((app) =>
+    app?.user_details?.username
+      ?.toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
   // Pagination logic
-  const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
+  const totalPages = Math.ceil(filterApplications.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentCandidates = filteredCandidates.slice(startIndex, endIndex);
+  const currentApps = filterApplications.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+  if (applicationDetials) {
+    return <ViewApplicationDetails applicationDetials={applicationDetials} />;
+  }
 
   return (
     <>
@@ -82,54 +82,62 @@ export const ViewApplications = () => {
                   S NO
                 </th>
                 <th className="tw-px-6 tw-py-3 tw-text-left tw-text-sm tw-font-semibold tw-text-lexiBlue-600">
-                  Profile
+                  Candidate Name
                 </th>
                 <th className="tw-px-6 tw-py-3 tw-text-left tw-text-sm tw-font-semibold tw-text-lexiBlue-600">
-                  Name
+                  Postion
                 </th>
                 <th className="tw-px-6 tw-py-3 tw-text-left tw-text-sm tw-font-semibold tw-text-lexiBlue-600">
-                  Phone Number
+                  Company
                 </th>
                 <th className="tw-px-6 tw-py-3 tw-text-left tw-text-sm tw-font-semibold tw-text-lexiBlue-600">
-                  Email ID
+                  Status
                 </th>
                 <th className="tw-px-6 tw-py-3 tw-text-left tw-text-sm tw-font-semibold tw-text-lexiBlue-600">
-                  Resume
+                  View More
                 </th>
               </tr>
             </thead>
             <tbody className="tw-divide-y tw-divide-gray-200">
-              {currentCandidates.map((candidate, index) => (
+              {currentApps.map((app, index) => (
                 <tr key={index} className="hover:tw-bg-gray-50">
                   <td className="tw-px-6 tw-py-4 tw-text-sm tw-text-gray-600">
                     {startIndex + index + 1}
                   </td>
-                  <td className="tw-px-6 tw-py-4">
-                    <img
-                      src={`${BACKEND_URL}${candidate.profile_image}`}
-                      alt={candidate.username}
-                      className="tw-w-10 tw-h-10 tw-rounded-full tw-object-cover"
-                    />
+                  <td className="tw-px-6 tw-py-4 tw-flex ">
+                    {app?.user_details?.username}
                   </td>
                   <td className="tw-px-6 tw-py-4 tw-text-sm tw-text-gray-600">
-                    {candidate?.username}
+                    {app?.job_details?.job_title}
                   </td>
                   <td className="tw-px-6 tw-py-4 tw-text-sm tw-text-gray-600">
-                    {candidate?.phone_number}
+                    {app?.job_details?.company?.company_name}
                   </td>
                   <td className="tw-px-6 tw-py-4 tw-text-sm tw-text-gray-600">
-                    {candidate?.email}
-                  </td>
-                  <td className="tw-px-6 tw-py-4">
-                    <a
-                      className="tw-flex tw-items-center tw-gap-1 tw-text-blue-600 hover:tw-text-blue-700"
-                      href={`${BACKEND_URL}${candidate?.resume}`}
-                      target="_blank"
+                    <span
+                      className={`tw-px-3 tw-py-1 tw-rounded-full tw-text-sm
+                      ${
+                        app?.status === "Accepted"
+                          ? "tw-bg-green-50 tw-text-green-600"
+                          : app?.status === "Rejected"
+                          ? "tw-bg-red-50 tw-text-red-600"
+                          : app?.status === "pending"
+                          ? "tw-bg-yellow-50 tw-text-yellow-600"
+                          : "tw-bg-yellow-50 tw-text-black"
+                      }`}
                     >
-                      <FileText className="tw-w-4 tw-h-4" />
-
-                      <span className="tw-text-sm">View Resume </span>
-                    </a>
+                      {app?.status?.toUpperCase()}
+                    </span>
+                  </td>
+                  <td className="tw-px-6 tw-py-4">
+                    <button
+                      className="tw-text-sm tw-text-lexiBlue-600 hover:tw-underline"
+                      onClick={() => {
+                        setApplicationDetails(app);
+                      }}
+                    >
+                      View More
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -153,8 +161,8 @@ export const ViewApplications = () => {
 
             <div className="tw-flex tw-items-center tw-gap-2">
               <span className="tw-text-sm tw-text-gray-600">
-                {startIndex + 1}-{Math.min(endIndex, filteredCandidates.length)}{" "}
-                of {filteredCandidates.length}
+                {startIndex + 1}-{Math.min(endIndex, filterApplications.length)}{" "}
+                of {filterApplications.length}
               </span>
               <div className="tw-flex tw-gap-1">
                 <button
@@ -191,25 +199,6 @@ export const ViewApplications = () => {
             </div>
           </div>
         </div>
-
-        {/* PDF Modal */}
-        {showPdfModal && (
-          <div className="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-50 tw-flex tw-items-center tw-justify-center">
-            <div className="tw-bg-white tw-rounded-xl tw-p-6 tw-w-11/12 tw-h-5/6">
-              <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
-                <h2 className="tw-text-xl tw-font-semibold tw-text-gray-800">
-                  Resume Preview
-                </h2>
-                <button
-                  onClick={() => setShowPdfModal(false)}
-                  className="tw-text-gray-500 hover:tw-text-gray-700"
-                >
-                  ×
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

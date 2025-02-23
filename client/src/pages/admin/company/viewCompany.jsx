@@ -97,9 +97,7 @@ export const ViewCompanies = () => {
                 <th className="tw-px-6 tw-py-3 tw-text-left tw-text-sm tw-font-semibold tw-text-lexiBlue-600">
                   Website (URL)
                 </th>
-                <th className="tw-px-6 tw-py-3 tw-text-left tw-text-sm tw-font-semibold tw-text-lexiBlue-600">
-                  Description
-                </th>
+              
                 <th className="tw-px-6 tw-py-3 tw-text-left tw-text-sm tw-font-semibold tw-text-lexiBlue-600">
                   Action
                 </th>
@@ -137,9 +135,7 @@ export const ViewCompanies = () => {
                       {company.website_url}
                     </a>
                   </td>
-                  <td className="tw-px-6  tw-line-clamp-2 tw-overflow-auto tw-max-h-40 tw-max-w-40 tw-py-4 tw-text-sm tw-text-gray-600">
-                    {company.description}
-                  </td>
+              
                   <td className="tw-px-6 tw-py-4 tw-text-sm tw-text-gray-600">
                     <div className="tw-flex">
                     <span className="tw-text-lexiBlue-500  tw-cursor-pointer">

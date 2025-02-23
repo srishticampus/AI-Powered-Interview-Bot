@@ -65,7 +65,6 @@ export const AdminOverview = () => {
                 <th className="tw-text-left tw-py-3 tw-px-4 tw-text-gray-600">Position</th>
                 <th className="tw-text-left tw-py-3 tw-px-4 tw-text-gray-600">Company</th>
                 <th className="tw-text-left tw-py-3 tw-px-4 tw-text-gray-600">Status</th>
-                <th className="tw-text-left tw-py-3 tw-px-4 tw-text-gray-600">Time</th>
               </tr>
             </thead>
             <tbody>
@@ -90,12 +89,7 @@ export const AdminOverview = () => {
                       {app.status}
                     </span>
                   </td>
-                  <td className="tw-py-3 tw-px-4">
-                    <div className="tw-flex tw-items-center tw-text-gray-500">
-                      <Clock className="tw-w-4 tw-h-4 tw-mr-1" />
-                      2h ago
-                    </div>
-                  </td>
+                 
                 </tr>
               ))}
             </tbody>
