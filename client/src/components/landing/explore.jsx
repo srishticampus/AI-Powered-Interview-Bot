@@ -4,30 +4,30 @@ import {JobCard} from './jobCard';
 export const ExploreOpportunities = () => {
   const jobs = [
     {
-      title: "Software Developer",
+      job_title: "MERN Developer",
       skills: "Python, Java, SQL, HTML",
       company: "Google",
       location: "Trivandrum, India",
-      date: "5 Nov",
-      applications: "150",
+      application_deadline: "20/06/2025",
+      salary_range: "12000-48000",
       companyLogo: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
     },
     {
-      title: "Software Developer",
+      job_title: "Software Developer",
       skills: "Python, Java, SQL, HTML",
       company: "Twitter",
       location: "Trivandrum, India",
-      date: "5 Nov",
-      applications: "150",
+      application_deadline: "15/02/2025",
+      salary_range: "43000-75000",
       companyLogo: "https://about.twitter.com/content/dam/about-twitter/x/brand-toolkit/logo-black.png.twimg.1920.png"
     },
     {
-      title: "Software Developer",
+      job_title: "Python Developer",
       skills: "Python, Java, SQL, HTML",
       company: "Microsoft",
       location: "Trivandrum, India",
-      date: "5 Nov",
-      applications: "150",
+      application_deadline: "25/04/2025",
+      salary_range: "12000-25000",
       companyLogo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
     }
   ];
@@ -42,7 +42,7 @@ export const ExploreOpportunities = () => {
         
         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
           {jobs.map((job, index) => (
-            <JobCard key={index} {...job} />
+            <JobCard key={index} job={job} />
           ))}
         </div>
       </div>

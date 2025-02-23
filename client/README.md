@@ -7,9 +7,6 @@ npm run dev
 
 
 apis 
-
-
-register
 http://127.0.0.1:8000/api/ai_bot_api/register/
 
 login

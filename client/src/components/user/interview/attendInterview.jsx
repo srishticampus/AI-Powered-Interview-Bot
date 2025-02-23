@@ -11,117 +11,87 @@ import {
 import { UserNavbar } from "../navbar/userNavbar";
 import { Footer } from "../../landing/footer";
 import { useNavigate } from "react-router-dom";
-
-const questions = [
-  {
-    id: 1,
-    question:
-      "A company wants to develop a mobile app that provides personalized movie recommendations based on user preferences and watch history. Which of the following technologies would be most suitable for implementing the recommendation system?",
-    option1: "SQL Database",
-    option2: "Machine Learning Model",
-    option3: "Static HTML Pages",
-    option4: "Manual Tagging by Admins",
-    answer: "option2",
-  },
-  {
-    id: 2,
-    question: "What is the time complexity of a binary search algorithm?",
-    option1: "O(n)",
-    option2: "O(log n)",
-    option3: "O(n²)",
-    option4: "O(1)",
-    answer: "option2",
-  },
-  {
-    id: 3,
-    question:
-      "Which design pattern is most suitable for implementing an undo mechanism in a text editor?",
-    option1: "Observer Pattern",
-    option2: "Command Pattern",
-    option3: "Singleton Pattern",
-    option4: "Factory Pattern",
-    answer: "option2",
-  },
-  {
-    id: 4,
-    question: "What is the main purpose of the Virtual DOM in React?",
-    option1: "To improve SEO",
-    option2: "To reduce memory usage",
-    option3: "To optimize rendering performance",
-    option4: "To handle server-side rendering",
-    answer: "option3",
-  },
-  {
-    id: 5,
-    question: "Which HTTP method is idempotent?",
-    option1: "POST",
-    option2: "PUT",
-    option3: "PATCH",
-    option4: "None of the above",
-    answer: "option2",
-  },
-  {
-    id: 6,
-    question: "What is the difference between 'let' and 'const' in JavaScript?",
-    option1: "No difference",
-    option2: "'let' is block-scoped, 'const' is function-scoped",
-    option3: "'const' cannot be reassigned, 'let' can be",
-    option4: "'let' is faster than 'const'",
-    answer: "option3",
-  },
-  {
-    id: 7,
-    question:
-      "Which data structure would be most efficient for implementing an LRU cache?",
-    option1: "Array",
-    option2: "Hash Map",
-    option3: "Linked List",
-    option4: "Hash Map with Doubly Linked List",
-    answer: "option4",
-  },
-  {
-    id: 8,
-    question: "What is the purpose of the 'useCallback' hook in React?",
-    option1: "To memoize functions",
-    option2: "To handle side effects",
-    option3: "To manage state",
-    option4: "To create refs",
-    answer: "option1",
-  },
-  {
-    id: 9,
-    question:
-      "Which sorting algorithm has the best average-case time complexity?",
-    option1: "Bubble Sort",
-    option2: "Quick Sort",
-    option3: "Insertion Sort",
-    option4: "Selection Sort",
-    answer: "option2",
-  },
-  {
-    id: 10,
-    question: "What is the main advantage of using TypeScript over JavaScript?",
-    option1: "Better performance",
-    option2: "Static type checking",
-    option3: "Smaller bundle size",
-    option4: "Built-in state management",
-    answer: "option2",
-  },
-];
+import { LEXI_USER_ID } from "../../../constants/constants";
+import { axiosInstance } from "../../../apis/axiosInstance";
+import { useUserData } from "../../../hooks/useUserData";
+import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
 
 export const AttendInterview = () => {
+  const [questions, setQuestions] = useState([]);
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
   const [stream, setStream] = useState(null);
-  const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
+  const [currentQuestion, setCurrentQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState(null);
-  const [timeRemaining, setTimeRemaining] = useState(40 * 60); // 40 minutes in seconds
+  const [timeRemaining, setTimeRemaining] = useState(30 * 60); // 30 minutes in seconds
   const [videoDevices, setVideoDevices] = useState([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
   const [showDeviceMenu, setShowDeviceMenu] = useState(false);
   const menuRef = useRef(null);
   const videoRef = useRef(null);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [trackingScore, setTrackingScore] = useState(Array(15).fill(-1));
+  const [score, setScore] = useState(0);
+  const userData = useUserData();
+  /////////generate questions////////
+
+  useEffect(() => {
+    const userId = JSON.parse(localStorage.getItem(LEXI_USER_ID)) || null;
+    if (!userId) {
+      navigate("/user/signin");
+      return;
+    }
+    // it should runs only once
+    if (questions.length === 0) {
+      generateQues(userId);
+    }
+  }, []);
+
+  const generateQues = async (userId) => {
+    setIsLoading(true);
+    try {
+      const res = await axiosInstance.post(`generate-mcqs/${userId}/`);
+      if (res.status === 200) {
+        console.log(res.data);
+        // todo => remove slice
+        setQuestions(res.data?.mcqs?.slice(0, 15) || []);
+        setCurrentQuestion(res.data?.mcqs[0] || {});
+      }
+    } catch (error) {
+      console.log("ERror on generate mcqs", error);
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const calculateScore = (key) => {
+    setSelectedOption(key);
+    const answer = currentQuestion.answer;
+    const questionId = currentQuestion.id;
+    const existingScore = [...trackingScore];
+    console.log("curr quest", currentQuestion);
+    if (answer === key) {
+      existingScore[questionId - 1] = 1;
+    } else {
+      existingScore[questionId - 1] = 0;
+    }
+    setTrackingScore(existingScore);
+  };
+
+  const submitAnswers = () => {
+    let finalScore = 0;
+    trackingScore.forEach((score) => {
+      if (score === 1) {
+        finalScore += 1;
+      }
+    });
+    console.log("final", finalScore);
+    // navigate("/user/interview-score");
+  };
+  //generate questions end  */
 
   const toggleDeviceMenu = () => {
     setShowDeviceMenu(!showDeviceMenu);
@@ -206,13 +176,13 @@ export const AttendInterview = () => {
   }, [audioEnabled, videoEnabled, stream]);
 
   // Timer effect
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeRemaining((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setTimeRemaining((prev) => (prev > 0 ? prev - 1 : 0));
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -230,7 +200,44 @@ export const AttendInterview = () => {
     { key: "option4", value: question.option4 },
   ];
 
-  const submitAnswers = () => {};
+  if (isLoading) {
+    return (
+      <div>
+        <UserNavbar />
+        <div className="tw-flex tw-items-center tw-justify-center tw-min-h-screen">
+          <h1>
+            Please wait a moment while we generate relevant questions for you...
+          </h1>
+          <div className="tw-animate-spin tw-rounded-full tw-h-16 tw-w-16 tw-border-b-2 tw-border-gray-900"></div>
+        </div>
+
+        <Footer />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div>
+        <UserNavbar />
+        <div className="tw-flex tw-items-center tw-justify-center tw-min-h-screen tw-flex-col">
+          <h1 className="tw-text-xl tw-font-bold tw-text-red-500">
+            Oops! Something went wrong. Please try again later.
+          </h1>
+
+          <button
+            onClick={() => {
+              navigate(-1);
+            }}
+            className="tw-mt-4 tw-bg-blue-500 tw-text-white tw-py-2 tw-px-4 tw-rounded"
+          >
+            Go Back
+          </button>
+        </div>
+
+        <Footer />
+      </div>
+    );
+  }
   return (
     <>
       <UserNavbar />
@@ -241,16 +248,16 @@ export const AttendInterview = () => {
             <div className="tw-bg-white tw-rounded-xl tw-shadow-lg tw-p-8">
               <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
                 <div className="tw-text-gray-600">
-                  Question {currentQuestion.id}/10
+                  Question {currentQuestion.id}/{questions.length}
                 </div>
                 <div className="tw-text-blue-600 tw-font-semibold">
-                  Time remaining: {formatTime(timeRemaining)}
+                  Time Remaining : {formatTime(timeRemaining)}
                 </div>
               </div>
 
               <div className="tw-mb-8">
                 <h2 className="tw-text-xl tw-font-semibold tw-mb-6">
-                  {currentQuestion.question}
+                  {currentQuestion?.question}
                 </h2>
                 <div className="tw-space-y-4">
                   {getOptions(currentQuestion).map(({ key, value }) => (
@@ -268,7 +275,9 @@ export const AttendInterview = () => {
                         name="answer"
                         className="tw-h-4 tw-w-4 tw-text-blue-600"
                         checked={selectedOption === key}
-                        onChange={() => setSelectedOption(key)}
+                        onChange={() => {
+                          calculateScore(key);
+                        }}
                       />
                       <span className="tw-ml-3">{value}</span>
                     </label>
@@ -279,9 +288,9 @@ export const AttendInterview = () => {
               <div className="tw-flex tw-w-full tw-justify-around">
                 <button
                   className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
-                  disabled={currentQuestion.id === 1}
+                  disabled={currentQuestion?.id === 1}
                   onClick={() => {
-                    const nextId = currentQuestion.id - 1;
+                    const nextId = currentQuestion?.id - 1;
                     if (nextId > 0) {
                       setCurrentQuestion(
                         questions.find((q) => q.id === nextId)
@@ -294,26 +303,32 @@ export const AttendInterview = () => {
                   <ChevronLeft className="tw-w-4 tw-h-4" />
                 </button>
 
-                <button
-                  className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
-                  onClick={() => {
-                    navigate("/user/interview-score");
-                  }}
-                >
-                  Submit
-                  <ChevronRight className="tw-w-4 tw-h-4" />
-                </button>
-                <button
-                  className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
-                  onClick={() => {
-                    const nextId = (currentQuestion.id % 10) + 1;
-                    setCurrentQuestion(questions.find((q) => q.id === nextId));
-                    setSelectedOption(null);
-                  }}
-                >
-                  Next
-                  <ChevronRight className="tw-w-4 tw-h-4" />
-                </button>
+                {currentQuestion?.id === questions.length && (
+                  <button
+                    className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
+                    onClick={() => {
+                      submitAnswers();
+                    }}
+                  >
+                    Submit
+                    <ChevronRight className="tw-w-4 tw-h-4" />
+                  </button>
+                )}
+                {currentQuestion?.id !== questions.length && (
+                  <button
+                    className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
+                    onClick={() => {
+                      const nextId = (currentQuestion?.id % 15) + 1;
+                      setCurrentQuestion(
+                        questions.find((q) => q.id === nextId)
+                      );
+                      setSelectedOption(null);
+                    }}
+                  >
+                    Next
+                    <ChevronRight className="tw-w-4 tw-h-4" />
+                  </button>
+                )}
               </div>
             </div>
 
@@ -335,7 +350,9 @@ export const AttendInterview = () => {
                     <div className="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-gray-900">
                       <div className="tw-h-20 tw-w-20 tw-rounded-full tw-bg-blue-600 tw-flex tw-items-center tw-justify-center">
                         <span className="tw-text-2xl tw-font-bold tw-text-white">
-                          A
+                          {capitalizeFirstLetter(
+                            userData?.username?.slice(0, 1) || "A"
+                          )}
                         </span>
                       </div>
                     </div>
@@ -410,7 +427,7 @@ export const AttendInterview = () => {
                   </div>
                 </div>
                 <div className="tw-p-4 tw-text-white">
-                  <h3 className="tw-font-medium">Anand R P</h3>
+                  <h3 className="tw-font-medium">{userData?.username}</h3>
                 </div>
               </div>
 
@@ -420,16 +437,16 @@ export const AttendInterview = () => {
                   Question Navigation
                 </h3>
                 <div className="tw-grid tw-grid-cols-5 tw-gap-2">
-                  {questions.map((q) => (
+                  {questions.map((q, i) => (
                     <button
-                      key={q.id}
+                      key={i}
                       onClick={() => {
                         setCurrentQuestion(q);
                         setSelectedOption(null);
                       }}
                       className={`tw-h-10 tw-w-10 tw-rounded-lg tw-flex tw-items-center tw-justify-center tw-font-medium tw-transition
                       ${
-                        currentQuestion.id === q.id
+                        trackingScore[i] !== -1
                           ? "tw-bg-blue-600 tw-text-white"
                           : "tw-border tw-border-gray-200 tw-text-gray-600 hover:tw-bg-gray-50"
                       }`}

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { MapPin, Briefcase, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { LEXI_USER_ID } from "../../../constants/constants";
+import { APPLICATION_STATUS, LEXI_USER_ID } from "../../../constants/constants";
 import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
 import { PlaceholderImgURL } from "../../../utils/placeholderImg";
+import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
+import { ApplicationStatus } from "../../../pages/user/applicationStatus/applicationStatus";
 export const Applications = () => {
   const navigate = useNavigate();
   const handleClick = () => {
@@ -71,8 +73,10 @@ export const Applications = () => {
       <div className="tw-container tw-mx-auto tw-px-4 tw-py-8 ">
         {applications.map((application, i) => {
           const companyImg = application?.job_details?.company?.company_logo;
-          const url = companyImg ? `${BACKEND_URL}${companyImg}` : PlaceholderImgURL;
-        
+          const url = companyImg
+            ? `${BACKEND_URL}${companyImg}`
+            : PlaceholderImgURL;
+
           return (
             <div
               className="tw-rounded-xl tw-bg-white tw-p-6 tw-shadow-sm tw-mt-5"
@@ -82,11 +86,7 @@ export const Applications = () => {
                 {/* Job Details */}
                 <div className="tw-space-y-4">
                   <div className="tw-flex tw-items-center tw-gap-4">
-                    <img
-                      src={url}
-                      alt="Google"
-                      className="tw-h-8 tw-w-auto"
-                    />
+                    <img src={url} alt="Google" className="tw-h-8 tw-w-auto" />
                     <div>
                       <h2 className="tw-text-xl tw-font-semibold">
                         {application?.job_details?.job_title}
@@ -120,13 +120,23 @@ export const Applications = () => {
                 </div>
 
                 {/* Resume Status */}
-                {application?.status === "pending" && (
+                {application?.status === APPLICATION_STATUS.PENDING && (
                   <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
-                    <h3 className="tw-font-medium">Resume</h3>
+                    <h3 className="tw-font-medium">Application Status</h3>
                     {/* <p className="tw-text-sm tw-text-gray-600">12/01/2025</p> */}
                     <span className="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-yellow-100 tw-px-3 tw-py-1 tw-text-sm tw-text-yellow-700">
                       <span className="tw-h-2 tw-w-2 tw-rounded-full tw-bg-yellow-500"></span>
-                      Under Review
+                      {capitalizeFirstLetter(application?.status)}
+                    </span>
+                  </div>
+                )}
+                {application?.status ===
+                  APPLICATION_STATUS.TECHNIAL_INTERVIEW && (
+                  <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
+                    <h3 className="tw-font-medium">Application Status</h3>
+                    <span className="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-blue-100 tw-px-3 tw-py-1 tw-text-sm tw-text-black">
+                      <span className="tw-h-2 tw-w-2 tw-rounded-full tw-bg-lexiBlue-500"></span>
+                      {capitalizeFirstLetter(application?.status)}
                     </span>
                   </div>
                 )}
@@ -136,14 +146,17 @@ export const Applications = () => {
                   <div className="tw-rounded-lg tw-border tw-border-gray-200 tw-p-4 tw-text-center">
                     <h3 className="tw-font-medium">Technical Round</h3>
                     <p className="tw-mt-2 tw-text-sm tw-text-gray-600">
-                      Not Scheduled Yet
+                      
                     </p>
-                    <button
-                      onClick={handleClick}
-                      className="tw-bg-lexiBlue-500 tw-text-white tw-rounded-full tw-px-10 tw-py-2 tw-mt-3"
-                    >
-                      Interview
-                    </button>
+                    {application?.status ===
+                      APPLICATION_STATUS.TECHNIAL_INTERVIEW && (
+                      <button
+                        onClick={handleClick}
+                        className="tw-bg-lexiBlue-500 tw-text-white tw-rounded-full tw-px-10 tw-py-2 tw-mt-3"
+                      >
+                        Attend
+                      </button>
+                    )}
                   </div>
                   <div className="tw-rounded-lg tw-border tw-border-gray-200 tw-p-4 tw-text-center">
                     <h3 className="tw-font-medium">HR Round</h3>

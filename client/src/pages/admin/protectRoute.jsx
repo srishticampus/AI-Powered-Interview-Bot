@@ -10,3 +10,4 @@ export const ProtectUserRoutes = () => {
   const isUserLoggedIn = localStorage.getItem(IS_LEXI_USER_LOGGED_IN) || false;
   return isUserLoggedIn ? <Outlet /> : <Navigate to="/" />;
 };
+
