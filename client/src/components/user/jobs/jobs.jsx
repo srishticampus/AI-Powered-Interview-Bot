@@ -23,7 +23,7 @@ export const CompanyJobs = ({ clickOnJob }) => {
   };
 
   return (
-    <section className="tw-py-16 tw-px-4 tw-bg-lexiBlue-100">
+    <section className="tw-py-16 tw-px-4 tw-bg-lexiBlue-100 tw-min-h-screen">
       <div className="tw-text-center tw-mb-16 tw-bg-#f3f8ff">
         <h2 className="tw-text-4xl tw-font-bold text-[#3B4B7C] tw-mb-4">
           Job Vacancies!

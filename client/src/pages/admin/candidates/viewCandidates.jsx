@@ -3,7 +3,7 @@ import { Search, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import { ApplicationBtnContainer } from "../../../components/admin/applicationButtons/applicationBtnContainer";
 import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
 
-export const CandidatesList = () => {
+export const CandidatesList = ({title = "View Candidates"}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,7 +50,7 @@ export const CandidatesList = () => {
       <div className="tw-max-w-7xl tw-mx-auto tw-p-6">
         <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
           <h1 className="tw-text-2xl tw-font-bold tw-text-gray-800">
-            View Candidates
+            {title}
           </h1>
           <div className="tw-relative">
             <Search className="tw-w-5 tw-h-5 tw-text-gray-400 tw-absolute tw-left-3 tw-top-1/2 tw-transform -tw-translate-y-1/2" />

@@ -1,14 +1,21 @@
 import React from "react";
 import { MapPin, Clock, Settings, IndianRupee } from "lucide-react";
 import { BACKEND_URL } from "../../apis/axiosInstance";
-
+import { useNavigate } from "react-router-dom";
 export const JobCard = ({ job, clickOnJob }) => {
+  const navigate = useNavigate();
+  const navigateToJobs = () => {
+    navigate("/user/jobs");
+  };
   const companyLogo = job?.company?.company_logo;
   const companyLogoURL = companyLogo
     ? `${BACKEND_URL}/${companyLogo}`
     : `https://www.svgrepo.com/show/508699/landscape-placeholder.svg`;
   return (
-    <div className=" tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-sm hover:tw-shadow-md tw-transition-shadow">
+    <div
+      onClick={navigateToJobs}
+      className="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-sm hover:tw-shadow-md tw-transition-shadow"
+    >
       <div className="tw-flex tw-justify-between tw-items-start tw-mb-4">
         <div>
           <h3 className="tw-text-xl tw-font-semibold text-[#3B4B7C] tw-mb-2">

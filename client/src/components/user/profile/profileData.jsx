@@ -34,9 +34,9 @@ export const ProfileData = () => {
                 alt="profile photo"
               />
 
-              <div className="tw-absolute tw-bottom-0 tw-right-0 tw-bg-blue-600 tw-text-white tw-p-1 tw-rounded-full">
+              {/* <div className="tw-absolute tw-bottom-0 tw-right-0 tw-bg-blue-600 tw-text-white tw-p-1 tw-rounded-full">
                 <Pencil className="tw-w-4 tw-h-4" />
-              </div>
+              </div> */}
             </div>
 
             <div>
@@ -44,12 +44,12 @@ export const ProfileData = () => {
                 <h1 className="tw-text-2xl tw-font-semibold tw-text-gray-900">
                   {profileData?.username}
                 </h1>
-                <button
+                {/* <button
                   onClick={() => setIsEditModalOpen(true)}
                   className="tw-p-2 tw-text-gray-500 hover:tw-text-gray-700 hover:tw-bg-gray-100 tw-rounded-full tw-transition-colors"
                 >
                   <Pencil className="tw-w-4 tw-h-4" />
-                </button>
+                </button> */}
               </div>
 
               <div className="tw-flex tw-flex-col tw-gap-2 tw-mt-3">

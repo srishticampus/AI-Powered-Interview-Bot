@@ -15,7 +15,7 @@ const Landing = () => {
     if (isLoggedIn) {
       navigate('/user/home/')
     }
-  }, [])
+  }, [isLoggedIn])
     
   return (
     <div className="tw-min-h-screen tw-bg-gradient-to-br tw-from-blue-50 tw-to-white">

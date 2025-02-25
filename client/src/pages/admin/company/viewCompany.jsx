@@ -8,6 +8,8 @@ import {
   SquarePen,
 } from "lucide-react";
 import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
+import axios from "axios";
+import { successToast } from "../../../utils/showToast";
 
 export const ViewCompanies = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,6 +58,17 @@ export const ViewCompanies = () => {
     setShowPdfModal(true);
   };
 
+  const deleteCompany = async (id) => {
+    try {
+      const res = await axiosInstance.delete(`/delete-company/${id}/`);
+      if (res.status === 200) {
+        successToast("Company deleted successfully");
+        getCompanies();
+      }
+    } catch (error) {
+      console.log("Error on delete company", error);
+    }
+  }
   return (
     <>
       <div className="tw-max-w-7xl tw-mx-auto tw-mt-5 tw-p-6">
@@ -138,10 +151,12 @@ export const ViewCompanies = () => {
               
                   <td className="tw-px-6 tw-py-4 tw-text-sm tw-text-gray-600">
                     <div className="tw-flex">
-                    <span className="tw-text-lexiBlue-500  tw-cursor-pointer">
+                    {/* <span className="tw-text-lexiBlue-500  tw-cursor-pointer">
                         <SquarePen />
-                      </span>
-                      <span className="tw-text-red-500 tw-ms-3">
+                      </span> */}
+                      <span className="tw-text-red-500 tw-ms-3" onClick={() => {
+                        deleteCompany(company.id);
+                      }}>
                         <Trash2 />
                       </span>
                     </div>

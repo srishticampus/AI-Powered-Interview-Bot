@@ -5,7 +5,7 @@ import starIcon from "../../assets/svg/Star.svg";
 import { PrimaryButton } from "../../components/ui/buttons/primaryBtn";
 import { SecondaryButton } from "../../components/ui/buttons/secondaryBtn";
 import headerGirl from "../../assets/png/header-girl.png";
-
+import { Link } from "react-router-dom";
 
 export const LandingHeader = () => {
   return (
@@ -31,8 +31,12 @@ export const LandingHeader = () => {
 
           {/* Button container  */}
           <div className="tw-space-x-4 tw-p-2 tw-rounded-lg  tw-flex tw-items-center">
-            <PrimaryButton text="Register Now" />
-            <SecondaryButton text="Learn More" />
+            <Link to='/user/jobs'>
+              <PrimaryButton text="Find Jobs" />
+            </Link>
+            <Link to='/user/about'>
+              <SecondaryButton text="Learn More" />
+            </Link>
           </div>
         </div>
 

@@ -69,7 +69,6 @@ export const AdminSidebar = ({
     },
     { icon: Users, text: "Candidates" },
     { icon: FileText, text: "Applications" },
-    { icon: UserCog, text: "Hiring Details" },
   ];
 
   return (

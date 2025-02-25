@@ -5,13 +5,13 @@ import {
   Calendar,
   Edit,
   Trash2,
-  Twitter,
 } from "lucide-react";
 import { axiosInstance } from "../../../apis/axiosInstance";
-
+import { useNavigate } from "react-router-dom";
+import { successToast } from "../../../utils/showToast";
 export const ViewJobDetails = ({ jobId }) => {
   const [jobDetails, setJobDetails] = useState({});
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (jobId) {
       getJobs();
@@ -30,6 +30,18 @@ export const ViewJobDetails = ({ jobId }) => {
       return false;
     }
   };
+
+  const deleteJob = async (id) => {
+      try {
+        const res = await axiosInstance.delete(`/delete-job/${id}/`);
+        if (res.status === 200) {
+          successToast("Company deleted successfully");
+          navigate(-1)
+        }
+      } catch (error) {
+        console.log("Error on delete job", error);
+      }
+    }
 
   return (
     <div className="tw-max-w-6xl tw-mx-auto tw-p-6">
@@ -56,11 +68,13 @@ export const ViewJobDetails = ({ jobId }) => {
             </div>
           </div>
           <div className="tw-flex tw-gap-2">
-            <button className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-blue-600 tw-bg-white tw-rounded-lg tw-border tw-border-blue-600 hover:tw-bg-blue-50">
+            {/* <button className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-blue-600 tw-bg-white tw-rounded-lg tw-border tw-border-blue-600 hover:tw-bg-blue-50">
               <Edit className="tw-w-4 tw-h-4" />
               Edit
-            </button>
-            <button className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-bg-red-500  tw-text-white tw-rounded-lg tw-border tw-border-red-600 hover:tw-bg-red-400">
+            </button> */}
+            <button onClick={() => {
+              deleteJob(jobId)
+            }} className="tw-cursor-pointer tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-bg-red-500  tw-text-white tw-rounded-lg tw-border tw-border-red-600 hover:tw-bg-red-400">
               <Trash2 className="tw-w-4 tw-h-4" />
               Delete
             </button>
