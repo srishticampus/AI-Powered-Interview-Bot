@@ -12,7 +12,7 @@ import {
 import { UserNavbar } from "../navbar/userNavbar";
 import { Footer } from "../../landing/footer";
 import { useNavigate } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 export const InterviewPreview = () => {
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
@@ -23,6 +23,7 @@ export const InterviewPreview = () => {
   const videoRef = useRef(null);
   const menuRef = useRef(null);
   const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     const getVideoDevices = async () => {
@@ -111,7 +112,7 @@ export const InterviewPreview = () => {
   };
 
   const navigateToInterview = () => {
-    navigate("/user/attend-interview");
+    navigate("/user/attend-interview/" + id);
   };
   return (
     <>
@@ -120,7 +121,7 @@ export const InterviewPreview = () => {
         <div className="tw-container tw-mx-auto tw-px-4">
           <header className="tw-mb-8 tw-text-center">
             <h1 className="tw-text-2xl tw-font-semibold tw-text-gray-800">
-              Technical Round Interview
+              Attend Interview
             </h1>
           </header>
 

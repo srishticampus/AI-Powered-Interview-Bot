@@ -3,21 +3,29 @@ import { Search, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import { ApplicationBtnContainer } from "../../../components/admin/applicationButtons/applicationBtnContainer";
 import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
 import { ViewApplicationDetails } from "./applicationDetails";
+import { APPLICATION_STATUS } from "../../../constants/constants";
 
 export const ViewApplications = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const [searchTerm, setSearchTerm] = useState("");
   const [applicationDetials, setApplicationDetails] = useState(null);
-
-  // applications
   const [applications, setApplications] = useState([]);
-  console.log("applic", applications);
+  const [activeType, setActiveType] = useState(APPLICATION_STATUS.PENDING);
+  const [triggerRerender,setTriggerRerender] = useState(false);
+
+  const rerenderComponent = () => {
+    setTriggerRerender(!triggerRerender)
+  }
+  const changeActivetype = (newType) => {
+    setActiveType(newType);
+  };
   useEffect(() => {
     fetchApplications();
-  }, []);
+  }, [triggerRerender]);
 
   const fetchApplications = async () => {
+    console.log('called..')
     try {
       const response = await axiosInstance.get("/all-applied-jobs/");
 
@@ -29,11 +37,15 @@ export const ViewApplications = () => {
     }
   };
 
-  const filterApplications = applications.filter((app) =>
-    app?.user_details?.username
-      ?.toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  const filterApplications = applications.filter((app) => {
+    console.log(activeType === app.status)
+    console.log(activeType , app.status)
+    return (
+      app?.user_details?.username
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()) && activeType === app.status
+    );
+  });
 
   // Pagination logic
   const totalPages = Math.ceil(filterApplications.length / itemsPerPage);
@@ -46,7 +58,7 @@ export const ViewApplications = () => {
   };
 
   if (applicationDetials) {
-    return <ViewApplicationDetails applicationDetials={applicationDetials} />;
+    return <ViewApplicationDetails rerenderComponent={rerenderComponent} applicationDetials={applicationDetials} />;
   }
 
   return (
@@ -55,7 +67,10 @@ export const ViewApplications = () => {
         Applications
       </h1>
 
-      <ApplicationBtnContainer />
+      <ApplicationBtnContainer
+        activeType={activeType}
+        changeActivetype={changeActivetype}
+      />
 
       <div className="tw-max-w-7xl tw-mx-auto tw-p-6">
         <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">

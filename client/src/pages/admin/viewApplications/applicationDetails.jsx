@@ -7,18 +7,21 @@ import {
   PhoneCall,
   Mail,
   SquareChartGantt,
+  Ban,
 } from "lucide-react";
 import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
 import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
 import { successToast } from "../../../utils/showToast";
 import { ScheduleInterview } from "../../../components/ui/scheduleInterview/scheduleInterview";
 import { APPLICATION_STATUS } from "../../../constants/constants";
+import { ApplicationStatus } from "../../user/applicationStatus/applicationStatus";
 
-export const ViewApplicationDetails = ({ applicationDetials }) => {
-  //   console.log('app deta', applicationDetials)
+export const ViewApplicationDetails = ({ applicationDetials, rerenderComponent }) => {
   const [isSceduleInterviewOpen, setisSceduleInterviewOpen] = useState(false);
   const userDatails = applicationDetials?.user_details || {};
   const jobDetails = applicationDetials?.job_details || {};
+
+  console.log('tec in', APPLICATION_STATUS.TECHNIAL_INTERVIEW)
 
   const submitInterview = (data) => {
     scheduleTechnicalInterview();
@@ -38,10 +41,51 @@ export const ViewApplicationDetails = ({ applicationDetials }) => {
       }
     } catch (error) {
       console.error("Error scheduling interview:", error);
-    }finally {
-      onClose()
+    } finally {
+      onClose();
+      rerenderComponent()
     }
   };
+
+  const rejectCandidate = async () => {
+    try {
+      const response = await axiosInstance.post(`/update-application-status/`, {
+        application_id: applicationDetials?.id,
+        status: APPLICATION_STATUS.REJECTED,
+      });
+      if (response.status === 200) {
+        successToast("Candidate rejected");
+      }
+    } catch (error) {
+      console.error("Error reject candidate:", error);
+    } finally {
+      onClose();
+      rerenderComponent()
+    }
+  };
+  const hireCandidate = async () => {
+    try {
+      const response = await axiosInstance.post(`/update-application-status/`, {
+        application_id: applicationDetials?.id,
+        status: APPLICATION_STATUS.HIRED,
+      });
+      if (response.status === 200) {
+        successToast("Candidate hired.");
+      }
+    } catch (error) {
+      console.error("Error reject candidate:", error);
+    } finally {
+      onClose();
+      rerenderComponent()
+    }
+  };
+
+  console.log("appli date", applicationDetials);
+  console.log(
+    "testt",
+    applicationDetials.status !== APPLICATION_STATUS.REJECTED
+  );
+  console.log("testt", applicationDetials.status, APPLICATION_STATUS.REJECTED);
   return (
     <>
       <div className="tw-max-w-6xl tw-mx-auto tw-p-6">
@@ -87,19 +131,40 @@ export const ViewApplicationDetails = ({ applicationDetials }) => {
                     {capitalizeFirstLetter(applicationDetials?.status)}
                   </span>
                 </div>
+                {applicationDetials?.score != -1 && (
+                  <div className="tw-flex tw-items-center tw-gap-1 tw-text-gray-600">
+                    <span>Score: </span>
+                    <span>{applicationDetials?.score}</span>
+                  </div>
+                )}
               </div>
             </div>
             <div className="tw-flex tw-gap-2">
-              <button
-                onClick={() => setisSceduleInterviewOpen(true)}
-                className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-blue-600 tw-bg-white tw-rounded-lg tw-border tw-border-blue-600 hover:tw-bg-blue-50"
-              >
-                Schedule an Interview
-              </button>
-              <button className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-bg-red-500  tw-text-white tw-rounded-lg tw-border tw-border-red-600 hover:tw-bg-red-400">
-                <Trash2 className="tw-w-4 tw-h-4" />
-                Reject
-              </button>
+              {applicationDetials.status == APPLICATION_STATUS.PENDING && (
+                <button
+                  onClick={() => scheduleTechnicalInterview()}
+                  className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-blue-600 tw-bg-white tw-rounded-lg tw-border tw-border-blue-600 hover:tw-bg-blue-50"
+                >
+                  Schedule an Interview
+                </button>
+              )}
+              {applicationDetials.status == APPLICATION_STATUS.TECHNIAL_INTERVIEW_COMPLETED && (
+                <button
+                  onClick={() => hireCandidate()}
+                  className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-green-600 tw-bg-white tw-rounded-lg tw-border tw-border-green-600 hover:tw-bg-blue-50"
+                >
+                  Hired
+                </button>
+              )}
+              {applicationDetials.status != APPLICATION_STATUS.REJECTED && applicationDetials.status != APPLICATION_STATUS.HIRED && (
+                <button
+                  onClick={rejectCandidate}
+                  className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-bg-red-500  tw-text-white tw-rounded-lg tw-border tw-border-red-600 hover:tw-bg-red-400"
+                >
+                  <Ban className="tw-w-4 tw-h-4" />
+                  Reject
+                </button>
+              )}
             </div>
           </div>
         </div>

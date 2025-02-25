@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { successToast } from "../../../utils/showToast";
+import { LEXI_ISADMIN_LOGGED_IN } from "../../../constants/constants";
 export const AdminSidebar = ({
   activeItem,
   activeSubItem,
@@ -36,8 +37,8 @@ export const AdminSidebar = ({
     }));
   };
   const handleLogout = () => {
-    if (localStorage.getItem("lexi-admin-loggedin")) {
-      localStorage.removeItem("lexi-admin-loggedin");
+    if (localStorage.getItem(LEXI_ISADMIN_LOGGED_IN)) {
+      localStorage.removeItem(LEXI_ISADMIN_LOGGED_IN);
     }
     
     successToast("Logout successful");

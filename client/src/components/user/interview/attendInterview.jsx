@@ -11,11 +11,12 @@ import {
 import { UserNavbar } from "../navbar/userNavbar";
 import { Footer } from "../../landing/footer";
 import { useNavigate } from "react-router-dom";
-import { LEXI_USER_ID } from "../../../constants/constants";
+import { APPLICATION_STATUS, LEXI_USER_ID } from "../../../constants/constants";
 import { axiosInstance } from "../../../apis/axiosInstance";
 import { useUserData } from "../../../hooks/useUserData";
 import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
-
+import { useParams } from "react-router-dom";
+import { successToast } from "../../../utils/showToast";
 export const AttendInterview = () => {
   const [questions, setQuestions] = useState([]);
   const [audioEnabled, setAudioEnabled] = useState(true);
@@ -32,9 +33,10 @@ export const AttendInterview = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [trackingScore, setTrackingScore] = useState(Array(15).fill(-1));
+  const [trackingScore, setTrackingScore] = useState(Array(30).fill(-1));
   const [score, setScore] = useState(0);
   const userData = useUserData();
+  const {id} = useParams()
   /////////generate questions////////
 
   useEffect(() => {
@@ -56,11 +58,11 @@ export const AttendInterview = () => {
       if (res.status === 200) {
         console.log(res.data);
         // todo => remove slice
-        setQuestions(res.data?.mcqs?.slice(0, 15) || []);
+        setQuestions(res.data?.mcqs?.slice(0, 30) || []);
         setCurrentQuestion(res.data?.mcqs[0] || {});
       }
     } catch (error) {
-      console.log("ERror on generate mcqs", error);
+      console.log("Error on generate mcqs", error);
       setError(error);
     } finally {
       setIsLoading(false);
@@ -72,7 +74,6 @@ export const AttendInterview = () => {
     const answer = currentQuestion.answer;
     const questionId = currentQuestion.id;
     const existingScore = [...trackingScore];
-    console.log("curr quest", currentQuestion);
     if (answer === key) {
       existingScore[questionId - 1] = 1;
     } else {
@@ -88,10 +89,28 @@ export const AttendInterview = () => {
         finalScore += 1;
       }
     });
-    console.log("final", finalScore);
+    submitInterviewResult(finalScore)
+
     // navigate("/user/interview-score");
   };
   //generate questions end  */
+  const submitInterviewResult = async (score) => {
+    try {
+      const response = await axiosInstance.post(`/update-application-status/`, {
+        application_id: id,
+        status: APPLICATION_STATUS.TECHNIAL_INTERVIEW_COMPLETED,
+      });
+      const secondRes = await axiosInstance.post(`/update-score/${id}/`, {
+        score,
+      });
+
+      if (response.status === 200 && secondRes.status === 200) {
+        successToast("Interview completed successfully");
+      }
+    } catch (error) {
+      console.error("Error submitting interview score:", error);
+    } 
+  };
 
   const toggleDeviceMenu = () => {
     setShowDeviceMenu(!showDeviceMenu);
@@ -318,7 +337,7 @@ export const AttendInterview = () => {
                   <button
                     className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
                     onClick={() => {
-                      const nextId = (currentQuestion?.id % 15) + 1;
+                      const nextId = (currentQuestion?.id % 30) + 1;
                       setCurrentQuestion(
                         questions.find((q) => q.id === nextId)
                       );

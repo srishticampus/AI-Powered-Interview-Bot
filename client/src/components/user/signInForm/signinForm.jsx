@@ -3,7 +3,12 @@ import { Eye, EyeOff, UserCircle, Plus } from "lucide-react";
 import { useAppNavigate } from "../../../hooks/useAppNavigate";
 import { errorToast, successToast } from "../../../utils/showToast";
 import { axiosInstance } from "../../../apis/axiosInstance";
-import { IS_LEXI_USER_LOGGED_IN, LEXI_USER_DATA, LEXI_USER_ID } from "../../../constants/constants";
+import {
+  IS_LEXI_USER_LOGGED_IN,
+  LEXI_ISADMIN_LOGGED_IN,
+  LEXI_USER_DATA,
+  LEXI_USER_ID,
+} from "../../../constants/constants";
 
 export const SigninForm = () => {
   const [formData, setFormData] = useState({
@@ -41,28 +46,28 @@ export const SigninForm = () => {
       const response = await axiosInstance.post("login/", formData);
       if (response.status === 200) {
         const userId = response.data?.user_id;
-        if(getUserData(userId)) {
+        if (getUserData(userId)) {
           localStorage.setItem(IS_LEXI_USER_LOGGED_IN, true);
           localStorage.setItem(LEXI_USER_ID, userId);
+
+          if (localStorage.getItem(LEXI_ISADMIN_LOGGED_IN)) {
+            localStorage.removeItem(LEXI_ISADMIN_LOGGED_IN);
+          }
           successToast("Login successful");
           navigate("/user/home");
-
         }
-        
       } else {
         errorToast("Login failed");
       }
     } catch (error) {
-      console.log("ERROR ON SIGNIN", error)
+      console.log("ERROR ON SIGNIN", error);
       const newErrors = error?.response?.data || {};
       for (let key in newErrors) {
         errorToast(newErrors[key]);
         return;
       }
-      
     }
   };
-
 
   const getUserData = async (userId) => {
     try {
@@ -72,12 +77,11 @@ export const SigninForm = () => {
         localStorage.setItem(LEXI_USER_DATA, JSON.stringify(res.data));
         return true;
       }
-
     } catch (error) {
-      console.log('Error ON GET USER DATA', error);
+      console.log("Error ON GET USER DATA", error);
       return false;
     }
-  }
+  };
   const validateFields = () => {
     const { email, password } = formData;
     if (!email || !password) {

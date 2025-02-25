@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useAppNavigate } from "../../../hooks/useAppNavigate";
 import { errorToast, successToast } from "../../../utils/showToast";
+import { IS_LEXI_USER_LOGGED_IN, LEXI_ISADMIN_LOGGED_IN } from "../../../constants/constants";
 
 export const SigninForm = () => {
   const [formData, setFormData] = useState({
@@ -33,7 +34,8 @@ export const SigninForm = () => {
   const sendDataToServer = async (formData) => {
     const { email, password } = formData;
     if (email === "admin@gmail.com" && password === "admin@123") {
-      localStorage.setItem("lexi-admin-loggedin", true);
+      localStorage.setItem(LEXI_ISADMIN_LOGGED_IN, true);
+      localStorage.removeItem(IS_LEXI_USER_LOGGED_IN);
       successToast("Login successful");
       navigate("/admin");
     } else {

@@ -8,11 +8,10 @@ import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
 import { ApplicationStatus } from "../../../pages/user/applicationStatus/applicationStatus";
 export const Applications = () => {
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/user/interview-preview");
-  };
-
   const [applications, setApplications] = useState([]);
+  const handleClick = (id) => {
+    navigate(`/user/interview-preview/${id}`);
+  };
 
   useEffect(() => {
     const id = localStorage.getItem(LEXI_USER_ID) || null;
@@ -130,6 +129,7 @@ export const Applications = () => {
                     </span>
                   </div>
                 )}
+
                 {application?.status ===
                   APPLICATION_STATUS.TECHNIAL_INTERVIEW && (
                   <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
@@ -141,29 +141,96 @@ export const Applications = () => {
                   </div>
                 )}
 
+                {application?.status ===
+                  APPLICATION_STATUS.TECHNIAL_INTERVIEW_COMPLETED && (
+                  <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
+                    <h3 className="tw-font-medium">Application Status</h3>
+                    <span className="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-blue-100 tw-px-3 tw-py-1 tw-text-sm tw-text-black">
+                      <span className="tw-h-2 tw-w-2 tw-rounded-full tw-bg-lexiBlue-500"></span>
+                      {capitalizeFirstLetter(application?.status)}
+                    </span>
+                  </div>
+                )}
+
+                {application?.status ===
+                  APPLICATION_STATUS.HIRED && (
+                  <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
+                    <h3 className="tw-font-medium">Application Status</h3>
+                    <span className="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-blue-100 tw-px-3 tw-py-1 tw-text-sm tw-text-black">
+                      <span className="tw-h-2 tw-w-2 tw-rounded-full tw-bg-green-500"></span>
+                      {capitalizeFirstLetter(application?.status)}
+                    </span>
+                  </div>
+                )}
+                {application?.status ===
+                  APPLICATION_STATUS.REJECTED && (
+                  <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
+                    <h3 className="tw-font-medium">Application Status</h3>
+                    <span className="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-red-100 tw-px-3 tw-py-1 tw-text-sm tw-text-black">
+                      <span className="tw-h-2 tw-w-2 tw-rounded-full tw-bg-red-500"></span>
+                      {capitalizeFirstLetter(application?.status)}
+                    </span>
+                  </div>
+                )}
+
                 {/* Interview Rounds */}
-                <div className="tw-grid tw-grid-cols-2 tw-gap-4">
+                <div className="tw-grid tw-grid-cols-1 tw-gap-4">
                   <div className="tw-rounded-lg tw-border tw-border-gray-200 tw-p-4 tw-text-center">
-                    <h3 className="tw-font-medium">Technical Round</h3>
-                    <p className="tw-mt-2 tw-text-sm tw-text-gray-600">
-                      
-                    </p>
+                    <h3 className="tw-font-medium tw-mt-5 ">Interview Status</h3>
+                    <p className="tw-mt-2 tw-text-sm tw-text-gray-600"></p>
+
+                    {application?.status ===
+                      APPLICATION_STATUS.PENDING && (
+                      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
+                        <span className="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-green-100 tw-px-3 tw-py-1 tw-text-sm tw-text-black">
+                          <span className="tw-h-2 tw-w-2 tw-rounded-full tw-bg-green-500"></span>
+                          Your resume under review. 
+                        </span>
+
+                      </div>
+                    )}
+
                     {application?.status ===
                       APPLICATION_STATUS.TECHNIAL_INTERVIEW && (
                       <button
-                        onClick={handleClick}
+                        onClick={() => {
+                          handleClick(application.id);
+                        }}
                         className="tw-bg-lexiBlue-500 tw-text-white tw-rounded-full tw-px-10 tw-py-2 tw-mt-3"
                       >
                         Attend
                       </button>
                     )}
+
+                    {application?.status ===
+                      APPLICATION_STATUS.TECHNIAL_INTERVIEW_COMPLETED && (
+                      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
+                        <span className="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-green-100 tw-px-3 tw-py-1 tw-text-sm tw-text-black">
+                          <span className="tw-h-2 tw-w-2 tw-rounded-full tw-bg-green-500"></span>
+                          Interview Completed.
+                        </span>
+
+                        <p>Score: {application.score}</p>
+                      </div>
+                    )}
+                    {application?.status ===
+                      APPLICATION_STATUS.HIRED && (
+                      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-space-y-2">
+                        <span className="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-green-100 tw-px-3 tw-py-1 tw-text-sm tw-text-black">
+                          <span className="tw-h-2 tw-w-2 tw-rounded-full tw-bg-green-500"></span>
+                          Interview Completed.
+                        </span>
+
+                        <p>Score: {application.score}</p>
+                      </div>
+                    )}
                   </div>
-                  <div className="tw-rounded-lg tw-border tw-border-gray-200 tw-p-4 tw-text-center">
+                  {/* <div className="tw-rounded-lg tw-border tw-border-gray-200 tw-p-4 tw-text-center">
                     <h3 className="tw-font-medium">HR Round</h3>
                     <p className="tw-mt-2 tw-text-sm tw-text-gray-600">
                       Not Scheduled Yet
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

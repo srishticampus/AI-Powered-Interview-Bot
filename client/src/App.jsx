@@ -41,8 +41,8 @@ function App() {
         <Route path="/user/jobs" element={<Jobs />} />
         <Route path="/user/profile" element={<UserProfile />} />
         <Route path="/user/contact" element={<Contact />} />
-        <Route path="/user/interview-preview" element={<InterviewPreview />} />
-        <Route path="/user/attend-interview" element={<AttendInterview />} />
+        <Route path="/user/interview-preview/:id" element={<InterviewPreview />} />
+        <Route path="/user/attend-interview/:id" element={<AttendInterview />} />
         <Route path="/user/interview-score" element={<InterviewScore />} />
 
         {/* admin  */}

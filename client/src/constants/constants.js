@@ -5,10 +5,18 @@ export const LEXI_ISADMIN_LOGGED_IN = "lexi-admin-loggedin";
 export const APPLICATION_STATUS = {
   PENDING: "pending",
   SHORTLISTED: "shortlisted",
-  TECHNIAL_INTERVIEW: "technial_interview",
-  TECHNIAL_INTERVIEW_REJECTED: "technial_interview_rejected",
+  TECHNIAL_INTERVIEW: "technical_interview",
+  TECHNIAL_INTERVIEW_REJECTED: "technical_interview_rejected",
+  TECHNIAL_INTERVIEW_COMPLETED: "technical_interview_completed",
   HR_INTERVIEW: "hr_interview",
   HR_INTERVIEW_REJECTED: "hr_interview_rejected",
   REJECTED: "rejected",
   HIRED: "hired",
 };
+export const ACTIVE_TYPE = {
+  PENDING: "pending",
+  SHORTLISTED: "shortlisted",
+  TECHNIAL_INTERVIEW: "technial_interview",
+  REJECTED: "rejected",
+  HIRED: "hired"
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LandingNavbar } from "../../components/ui/landingNavbar/landingNavbar";
 import { LandingHeader } from "../../components/landing/header";
 import { HowItWorks } from "../../components/landing/howItWorks";
@@ -7,13 +7,19 @@ import { CallToAction } from "../../components/landing/callToAction";
 import { Footer } from "../../components/landing/footer";
 import { UserNavbar } from "../../components/user/navbar/userNavbar";
 import { useUserLoggedin } from "../../hooks/useLoggedIn";
-
+import { useNavigate } from "react-router-dom";
 const Landing = () => {
   const isLoggedIn = useUserLoggedin();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/user/home/')
+    }
+  }, [])
     
   return (
     <div className="tw-min-h-screen tw-bg-gradient-to-br tw-from-blue-50 tw-to-white">
-      {isLoggedIn ? <UserNavbar /> : <LandingNavbar />}
+      <LandingNavbar />
       <LandingHeader />
       <HowItWorks />
       <ExploreOpportunities />

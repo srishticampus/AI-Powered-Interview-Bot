@@ -56,3 +56,8 @@ http://127.0.0.1:8000/api/ai_bot_api/all-applied-jobs/
 
 question-generating api
 http://127.0.0.1:8000/api/ai_bot_api/generate-mcqs/id/
+
+
+
+update-score
+http://127.0.0.1:8000/api/ai_bot_api/update-score/application_id/
