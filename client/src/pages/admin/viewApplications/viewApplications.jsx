@@ -25,21 +25,28 @@ export const ViewApplications = () => {
   }, [triggerRerender]);
 
   const fetchApplications = async () => {
-    console.log("called..");
     try {
       const response = await axiosInstance.get("/all-applied-jobs/");
 
       if (response.status === 200) {
         setApplications(response.data?.reverse() || []);
+
+        if (applicationDetials) {
+          const updatedDetails = response.data.find(
+            (app) => app.id === applicationDetials.id
+          );
+          setApplicationDetails(updatedDetails);
+        }
       }
     } catch (error) {
       console.error("Error fetching applications:", error);
     }
   };
+  const makeApplicationDetailsEmpty = () => {
+    setApplicationDetails(null);
+  };
 
   const filterApplications = applications.filter((app) => {
-    console.log(activeType === app.status);
-    console.log(activeType, app.status);
     return (
       app?.user_details?.username
         ?.toLowerCase()
@@ -60,6 +67,7 @@ export const ViewApplications = () => {
   if (applicationDetials) {
     return (
       <ViewApplicationDetails
+        makeApplicationDetailsEmpty={makeApplicationDetailsEmpty}
         rerenderComponent={rerenderComponent}
         applicationDetials={applicationDetials}
       />
@@ -147,11 +155,14 @@ export const ViewApplications = () => {
                       }`}
                     >
                       {app?.status === APPLICATION_STATUS.PENDING && "Pending"}
-                      {app?.status === APPLICATION_STATUS.TECHNIAL_INTERVIEW && "Interview Scheduled"}
-                      {app?.status === APPLICATION_STATUS.TECHNIAL_INTERVIEW_COMPLETED && "Interview Completed"}
+                      {app?.status === APPLICATION_STATUS.TECHNIAL_INTERVIEW &&
+                        "Interview Scheduled"}
+                      {app?.status ===
+                        APPLICATION_STATUS.TECHNIAL_INTERVIEW_COMPLETED &&
+                        "Interview Completed"}
                       {app?.status === APPLICATION_STATUS.HIRED && "Hired"}
-                      {app?.status === APPLICATION_STATUS.REJECTED && "Rejected"}
-                        
+                      {app?.status === APPLICATION_STATUS.REJECTED &&
+                        "Rejected"}
                     </span>
                   </td>
                   <td className="tw-px-6 tw-py-4">

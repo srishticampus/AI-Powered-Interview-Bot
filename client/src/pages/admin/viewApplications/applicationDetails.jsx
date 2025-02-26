@@ -8,6 +8,7 @@ import {
   Mail,
   SquareChartGantt,
   Ban,
+  MoveLeft,
 } from "lucide-react";
 import { axiosInstance, BACKEND_URL } from "../../../apis/axiosInstance";
 import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
@@ -16,12 +17,14 @@ import { ScheduleInterview } from "../../../components/ui/scheduleInterview/sche
 import { APPLICATION_STATUS } from "../../../constants/constants";
 import { ApplicationStatus } from "../../user/applicationStatus/applicationStatus";
 
-export const ViewApplicationDetails = ({ applicationDetials, rerenderComponent }) => {
+export const ViewApplicationDetails = ({
+  makeApplicationDetailsEmpty,
+  applicationDetials,
+  rerenderComponent,
+}) => {
   const [isSceduleInterviewOpen, setisSceduleInterviewOpen] = useState(false);
   const userDatails = applicationDetials?.user_details || {};
   const jobDetails = applicationDetials?.job_details || {};
-
-  console.log('tec in', APPLICATION_STATUS.TECHNIAL_INTERVIEW)
 
   const submitInterview = (data) => {
     scheduleTechnicalInterview();
@@ -43,7 +46,7 @@ export const ViewApplicationDetails = ({ applicationDetials, rerenderComponent }
       console.error("Error scheduling interview:", error);
     } finally {
       onClose();
-      rerenderComponent()
+      rerenderComponent();
     }
   };
 
@@ -60,7 +63,7 @@ export const ViewApplicationDetails = ({ applicationDetials, rerenderComponent }
       console.error("Error reject candidate:", error);
     } finally {
       onClose();
-      rerenderComponent()
+      rerenderComponent();
     }
   };
   const hireCandidate = async () => {
@@ -76,16 +79,10 @@ export const ViewApplicationDetails = ({ applicationDetials, rerenderComponent }
       console.error("Error reject candidate:", error);
     } finally {
       onClose();
-      rerenderComponent()
+      rerenderComponent();
     }
   };
 
-  console.log("appli date", applicationDetials);
-  console.log(
-    "testt",
-    applicationDetials.status !== APPLICATION_STATUS.REJECTED
-  );
-  console.log("testt", applicationDetials.status, APPLICATION_STATUS.REJECTED);
   return (
     <>
       <div className="tw-max-w-6xl tw-mx-auto tw-p-6">
@@ -93,7 +90,13 @@ export const ViewApplicationDetails = ({ applicationDetials, rerenderComponent }
         <div className="tw-bg-blue-50 tw-rounded-xl tw-p-6 tw-mb-6">
           <div className="tw-flex tw-justify-between tw-items-start tw-mb-4">
             <div>
-              <h1 className="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-2">
+              <span
+                className="tw-cursor-pointer"
+                onClick={makeApplicationDetailsEmpty}
+              >
+                <MoveLeft />
+              </span>
+              <h1 className="tw-mt-3 tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-2">
                 Applicant Name: {userDatails?.username}
               </h1>
               <div className="tw-flex tw-flex-wrap tw-gap-4 tw-text-gray-600">
@@ -148,7 +151,8 @@ export const ViewApplicationDetails = ({ applicationDetials, rerenderComponent }
                   Schedule an Interview
                 </button>
               )}
-              {applicationDetials.status == APPLICATION_STATUS.TECHNIAL_INTERVIEW_COMPLETED && (
+              {applicationDetials.status ==
+                APPLICATION_STATUS.TECHNIAL_INTERVIEW_COMPLETED && (
                 <button
                   onClick={() => hireCandidate()}
                   className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-green-600 tw-bg-white tw-rounded-lg tw-border tw-border-green-600 hover:tw-bg-blue-50"
@@ -156,15 +160,16 @@ export const ViewApplicationDetails = ({ applicationDetials, rerenderComponent }
                   Hired
                 </button>
               )}
-              {applicationDetials.status != APPLICATION_STATUS.REJECTED && applicationDetials.status != APPLICATION_STATUS.HIRED && (
-                <button
-                  onClick={rejectCandidate}
-                  className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-bg-red-500  tw-text-white tw-rounded-lg tw-border tw-border-red-600 hover:tw-bg-red-400"
-                >
-                  <Ban className="tw-w-4 tw-h-4" />
-                  Reject
-                </button>
-              )}
+              {applicationDetials.status != APPLICATION_STATUS.REJECTED &&
+                applicationDetials.status != APPLICATION_STATUS.HIRED && (
+                  <button
+                    onClick={rejectCandidate}
+                    className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-bg-red-500  tw-text-white tw-rounded-lg tw-border tw-border-red-600 hover:tw-bg-red-400"
+                  >
+                    <Ban className="tw-w-4 tw-h-4" />
+                    Reject
+                  </button>
+                )}
             </div>
           </div>
         </div>
