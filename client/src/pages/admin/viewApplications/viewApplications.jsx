@@ -12,11 +12,11 @@ export const ViewApplications = () => {
   const [applicationDetials, setApplicationDetails] = useState(null);
   const [applications, setApplications] = useState([]);
   const [activeType, setActiveType] = useState(APPLICATION_STATUS.PENDING);
-  const [triggerRerender,setTriggerRerender] = useState(false);
+  const [triggerRerender, setTriggerRerender] = useState(false);
 
   const rerenderComponent = () => {
-    setTriggerRerender(!triggerRerender)
-  }
+    setTriggerRerender(!triggerRerender);
+  };
   const changeActivetype = (newType) => {
     setActiveType(newType);
   };
@@ -25,7 +25,7 @@ export const ViewApplications = () => {
   }, [triggerRerender]);
 
   const fetchApplications = async () => {
-    console.log('called..')
+    console.log("called..");
     try {
       const response = await axiosInstance.get("/all-applied-jobs/");
 
@@ -38,8 +38,8 @@ export const ViewApplications = () => {
   };
 
   const filterApplications = applications.filter((app) => {
-    console.log(activeType === app.status)
-    console.log(activeType , app.status)
+    console.log(activeType === app.status);
+    console.log(activeType, app.status);
     return (
       app?.user_details?.username
         ?.toLowerCase()
@@ -58,7 +58,12 @@ export const ViewApplications = () => {
   };
 
   if (applicationDetials) {
-    return <ViewApplicationDetails rerenderComponent={rerenderComponent} applicationDetials={applicationDetials} />;
+    return (
+      <ViewApplicationDetails
+        rerenderComponent={rerenderComponent}
+        applicationDetials={applicationDetials}
+      />
+    );
   }
 
   return (
@@ -132,7 +137,7 @@ export const ViewApplications = () => {
                     <span
                       className={`tw-px-3 tw-py-1 tw-rounded-full tw-text-sm
                       ${
-                        app?.status === "Accepted"
+                        app?.status === "Hired"
                           ? "tw-bg-green-50 tw-text-green-600"
                           : app?.status === "Rejected"
                           ? "tw-bg-red-50 tw-text-red-600"
@@ -141,7 +146,12 @@ export const ViewApplications = () => {
                           : "tw-bg-yellow-50 tw-text-black"
                       }`}
                     >
-                      {app?.status?.toUpperCase()}
+                      {app?.status === APPLICATION_STATUS.PENDING && "Pending"}
+                      {app?.status === APPLICATION_STATUS.TECHNIAL_INTERVIEW && "Interview Scheduled"}
+                      {app?.status === APPLICATION_STATUS.TECHNIAL_INTERVIEW_COMPLETED && "Interview Completed"}
+                      {app?.status === APPLICATION_STATUS.HIRED && "Hired"}
+                      {app?.status === APPLICATION_STATUS.REJECTED && "Rejected"}
+                        
                     </span>
                   </td>
                   <td className="tw-px-6 tw-py-4">

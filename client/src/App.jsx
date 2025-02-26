@@ -43,7 +43,7 @@ function App() {
         <Route path="/user/contact" element={<Contact />} />
         <Route path="/user/interview-preview/:id" element={<InterviewPreview />} />
         <Route path="/user/attend-interview/:id" element={<AttendInterview />} />
-        <Route path="/user/interview-score" element={<InterviewScore />} />
+        <Route path="/user/interview-score/:id" element={<InterviewScore />} />
 
         {/* admin  */}
         <Route path="/admin/signin" element={<AdminSignIn />} />

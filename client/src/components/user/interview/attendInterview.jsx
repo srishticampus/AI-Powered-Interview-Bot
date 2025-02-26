@@ -68,6 +68,7 @@ export const AttendInterview = () => {
       setIsLoading(false);
     }
   };
+  console.log('curr quest: ',currentQuestion)
 
   const calculateScore = (key) => {
     setSelectedOption(key);
@@ -91,7 +92,7 @@ export const AttendInterview = () => {
     });
     submitInterviewResult(finalScore)
 
-    // navigate("/user/interview-score");
+    navigate("/user/interview-score/" + id);
   };
   //generate questions end  */
   const submitInterviewResult = async (score) => {
