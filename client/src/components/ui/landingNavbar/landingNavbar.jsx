@@ -40,20 +40,6 @@ export const LandingNavbar = () => {
           <div
             className="tw-cursor-pointer"
             onClick={() => {
-              navigatePage("jobs");
-            }}
-          >
-            <span
-              className={`${
-                activePage === "jobs" && "tw-text-lexiBlue-500 tw-underline"
-              }`}
-            >
-              Jobs{" "}
-            </span>
-          </div>
-          <div
-            className="tw-cursor-pointer"
-            onClick={() => {
               navigatePage("about");
             }}
           >

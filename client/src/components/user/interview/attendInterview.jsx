@@ -270,9 +270,9 @@ export const AttendInterview = () => {
                 <div className="tw-text-gray-600">
                   Question {currentQuestion.id}/{questions.length}
                 </div>
-                <div className="tw-text-blue-600 tw-font-semibold">
+                {/* <div className="tw-text-blue-600 tw-font-semibold">
                   Time Remaining : {formatTime(timeRemaining)}
-                </div>
+                </div> */}
               </div>
 
               <div className="tw-mb-8">
