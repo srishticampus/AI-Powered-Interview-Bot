@@ -184,7 +184,7 @@ export const AttendInterview = () => {
     };
   }, [selectedDeviceId]);
 
-  useEffect(() => {
+  useEffect(() => { 
     if (stream) {
       stream.getAudioTracks().forEach((track) => {
         track.enabled = audioEnabled;
@@ -405,14 +405,14 @@ export const AttendInterview = () => {
                             <VideoOff className="tw-h-5 tw-w-5 tw-text-white" />
                           )}
                         </button>
-                        <button
+                        {/* <button
                           onClick={toggleDeviceMenu}
                           className={`tw-rounded-r-full tw-border-l tw-border-l-gray-700 tw-p-3 tw-transition ${
                             videoEnabled ? "tw-bg-blue-600" : "tw-bg-red-600"
                           }`}
                         >
                           <ChevronDown className="tw-h-6 tw-w-6 tw-text-white" />
-                        </button>
+                        </button> */}
                       </div>
                       {showDeviceMenu && (
                         <div className="tw-absolute tw-h-40 tw-overflow-auto tw-bottom-full tw-mb-2 tw-w-64 tw-rounded-lg tw-bg-white tw-shadow-lg">

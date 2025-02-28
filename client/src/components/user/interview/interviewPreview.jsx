@@ -162,7 +162,7 @@ export const InterviewPreview = () => {
                       <div className="tw-flex tw-gap-1">
                         <button
                           onClick={toggleVideo}
-                          className={`tw-rounded-l-full tw-p-3 tw-transition ${
+                          className={`tw-rounded-full tw-p-3 tw-transition ${
                             videoEnabled ? "tw-bg-blue-600" : "tw-bg-red-600"
                           }`}
                         >
@@ -172,14 +172,14 @@ export const InterviewPreview = () => {
                             <VideoOff className="tw-h-6 tw-w-6 tw-text-white" />
                           )}
                         </button>
-                        <button
+                        {/* <button
                           onClick={toggleDeviceMenu}
                           className={`tw-rounded-r-full tw-border-l tw-border-l-gray-700 tw-p-3 tw-transition ${
                             videoEnabled ? "tw-bg-blue-600" : "tw-bg-red-600"
                           }`}
                         >
                           <ChevronDown className="tw-h-6 tw-w-6 tw-text-white" />
-                        </button>
+                        </button> */}
                       </div>
 
                       {showDeviceMenu && (
@@ -220,7 +220,7 @@ export const InterviewPreview = () => {
                   </div>
                 </div>
                 <div className="tw-mt-4 tw-text-center tw-text-white">
-                  <h2 className="tw-text-lg tw-font-medium">Anand R P</h2>
+                  <h2 className="tw-text-lg tw-font-medium">User</h2>
                 </div>
               </div>
 

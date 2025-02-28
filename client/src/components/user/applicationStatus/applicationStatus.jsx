@@ -42,9 +42,9 @@ export const Applications = () => {
     try {
       const res = await axiosInstance.get(`user-applied-job/${id}/`);
       if (res.status === 200) {
-        const data = res.data || [];
-        setApplications(data.reverse());
-        setFixedApplications(data.reverse());
+        const data = res.data?.reverse() || [];
+        setApplications(data);
+        setFixedApplications(data);
       }
     } catch (error) {
       console.log("Error ON GET application DATA", error);

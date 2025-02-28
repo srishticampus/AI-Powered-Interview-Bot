@@ -116,9 +116,6 @@ export const SigninForm = () => {
                   navigate("/user/forget-password");
                 }}
               >
-                <p className="tw-text-lexiBlue-500 tw-font-bold">
-                  Forgot password?
-                </p>
               </div>
             </div>
           </div>
