@@ -26,7 +26,6 @@ export const InterviewScore = () => {
       console.log("ERROR ON GET MY APPLICATIONS", error);
     }
   };
-  console.log('applic', application)
   return (
     <div>
       <UserNavbar />

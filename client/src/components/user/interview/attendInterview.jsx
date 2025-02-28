@@ -36,7 +36,7 @@ export const AttendInterview = () => {
   const [trackingScore, setTrackingScore] = useState(Array(30).fill(-1));
   const [score, setScore] = useState(0);
   const userData = useUserData();
-  const {id} = useParams()
+  const { id } = useParams();
   /////////generate questions////////
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export const AttendInterview = () => {
       setIsLoading(false);
     }
   };
-  console.log('curr quest: ',currentQuestion)
+  console.log("curr quest: ", currentQuestion);
 
   const calculateScore = (key) => {
     setSelectedOption(key);
@@ -90,9 +90,7 @@ export const AttendInterview = () => {
         finalScore += 1;
       }
     });
-    submitInterviewResult(finalScore)
-
-    navigate("/user/interview-score/" + id);
+    submitInterviewResult(finalScore);
   };
   //generate questions end  */
   const submitInterviewResult = async (score) => {
@@ -107,10 +105,12 @@ export const AttendInterview = () => {
 
       if (response.status === 200 && secondRes.status === 200) {
         successToast("Interview completed successfully");
+
+        navigate("/user/interview-score/" + id);
       }
     } catch (error) {
       console.error("Error submitting interview score:", error);
-    } 
+    }
   };
 
   const toggleDeviceMenu = () => {
@@ -159,9 +159,7 @@ export const AttendInterview = () => {
           stream.getTracks().forEach((track) => track.stop());
         }
         const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: selectedDeviceId
-            ? { deviceId: { exact: selectedDeviceId } }
-            : true,
+          video: true,
           audio: true,
         });
         setStream(mediaStream);
@@ -184,7 +182,7 @@ export const AttendInterview = () => {
     };
   }, [selectedDeviceId]);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (stream) {
       stream.getAudioTracks().forEach((track) => {
         track.enabled = audioEnabled;
@@ -363,7 +361,7 @@ export const AttendInterview = () => {
                     playsInline
                     muted
                     className={`tw-h-full tw-w-full tw-object-cover ${
-                      !videoEnabled ? "tw-hidden" : ""
+                      !videoEnabled ? "" : ""
                     }`}
                   />
                   {!videoEnabled && (

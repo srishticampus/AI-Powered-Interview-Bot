@@ -51,10 +51,14 @@ export const InterviewPreview = () => {
           stream.getTracks().forEach((track) => track.stop());
         }
 
+        // const mediaStream = await navigator.mediaDevices.getUserMedia({
+        //   video: selectedDeviceId
+        //     ? { deviceId: { exact: selectedDeviceId } }
+        //     : true,
+        //   audio: true,
+        // });
         const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: selectedDeviceId
-            ? { deviceId: { exact: selectedDeviceId } }
-            : true,
+          video: true,
           audio: true,
         });
 
@@ -135,13 +139,13 @@ export const InterviewPreview = () => {
                     playsInline
                     muted
                     className={`tw-h-full tw-w-full tw-object-cover ${
-                      !videoEnabled ? "tw-hidden" : ""
+                      !videoEnabled ? "" : ""
                     }`}
                   />
                   {!videoEnabled && (
                     <div className="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center">
                       <div className="tw-h-24 tw-w-24 tw-rounded-full tw-bg-blue-600 tw-text-center tw-text-4xl tw-font-bold tw-text-white tw-flex tw-items-center tw-justify-center">
-                        A
+                        ...
                       </div>
                     </div>
                   )}
@@ -209,18 +213,10 @@ export const InterviewPreview = () => {
                               </button>
                             ))}
                           </div>
-                        </div>  
+                        </div>
                       )}
                     </div>
                   </div>
-                  <div className="tw-absolute tw-right-4 tw-top-4">
-                    <div className="tw-rounded-full tw-bg-blue-600 tw-p-2">
-                      <Mic className="tw-h-5 tw-w-5 tw-text-white" />
-                    </div>
-                  </div>
-                </div>
-                <div className="tw-mt-4 tw-text-center tw-text-white">
-                  <h2 className="tw-text-lg tw-font-medium">User</h2>
                 </div>
               </div>
 
