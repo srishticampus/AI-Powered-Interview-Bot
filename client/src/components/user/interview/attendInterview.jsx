@@ -5,7 +5,6 @@ import {
   Video,
   VideoOff,
   ChevronRight,
-  ChevronDown,
   ChevronLeft,
 } from "lucide-react";
 import { UserNavbar } from "../navbar/userNavbar";
@@ -16,7 +15,7 @@ import { axiosInstance } from "../../../apis/axiosInstance";
 import { useUserData } from "../../../hooks/useUserData";
 import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
 import { useParams } from "react-router-dom";
-import { successToast } from "../../../utils/showToast";
+import { errorToast, successToast } from "../../../utils/showToast";
 export const AttendInterview = () => {
   const [questions, setQuestions] = useState([]);
   const [audioEnabled, setAudioEnabled] = useState(true);
@@ -24,17 +23,14 @@ export const AttendInterview = () => {
   const [stream, setStream] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [selectedOption, setSelectedOption] = useState(null);
-  const [timeRemaining, setTimeRemaining] = useState(30 * 60); // 30 minutes in seconds
-  const [videoDevices, setVideoDevices] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
-  const [showDeviceMenu, setShowDeviceMenu] = useState(false);
   const menuRef = useRef(null);
   const videoRef = useRef(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [trackingScore, setTrackingScore] = useState(Array(30).fill(-1));
-  const [score, setScore] = useState(0);
   const userData = useUserData();
   const { id } = useParams();
   /////////generate questions////////
@@ -42,6 +38,9 @@ export const AttendInterview = () => {
   useEffect(() => {
     const userId = JSON.parse(localStorage.getItem(LEXI_USER_ID)) || null;
     if (!userId) {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
       navigate("/user/signin");
       return;
     }
@@ -56,10 +55,10 @@ export const AttendInterview = () => {
     try {
       const res = await axiosInstance.post(`generate-mcqs/${userId}/`);
       if (res.status === 200) {
-        console.log(res.data);
-        // todo => remove slice
         setQuestions(res.data?.mcqs?.slice(0, 30) || []);
         setCurrentQuestion(res.data?.mcqs[0] || {});
+        setError(false);
+        setupMedia();
       }
     } catch (error) {
       console.log("Error on generate mcqs", error);
@@ -68,9 +67,12 @@ export const AttendInterview = () => {
       setIsLoading(false);
     }
   };
-  console.log("curr quest: ", currentQuestion);
 
   const calculateScore = (key) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.id]: key,
+    }));
     setSelectedOption(key);
     const answer = currentQuestion.answer;
     const questionId = currentQuestion.id;
@@ -105,7 +107,9 @@ export const AttendInterview = () => {
 
       if (response.status === 200 && secondRes.status === 200) {
         successToast("Interview completed successfully");
-
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+        }
         navigate("/user/interview-score/" + id);
       }
     } catch (error) {
@@ -113,13 +117,6 @@ export const AttendInterview = () => {
     }
   };
 
-  const toggleDeviceMenu = () => {
-    setShowDeviceMenu(!showDeviceMenu);
-  };
-  const handleDeviceChange = (deviceId) => {
-    setSelectedDeviceId(deviceId);
-    setShowDeviceMenu(false);
-  };
   useEffect(() => {
     const getVideoDevices = async () => {
       try {
@@ -127,7 +124,6 @@ export const AttendInterview = () => {
         const videoInputs = devices.filter(
           (device) => device.kind === "videoinput"
         );
-        setVideoDevices(videoInputs);
         if (videoInputs.length > 0 && !selectedDeviceId) {
           setSelectedDeviceId(videoInputs[0].deviceId);
         }
@@ -138,46 +134,43 @@ export const AttendInterview = () => {
 
     getVideoDevices();
   }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setShowDeviceMenu(false);
+  const setupMedia = async () => {
+    try {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
       }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    const setupMedia = async () => {
-      try {
-        if (stream) {
-          stream.getTracks().forEach((track) => track.stop());
-        }
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        });
-        setStream(mediaStream);
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      setStream(mediaStream);
+      setTimeout(() => {
         if (videoRef.current) {
           videoRef.current.srcObject = mediaStream;
         }
-      } catch (err) {
-        console.error("Error accessing media devices:", err);
-      }
-    };
+      }, 500);
+    } catch (err) {
+      console.error("Error accessing media devices:", err);
 
-    if (selectedDeviceId || videoDevices.length === 0) {
+      if (err.name === "NotReadableError") {
+        errorToast(
+          "Your camera is already in use by another application. Close any other apps using the camera."
+        );
+      } else if (err.name === "NotAllowedError") {
+        errorToast(
+          "Camera access is blocked. Please allow camera permissions in your browser settings."
+        );
+      }
+    }
+  };
+  useEffect(() => {
+    if (selectedDeviceId) {
       setupMedia();
     }
 
     return () => {
       if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
+        stream.getTracks().forEach((track) => track.stop()); // Stop camera on unmount
       }
     };
   }, [selectedDeviceId]);
@@ -192,21 +185,6 @@ export const AttendInterview = () => {
       });
     }
   }, [audioEnabled, videoEnabled, stream]);
-
-  // Timer effect
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setTimeRemaining((prev) => (prev > 0 ? prev - 1 : 0));
-  //   }, 1000);
-
-  //   return () => clearInterval(timer);
-  // }, []);
-
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-  };
 
   const toggleAudio = () => setAudioEnabled(!audioEnabled);
   const toggleVideo = () => setVideoEnabled(!videoEnabled);
@@ -244,6 +222,9 @@ export const AttendInterview = () => {
 
           <button
             onClick={() => {
+              if (stream) {
+                stream.getTracks().forEach((track) => track.stop());
+              }
               navigate(-1);
             }}
             className="tw-mt-4 tw-bg-blue-500 tw-text-white tw-py-2 tw-px-4 tw-rounded"
@@ -278,28 +259,31 @@ export const AttendInterview = () => {
                   {currentQuestion?.question}
                 </h2>
                 <div className="tw-space-y-4">
-                  {getOptions(currentQuestion).map(({ key, value }) => (
-                    <label
-                      key={key}
-                      className={`tw-flex tw-items-center tw-p-4 tw-border tw-rounded-lg tw-cursor-pointer tw-transition-colors
-                      ${
-                        selectedOption === key
-                          ? "tw-border-blue-500 tw-bg-blue-50"
-                          : "tw-border-gray-200 hover:tw-bg-gray-50"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="answer"
-                        className="tw-h-4 tw-w-4 tw-text-blue-600"
-                        checked={selectedOption === key}
-                        onChange={() => {
-                          calculateScore(key);
-                        }}
-                      />
-                      <span className="tw-ml-3">{value}</span>
-                    </label>
-                  ))}
+                  {getOptions(currentQuestion).map(({ key, value }) => {
+                    console.log("key va", key, value, selectedOption);
+                    return (
+                      <label
+                        key={key}
+                        className={`tw-flex tw-items-center tw-p-4 tw-border tw-rounded-lg tw-cursor-pointer tw-transition-colors
+                    ${
+                      selectedOption === key
+                        ? "tw-border-blue-500 tw-bg-blue-50"
+                        : "tw-border-gray-200 hover:tw-bg-gray-50"
+                    }`}
+                      >
+                        <input
+                          type="radio"
+                          name="answer"
+                          className="tw-h-4 tw-w-4 tw-text-blue-600"
+                          checked={selectedOption === key}
+                          onChange={() => {
+                            calculateScore(key);
+                          }}
+                        />
+                        <span className="tw-ml-3">{value}</span>
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -308,12 +292,14 @@ export const AttendInterview = () => {
                   className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
                   disabled={currentQuestion?.id === 1}
                   onClick={() => {
-                    const nextId = currentQuestion?.id - 1;
-                    if (nextId > 0) {
-                      setCurrentQuestion(
-                        questions.find((q) => q.id === nextId)
+                    const prevId = currentQuestion?.id - 1;
+                    if (prevId > 0) {
+                      const prevQuestion = questions.find(
+                        (q) => q.id === prevId
                       );
-                      setSelectedOption(null);
+                      setCurrentQuestion(prevQuestion);
+
+                      setSelectedOption(selectedAnswers[prevId] || null);
                     }
                   }}
                 >
@@ -337,10 +323,9 @@ export const AttendInterview = () => {
                     className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
                     onClick={() => {
                       const nextId = (currentQuestion?.id % 30) + 1;
-                      setCurrentQuestion(
-                        questions.find((q) => q.id === nextId)
-                      );
-                      setSelectedOption(null);
+                      const nextQuest = questions.find((q) => q.id === nextId);
+                      setCurrentQuestion(nextQuest);
+                      setSelectedOption(selectedAnswers[nextId] || null);
                     }}
                   >
                     Next
@@ -403,44 +388,8 @@ export const AttendInterview = () => {
                             <VideoOff className="tw-h-5 tw-w-5 tw-text-white" />
                           )}
                         </button>
-                        {/* <button
-                          onClick={toggleDeviceMenu}
-                          className={`tw-rounded-r-full tw-border-l tw-border-l-gray-700 tw-p-3 tw-transition ${
-                            videoEnabled ? "tw-bg-blue-600" : "tw-bg-red-600"
-                          }`}
-                        >
-                          <ChevronDown className="tw-h-6 tw-w-6 tw-text-white" />
-                        </button> */}
+                    
                       </div>
-                      {showDeviceMenu && (
-                        <div className="tw-absolute tw-h-40 tw-overflow-auto tw-bottom-full tw-mb-2 tw-w-64 tw-rounded-lg tw-bg-white tw-shadow-lg">
-                          <div className="tw-p-2">
-                            <div className="tw-mb-2 tw-px-3 tw-py-2 tw-text-sm tw-font-medium tw-text-gray-500">
-                              Select Camera
-                            </div>
-                            {videoDevices.map((device) => (
-                              <button
-                                key={device.deviceId}
-                                onClick={() =>
-                                  handleDeviceChange(device.deviceId)
-                                }
-                                className="tw-flex tw-w-full tw-items-center tw-gap-3 tw-rounded-lg tw-px-3 tw-py-2 tw-text-left tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100"
-                              >
-                                <Video className="tw-h-4 tw-w-4" />
-                                <span className="tw-flex-1">
-                                  {device.label ||
-                                    `Camera ${
-                                      videoDevices.indexOf(device) + 1
-                                    }`}
-                                </span>
-                                {selectedDeviceId === device.deviceId && (
-                                  <div className="tw-h-2 tw-w-2 tw-rounded-full tw-bg-blue-600"></div>
-                                )}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -460,7 +409,7 @@ export const AttendInterview = () => {
                       key={i}
                       onClick={() => {
                         setCurrentQuestion(q);
-                        setSelectedOption(null);
+                        setSelectedOption(selectedAnswers[q.id] || null);
                       }}
                       className={`tw-h-10 tw-w-10 tw-rounded-lg tw-flex tw-items-center tw-justify-center tw-font-medium tw-transition
                       ${

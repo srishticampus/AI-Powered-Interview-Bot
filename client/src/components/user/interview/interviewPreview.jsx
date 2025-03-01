@@ -51,12 +51,6 @@ export const InterviewPreview = () => {
           stream.getTracks().forEach((track) => track.stop());
         }
 
-        // const mediaStream = await navigator.mediaDevices.getUserMedia({
-        //   video: selectedDeviceId
-        //     ? { deviceId: { exact: selectedDeviceId } }
-        //     : true,
-        //   audio: true,
-        // });
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
