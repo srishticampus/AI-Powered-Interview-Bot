@@ -34,13 +34,31 @@ export const SignUpForm = () => {
   const navigateToSignin = () => {
     navigate("/user/signin");
   };
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
+
+  
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  
+    // Regex to allow only letters and spaces
+    const nameRegex = /^[A-Za-z\s]+$/;
+  
+    if (name === "name") {
+      if (value === "" || nameRegex.test(value)) {
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+      }
+    } else {
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -141,40 +159,42 @@ export const SignUpForm = () => {
         <form onSubmit={handleSubmit} className="tw-space-y-6">
           {/* Profile Image Upload */}
           <div className="tw-flex tw-justify-center tw-mb-8">
-            <div className="tw-relative">
-              <div className="tw-w-32 tw-h-32 tw-rounded-full tw-bg-gray-100 tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
-                {previewImage ? (
-                  <img
-                    src={previewImage}
-                    alt="Profile preview"
-                    className="tw-w-full tw-h-full tw-object-cover"
-                  />
-                ) : (
-                  <UserCircle className="tw-w-20 tw-h-20 tw-text-gray-400" />
-                )}
-              </div>
-              <label
-                htmlFor="profile-image"
-                className="tw-absolute tw-bottom-0 tw-right-0 tw-w-8 tw-h-8 tw-bg-blue-600 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-bg-blue-700 tw-transition-colors"
-              >
-                <Plus className="tw-w-5 tw-h-5 tw-text-white" />
-                <input
-                  type="file"
-                  id="profile-image"
-                  className="tw-hidden"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-              </label>
-              <p className="tw-text-center tw-text-gray-600 tw-mt-2">
-                + Add Image
-              </p>
-            </div>
+          <div className="tw-flex tw-justify-center tw-mb-8">
+  <div className="tw-relative">
+    <div className="tw-w-32 tw-h-32 tw-rounded-full tw-bg-gray-100 tw-flex tw-items-center tw-justify-center tw-overflow-hidden">
+      {previewImage ? (
+        <img
+          src={previewImage}
+          alt="Profile preview"
+          className="tw-w-full tw-h-full tw-object-cover"
+        />
+      ) : (
+        <UserCircle className="tw-w-20 tw-h-20 tw-text-gray-400" />
+      )}
+    </div>
+
+    {/* Removed the blue plus button */}
+
+    {/* Label moved to the text area */}
+    <label htmlFor="profile-image" className="tw-text-center tw-text-gray-600 tw-mt-2 tw-block tw-cursor-pointer">
+      + Add Image
+      <input
+        type="file"
+        id="profile-image"
+        className="tw-hidden"
+        accept="image/*"
+        onChange={handleImageChange}
+      />
+    </label>
+  </div>
+</div>
+
           </div>
 
           {/* Form Fields */}
           <div className="tw-space-y-4">
             <div className="tw-flex  tw-justify-between">
+              
               <div className="tw-w-5/12 ">
                 <label
                   htmlFor="name"

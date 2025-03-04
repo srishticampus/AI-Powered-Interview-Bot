@@ -127,7 +127,7 @@ export const ViewApplications = () => {
               </tr>
             </thead>
             <tbody className="tw-divide-y tw-divide-gray-200">
-              {currentApps.map((app, index) => (
+              {currentApps?.length>0? currentApps.map((app, index) => (
                 <tr key={index} className="hover:tw-bg-gray-50">
                   <td className="tw-px-6 tw-py-4 tw-text-sm tw-text-gray-600">
                     {startIndex + index + 1}
@@ -176,7 +176,7 @@ export const ViewApplications = () => {
                     </button>
                   </td>
                 </tr>
-              ))}
+              )):<p>No Applications Found</p>}
             </tbody>
           </table>
 
