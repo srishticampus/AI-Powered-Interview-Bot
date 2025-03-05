@@ -10,6 +10,13 @@ export const ContactForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    alert("Submitted Succesfully");
+    setFormData({
+      name: "",
+      email: "",
+      comments: "",
+    });
+
     // Handle form submission logic here
     console.log("Form submitted:", formData);
   };

@@ -107,9 +107,14 @@ export const AddJob = ({ changeActiveSubItem }) => {
               Job Title
             </label>
             <input
-              type="text"
-              {...register("jobTitle", { required: "Job title is required" })}
+            type="form-control"
+              {...register("jobTitle", { 
+                required: "Job title is required",
+                validate: (value) =>
+                  /^[A-Za-z\s]+$/.test(value) || "Job title cannot contain numbers or special characters"
+              })}
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
+
             />
             {errors.jobTitle && (
               <p className="tw-mt-1 tw-text-sm tw-text-red-600">
@@ -167,7 +172,7 @@ export const AddJob = ({ changeActiveSubItem }) => {
               Experience
             </label>
             <input
-              type="text"
+              type="number"
               {...register("experience", {
                 required: "Experience is required",
               })}
@@ -253,6 +258,7 @@ export const AddJob = ({ changeActiveSubItem }) => {
                 required: "Application deadline is required",
                 validate: (value) => {
                   const today = new Date();
+                  today.setHours(0, 0, 0, 0)
                   const selectedDate = new Date(value);
                   return selectedDate >= today;
                 },

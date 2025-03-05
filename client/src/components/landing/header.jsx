@@ -32,7 +32,7 @@ export const LandingHeader = () => {
           {/* Button container  */}
           <div className="tw-space-x-4 tw-p-2 tw-rounded-lg  tw-flex tw-items-center">
             <Link to='/user/jobs'>
-              <PrimaryButton text="Find Jobs" />
+              <PrimaryButton text="Apply Now" />
             </Link>
             <Link to='/user/about'>
               <SecondaryButton text="Learn More" />
@@ -66,7 +66,7 @@ export const LandingHeader = () => {
                 <img className=" tw-h-5 tw-w-5 " src={StartIcon} alt="like" />
               </span>
               <span className="tw-text-sm tw-font-medium">
-                Search Thousands of Verfied Listings
+                Search Thousands of Verified Listings
               </span>
             </div>
           </div>

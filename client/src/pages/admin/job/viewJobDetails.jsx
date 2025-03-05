@@ -45,6 +45,7 @@ export const ViewJobDetails = ({ jobId }) => {
 
   return (
     <div className="tw-max-w-6xl tw-mx-auto tw-p-6">
+    
       {/* Header Section */}
       <div className="tw-bg-blue-50 tw-rounded-xl tw-p-6 tw-mb-6">
         <div className="tw-flex tw-justify-between tw-items-start tw-mb-4">

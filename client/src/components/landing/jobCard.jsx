@@ -50,7 +50,7 @@ export const JobCard = ({ job, clickOnJob }) => {
         onClick={() => clickOnJob(job.id)}
         className="tw-cursor-pointer tw-w-full tw-mt-6 tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white tw-py-3 tw-px-6 tw-rounded-lg tw-flex tw-items-center tw-justify-center group tw-transition-all"
       >
-        View More
+       Apply Job
         <svg
           className="tw-w-4 tw-h-4 tw-ml-2 group-hover:tw-translate-x-1 tw-transition-transform"
           viewBox="0 0 24 24"
