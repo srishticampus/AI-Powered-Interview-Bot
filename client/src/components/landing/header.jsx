@@ -1,7 +1,6 @@
 import LikeIcon from "../../assets/svg/like.svg";
 import StartIcon from "../../assets/svg/star.svg";
 import VerifyIcon from "../../assets/svg/verify.svg";
-import starIcon from "../../assets/svg/Star.svg";
 import { PrimaryButton } from "../../components/ui/buttons/primaryBtn";
 import { SecondaryButton } from "../../components/ui/buttons/secondaryBtn";
 import headerGirl from "../../assets/png/header-girl.png";
@@ -14,7 +13,7 @@ export const LandingHeader = () => {
         <div>
           <div className="tw-inline-block tw-border-2 tw-border-spacing-1 tw-border-lexiBlue-500 tw-px-4 tw-py-2 tw-text-lexiBlue-800 tw-rounded-full tw-mb-6">
             <span className="tw-flex  tw-font-medium tw-space-x-5">
-              <img src={starIcon} alt="star icon" />
+              <img src={StartIcon} alt="star icon" />
               <span>Your Career Starts Here!</span>
             </span>
           </div>
