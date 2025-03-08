@@ -10,6 +10,7 @@ export const UserHome = () => {
      <div className="tw-min-h-screen tw-bg-gradient-to-br tw-from-blue-50 tw-to-white">
            <UserNavbar />
            <LandingHeader />
+           <ProfileData />
            <HowItWorks />
            <ExploreOpportunities />
            <CallToAction />
