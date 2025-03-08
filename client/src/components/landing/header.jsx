@@ -30,8 +30,8 @@ export const LandingHeader = () => {
 
           {/* Button container  */}
           <div className="tw-space-x-4 tw-p-2 tw-rounded-lg  tw-flex tw-items-center">
-            <Link to='/user/jobs'>
-              <PrimaryButton text="Apply Now" />
+            <Link to='/user/signup'>
+              <PrimaryButton text="Register Now" />
             </Link>
             <Link to='/user/about'>
               <SecondaryButton text="Learn More" />
