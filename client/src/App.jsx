@@ -21,7 +21,7 @@ import { ApplicationStatus } from "./pages/user/applicationStatus/applicationSta
 import { InterviewPreview } from "./components/user/interview/interviewPreview";
 import { AttendInterview } from "./components/user/interview/attendInterview";
 import { InterviewScore } from "./components/user/interview/interviewScore";
-
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 function App() {
   return (
     <BrowserRouter basename="/lexsi">

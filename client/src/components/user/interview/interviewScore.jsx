@@ -1,10 +1,11 @@
-import { ChevronLeft,  CircleCheck } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { ChevronLeft, CircleCheck } from "lucide-react";
 import { Footer } from "../../landing/footer";
 import { UserNavbar } from "../navbar/userNavbar";
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../../apis/axiosInstance";
+
 export const InterviewScore = () => {
   const [application, setApplication] = useState({});
   const navigate = useNavigate();
@@ -15,17 +16,25 @@ export const InterviewScore = () => {
       getMyApplications(id);
     }
   }, [id]);
+
   const getMyApplications = async (id) => {
     try {
       const res = await axiosInstance.get(`application/${id}/`);
       if (res.status === 200) {
-        const data = res.data;
-        setApplication(data);
+        setApplication(res.data);
       }
     } catch (error) {
       console.log("ERROR ON GET MY APPLICATIONS", error);
     }
   };
+
+  useEffect(()=>{
+    console.log('window.myMediaStream', window.myMediaStream)
+    if (window.myMediaStream) {
+      console.log('window.myMediaStream', window.myMediaStream)
+      window.myMediaStream.getTracks().forEach((track) => track.stop());
+    }
+  })
   return (
     <div>
       <UserNavbar />
@@ -40,20 +49,22 @@ export const InterviewScore = () => {
           </h1>
           <h3 className="tw-mt-4">Interview Successfully Completed!</h3>
           <p className='tw-mt-3'>
-            Thank you for your time, We will let you know the status as soon as possible. 
+            Thank you for your time, we will let you know the status as soon as possible.
           </p>
 
-          <div className="tw-flex tw-justify-center tw-mt-5 ">
+          {/* Feedback Section */}
+          
+          <div className="tw-flex tw-justify-center tw-m-5">
             <button
               className="tw-bg-blue-600 tw-text-white tw-px-6 tw-py-2 tw-rounded-full tw-flex tw-items-center tw-gap-2"
-              onClick={() => {
-                navigate('/user/application-status');
-              }}
+              onClick={() => navigate('/user/application-status')}
             >
               <ChevronLeft className="tw-w-4 tw-h-4" />
               Back 
             </button>
           </div>
+
+          
         </div>
       </div>
 

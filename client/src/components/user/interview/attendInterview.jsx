@@ -91,6 +91,9 @@ export const AttendInterview = () => {
       if (score === 1) {
         finalScore += 1;
       }
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
     });
     submitInterviewResult(finalScore);
   };
@@ -201,9 +204,9 @@ export const AttendInterview = () => {
       <div>
         <UserNavbar />
         <div className="tw-flex tw-items-center tw-justify-center tw-min-h-screen">
-          <h1>
+          <p>
             Please wait a moment while we generate relevant questions for you...
-          </h1>
+          </p>
           <div className="tw-animate-spin tw-rounded-full tw-h-16 tw-w-16 tw-border-b-2 tw-border-gray-900"></div>
         </div>
 
@@ -362,7 +365,7 @@ export const AttendInterview = () => {
                   )}
                   <div className="tw-absolute tw-bottom-4 tw-left-1/2 tw-transform -tw-translate-x-1/2 tw-flex tw-gap-2">
                     <button
-                      onClick={toggleAudio}
+                      // onClick={toggleAudio}
                       className={`tw-rounded-full tw-p-2 tw-transition ${
                         audioEnabled ? "tw-bg-blue-600" : "tw-bg-red-600"
                       }`}
@@ -377,7 +380,7 @@ export const AttendInterview = () => {
                     <div className="tw-relative" ref={menuRef}>
                       <div className="tw-flex tw-gap-1">
                         <button
-                          onClick={toggleVideo}
+                          // onClick={toggleVideo}
                           className={`tw-rounded-full tw-p-2 tw-transition ${
                             videoEnabled ? "tw-bg-blue-600" : "tw-bg-red-600"
                           }`}
