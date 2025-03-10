@@ -111,7 +111,8 @@ export const AddJob = ({ changeActiveSubItem }) => {
               {...register("jobTitle", { 
                 required: "Job title is required",
                 validate: (value) =>
-                  /^[A-Za-z\s]+$/.test(value) || "Job title cannot contain numbers or special characters"
+                  /^[A-Za-z\s]+./.test(value) || "Job title cannot contain numbers "
+                
               })}
               className="tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-blue-500"
 

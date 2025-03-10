@@ -10,8 +10,12 @@ export const Jobs = () => {
   const isLoggedIn = useUserLoggedin();
   const [jobId, setJobId] = useState("");
   const clickOnJob = (id) => {
+    console.log(id,"clickonjob");
+    
     setJobId(id);
   };
+  console.log((jobId,"data"));
+  
   return (
     <div>
       {isLoggedIn ? <UserNavbar /> : <LandingNavbar />}

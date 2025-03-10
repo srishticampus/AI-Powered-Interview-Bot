@@ -57,6 +57,7 @@ export const InterviewPreview = () => {
         });
 
         setStream(mediaStream);
+        window.myMediaStream = mediaStream
         if (videoRef.current) {
           videoRef.current.srcObject = mediaStream;
         }
@@ -100,7 +101,7 @@ export const InterviewPreview = () => {
     };
   }, []);
 
-  const toggleAudio = () => setAudioEnabled(!audioEnabled);
+  // const toggleAudio = () => setAudioEnabled(!audioEnabled);
   const toggleVideo = () => setVideoEnabled(!videoEnabled);
   const toggleDeviceMenu = () => setShowDeviceMenu(!showDeviceMenu);
 
@@ -145,9 +146,9 @@ export const InterviewPreview = () => {
                   )}
                   <div className="tw-absolute tw-bottom-4 tw-left-1/2 tw-flex -tw-translate-x-1/2 tw-gap-4">
                     <button
-                      onClick={toggleAudio}
+                      // onClick={toggleAudio}
                       className={`tw-rounded-full tw-p-3 tw-transition ${
-                        audioEnabled ? "tw-bg-blue-600" : "tw-bg-red-600"
+audioEnabled ? "tw-bg-blue-600" : "tw-bg-red-600"
                       }`}
                     >
                       {audioEnabled ? (
@@ -159,7 +160,7 @@ export const InterviewPreview = () => {
                     <div className="tw-relative" ref={menuRef}>
                       <div className="tw-flex tw-gap-1">
                         <button
-                          onClick={toggleVideo}
+                          // onClick={toggleVideo}
                           className={`tw-rounded-full tw-p-3 tw-transition ${
                             videoEnabled ? "tw-bg-blue-600" : "tw-bg-red-600"
                           }`}
@@ -232,7 +233,7 @@ export const InterviewPreview = () => {
                   </div>
                   <div className="tw-flex tw-items-center tw-gap-2 tw-text-gray-600">
                     <ListChecks className="tw-h-5 tw-w-5" />
-                    <span>22 Questions</span>
+                    <span>30 Questions</span>
                   </div>
                 </div>
 
