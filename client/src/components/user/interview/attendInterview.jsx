@@ -113,6 +113,11 @@ export const AttendInterview = () => {
         if (stream) {
           stream.getTracks().forEach((track) => track.stop());
         }
+        console.log('window.myMediaStream', window.myMediaStream)
+        if (window.myMediaStream) {
+          console.log('window.myMediaStream', window.myMediaStream)
+          window.myMediaStream.getTracks().forEach((track) => track.stop());
+        }
         navigate("/user/interview-score/" + id);
       }
     } catch (error) {

@@ -12,6 +12,11 @@ export const InterviewScore = () => {
   const { id } = useParams();
 
   useEffect(() => {
+    console.log('window.myMediaStream', window.myMediaStream)
+    if (window.myMediaStream) {
+      console.log('window.myMediaStream', window.myMediaStream)
+      window.myMediaStream.getTracks().forEach((track) => track.stop());
+    }
     if (id) {
       getMyApplications(id);
     }
@@ -28,13 +33,7 @@ export const InterviewScore = () => {
     }
   };
 
-  useEffect(()=>{
-    console.log('window.myMediaStream', window.myMediaStream)
-    if (window.myMediaStream) {
-      console.log('window.myMediaStream', window.myMediaStream)
-      window.myMediaStream.getTracks().forEach((track) => track.stop());
-    }
-  })
+  
   return (
     <div>
       <UserNavbar />
