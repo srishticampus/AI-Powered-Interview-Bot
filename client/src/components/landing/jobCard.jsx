@@ -16,7 +16,6 @@ export const JobCard = ({ job, clickOnJob }) => {
       onClick={navigateToJobs}
       className="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-sm hover:tw-shadow-md tw-transition-shadow"
     >
-    <input className="form-control" placeholder="search"/>
       <div className="tw-flex tw-justify-between tw-items-start tw-mb-4">
         <div>
           <h3 className="tw-text-xl tw-font-semibold text-[#3B4B7C] tw-mb-2">
