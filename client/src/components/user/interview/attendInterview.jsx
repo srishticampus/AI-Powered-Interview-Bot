@@ -125,35 +125,37 @@ export const AttendInterview = () => {
     const video = document.querySelector("video");
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-  
+
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-  
+
     canvas.toBlob(async (blob) => {
-      const formData = new FormData();
-      formData.append("image", blob, "frame.jpg");
-  
-      try {
-        const response = await axiosInstance.post(
-          "/emotion-detection/",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-  
-        console.log("Detected Emotion:", response.data.emotion);
-      } catch (error) {
-        console.error("Error detecting emotion:", error);
-      }
+        const formData = new FormData();
+        formData.append("image", blob, "frame.jpg");
+
+        const response = await fetch("http://localhost:8000/api/ai_bot_api/emotion-detection/", {
+            method: "POST",
+            body: formData
+        });
+
+        console.log(response);
+        
+        // if (response.ok) {
+        //     const blobResponse = await response.blob();
+        //     const imageUrl = URL.createObjectURL(blobResponse);
+
+        //     // Update an image tag in the frontend
+        //     const imgElement = document.getElementById("processedImage");
+        //     imgElement.src = imageUrl;
+        // } else {
+        //     console.error("Error detecting emotion:", await response.json());
+        // }
     }, "image/jpeg");
-  };
-  
-  // Call captureFrame() every few seconds
-  setInterval(captureFrame, 5000);
+};
+
+// Call captureFrame() every few seconds
+setInterval(captureFrame, 2000);
   useEffect(() => {
 
     const getVideoDevices = async () => {
