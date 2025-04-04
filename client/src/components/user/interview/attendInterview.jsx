@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, startTransition } from "react";
+import { useState, useRef, useEffect, } from "react";
 import {
   Mic,
   MicOff,
@@ -38,6 +38,7 @@ export const AttendInterview = () => {
 
   useEffect(() => {
     const userId = JSON.parse(localStorage.getItem(LEXI_USER_ID)) || null;
+    
     if (!userId) {
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
@@ -133,14 +134,11 @@ export const AttendInterview = () => {
     canvas.toBlob(async (blob) => {
         const formData = new FormData();
         formData.append("image", blob, "frame.jpg");
-
-        const response = await fetch("http://localhost:8000/api/ai_bot_api/emotion-detection/", {
+        formData.append("userId", localStorage.getItem(LEXI_USER_ID))
+                const response = await fetch("http://localhost:8000/api/ai_bot_api/emotion-detection/", {
             method: "POST",
             body: formData
-        });
-
-        console.log(response);
-        
+        });        
         // if (response.ok) {
         //     const blobResponse = await response.blob();
         //     const imageUrl = URL.createObjectURL(blobResponse);
@@ -226,8 +224,8 @@ setInterval(captureFrame, 2000);
     }
   }, [audioEnabled, videoEnabled, stream]);
 
-  const toggleAudio = () => setAudioEnabled(!audioEnabled);
-  const toggleVideo = () => setVideoEnabled(!videoEnabled);
+  // const toggleAudio = () => setAudioEnabled(!audioEnabled);
+  // const toggleVideo = () => setVideoEnabled(!videoEnabled);
 
   const getOptions = (question) => [
     { key: "option1", value: question.option1 },
@@ -300,7 +298,7 @@ setInterval(captureFrame, 2000);
                 </h2>
                 <div className="tw-space-y-4">
                   {getOptions(currentQuestion).map(({ key, value }) => {
-                    console.log("key va", key, value, selectedOption);
+                    // console.log("key va", key, value, selectedOption);
                     return (
                       <label
                         key={key}
