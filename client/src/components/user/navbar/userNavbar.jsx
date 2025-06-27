@@ -1,10 +1,12 @@
 import {  LogOut, Star } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { useState } from "react";
 import { IS_LEXI_USER_LOGGED_IN } from "../../../constants/constants";
 import { useUserData } from "../../../hooks/useUserData";
 import { BACKEND_URL } from "../../../apis/axiosInstance";
+import { FaRobot } from "react-icons/fa";
+
 export const UserNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -100,6 +102,21 @@ export const UserNavbar = () => {
               Contact{" "}
             </span>
           </div>
+          <div
+            className="tw-cursor-pointer"
+           
+          >
+            {" "}
+            <span
+              className={`${
+                activePage === "contact" && "tw-text-lexiBlue-500 tw-underline"
+              }`}
+            >
+              <Link to="/chatbot">
+            <FaRobot size={24} />
+          </Link>{" "}
+            </span>
+          </div>
         </div>
         <div
           className="tw-relative tw-inline-block tw-text-left"
@@ -154,6 +171,7 @@ export const UserNavbar = () => {
           )}
         </div>
       </div>
+
     </nav>
   );
 };

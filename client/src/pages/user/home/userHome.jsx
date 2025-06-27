@@ -5,16 +5,19 @@ import { LandingHeader } from "../../../components/landing/header"
 import { HowItWorks } from "../../../components/landing/howItWorks"
 import { UserNavbar } from "../../../components/user/navbar/userNavbar"
 import { ProfileData } from "../../../components/user/profile/profileData"
+import {Link} from "react-router-dom"
+import { FaRobot } from "react-icons/fa";
 
 export const UserHome = () => {
     return (
      <div className="tw-min-h-screen tw-bg-gradient-to-br tw-from-blue-50 tw-to-white">
-           <UserNavbar />
+           <UserNavbar  />
            <LandingHeader />
            <ProfileData/>
            <HowItWorks />
            <ExploreOpportunities />
            <CallToAction />
+             
            <Footer />
          </div>
     )
