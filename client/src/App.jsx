@@ -22,10 +22,12 @@ import { InterviewPreview } from "./components/user/interview/interviewPreview";
 import { AttendInterview } from "./components/user/interview/attendInterview";
 import { InterviewScore } from "./components/user/interview/interviewScore";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+import ChatBot from "./chatbot/Chatbot";
 function App() {
   return (
     <BrowserRouter basename="/lexsi">
       <Routes>
+               
         <Route path="/" element={<Landing />} />
         <Route path="/user/signup" element={<Signup />} />
         <Route path="/user/signin" element={<SignIn />} />
@@ -53,6 +55,7 @@ function App() {
 
         {/* this route should be last */}
         <Route path="/*" element={<NotFound />} />
+        <Route path="/chatbot" element={<ChatBot/>}  />
       </Routes>
     </BrowserRouter>
   );
